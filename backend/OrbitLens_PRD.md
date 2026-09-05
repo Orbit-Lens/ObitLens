@@ -49,7 +49,7 @@ Registering images across these sensors — and against reference datasets (e.g.
 ## 5. Key Technical Challenges (from problem statement)
 
 | Challenge | Description | Mitigation approach |
-|---|---|---|
+|---|---|---|/*
 | Illumination variation | Sun azimuth/elevation changes shadows and albedo appearance | Illumination-invariant / learned descriptors, phase-correlation on gradient or edge domain, histogram equalization, shadow-aware preprocessing |
 | Viewpoint variation | Shift, rotation, perspective distortion from orbit geometry | Affine/homography estimation, RANSAC, optional orbit/pose metadata from PDS4 labels |
 | Scale variation | Large resolution/altitude ratio between sensors | Multi-scale pyramid search, scale-invariant detectors (SIFT-family, learned scale-invariant descriptors), coarse-to-fine matching |
