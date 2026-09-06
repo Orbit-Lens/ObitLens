@@ -6,21 +6,23 @@ import { env } from './config/env.js';
 import { logger } from './utils/logger.js';
 
 async function bootstrap() {
-  // 1. Connect to MongoDB
-  await connectDB();
-
-  // 2. Create Express app and HTTP server
+  // 1. Create Express app and HTTP server
   const app = createApp();
   const httpServer = http.createServer(app);
 
-  // 3. Initialize Socket.io
+  // 2. Initialize Socket.io
   initSocketIO(httpServer);
 
-  // 4. Start listening
+  // 3. Start listening immediately so port is available right away
   const server = httpServer.listen(env.PORT, () => {
     logger.info(`🚀 OrbitLens Web Backend running in ${env.NODE_ENV} mode on port ${env.PORT}`);
     logger.info(`📡 Health Check: http://localhost:${env.PORT}/health`);
     logger.info(`🔍 Readiness Probe: http://localhost:${env.PORT}/ready`);
+  });
+
+  // 4. Connect to MongoDB (local, Atlas, or MongoMemoryServer fallback)
+  connectDB().catch((err) => {
+    logger.error('Database connection error:', err);
   });
 
   // Graceful shutdown handling

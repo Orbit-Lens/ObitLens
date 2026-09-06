@@ -19,5 +19,8 @@
     "isro"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "tsx": "^4.23.13"
+  }
 }
