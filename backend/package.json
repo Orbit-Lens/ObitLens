@@ -1,28 +1,24 @@
 {
-  "name": "orbitlens-backend-root",
+  "name": "orbitlens-root",
   "version": "1.0.0",
-  "description": "OrbitLens Backend Root Orchestrator",
+  "description": "OrbitLens Project Root Orchestrator",
   "private": true,
   "scripts": {
-    "dev": "npm --prefix web-backend run dev",
-    "build": "npm --prefix web-backend run build",
-    "start": "npm --prefix web-backend start",
-    "lint": "npm --prefix web-backend run lint",
-    "install:web": "npm --prefix web-backend install",
-    "seed": "npm --prefix web-backend run seed",
-    "test:db": "npm --prefix web-backend run test:db",
-    "dev:worker": "cd processing-service && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
-    "test:worker": "cd processing-service && pytest -v tests/test_pipeline.py"
+    "dev": "npm --prefix backend/web-backend run dev",
+    "build": "npm --prefix backend/web-backend run build",
+    "start": "npm --prefix backend/web-backend start",
+    "lint": "npm --prefix backend/web-backend run lint",
+    "install:web": "npm --prefix backend/web-backend install",
+    "seed": "npm --prefix backend/web-backend run seed",
+    "dev:backend": "npm --prefix backend/web-backend run dev",
+    "dev:worker": "cd backend/processing-service && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
+    "test:worker": "cd backend/processing-service && pytest -v tests/test_pipeline.py"
   },
   "keywords": [
     "chandrayaan-2",
-    "image-registration",
     "orbitlens",
     "isro"
   ],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "tsx": "^4.23.13"
-  }
+  "license": "ISC"
 }
