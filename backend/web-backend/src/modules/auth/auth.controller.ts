@@ -15,7 +15,7 @@ const cookieOptions = {
 
 export async function registerHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await authService.register(req.body);
+    const result = await authService.register(req.body, req.ip);
     res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, cookieOptions);
     return sendSuccess(res, {
       user: result.user,
@@ -28,7 +28,7 @@ export async function registerHandler(req: Request, res: Response, next: NextFun
 
 export async function loginHandler(req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await authService.login(req.body);
+    const result = await authService.login(req.body, req.ip);
     res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, cookieOptions);
     return sendSuccess(res, {
       user: result.user,
@@ -38,6 +38,7 @@ export async function loginHandler(req: Request, res: Response, next: NextFuncti
     next(error);
   }
 }
+
 
 export async function refreshHandler(req: Request, res: Response, next: NextFunction) {
   try {

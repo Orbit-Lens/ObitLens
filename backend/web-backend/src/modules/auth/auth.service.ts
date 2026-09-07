@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { User, IUser } from '../users/user.model.js';
+import { AuditLog } from '../audit/audit.model.js';
 import { RegisterInput, LoginInput } from './auth.schema.js';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../../utils/jwt.js';
 
@@ -14,9 +15,16 @@ export interface AuthTokens {
   };
 }
 
-export async function register(input: RegisterInput): Promise<AuthTokens> {
+export async function register(input: RegisterInput, ipAddress?: string): Promise<AuthTokens> {
   const existing = await User.findOne({ email: input.email.toLowerCase() });
   if (existing) {
+    await AuditLog.create({
+      userEmail: input.email,
+      action: 'USER_REGISTER',
+      status: 'FAILED',
+      details: 'Email conflict - user already exists',
+      ipAddress,
+    }).catch(() => {});
     const err: any = new Error('User with this email already exists');
     err.statusCode = 409;
     err.code = 'CONFLICT';
@@ -31,6 +39,8 @@ export async function register(input: RegisterInput): Promise<AuthTokens> {
     email: input.email.toLowerCase(),
     passwordHash,
     role: input.role || 'user',
+    lastLoginAt: new Date(),
+    loginCount: 1,
   });
 
   const accessToken = signAccessToken({
@@ -44,6 +54,15 @@ export async function register(input: RegisterInput): Promise<AuthTokens> {
   user.refreshTokenHash = refreshHash;
   await user.save();
 
+  await AuditLog.create({
+    userId: user._id,
+    userEmail: user.email,
+    action: 'USER_REGISTER',
+    status: 'SUCCESS',
+    details: `User registered successfully with role '${user.role}'`,
+    ipAddress,
+  }).catch(() => {});
+
   return {
     accessToken,
     refreshToken,
@@ -56,9 +75,16 @@ export async function register(input: RegisterInput): Promise<AuthTokens> {
   };
 }
 
-export async function login(input: LoginInput): Promise<AuthTokens> {
+export async function login(input: LoginInput, ipAddress?: string): Promise<AuthTokens> {
   const user = await User.findOne({ email: input.email.toLowerCase() });
   if (!user) {
+    await AuditLog.create({
+      userEmail: input.email,
+      action: 'USER_LOGIN',
+      status: 'FAILED',
+      details: 'Invalid email address',
+      ipAddress,
+    }).catch(() => {});
     const err: any = new Error('Invalid email or password');
     err.statusCode = 401;
     err.code = 'UNAUTHORIZED';
@@ -66,6 +92,14 @@ export async function login(input: LoginInput): Promise<AuthTokens> {
   }
 
   if (user.isLocked()) {
+    await AuditLog.create({
+      userId: user._id,
+      userEmail: user.email,
+      action: 'USER_LOGIN',
+      status: 'FAILED',
+      details: 'Account temporarily locked',
+      ipAddress,
+    }).catch(() => {});
     const err: any = new Error('Account temporarily locked due to multiple failed login attempts. Please try again later.');
     err.statusCode = 403;
     err.code = 'FORBIDDEN';
@@ -75,6 +109,14 @@ export async function login(input: LoginInput): Promise<AuthTokens> {
   const isMatch = await user.comparePassword(input.password);
   if (!isMatch) {
     await user.incLoginAttempts();
+    await AuditLog.create({
+      userId: user._id,
+      userEmail: user.email,
+      action: 'USER_LOGIN',
+      status: 'FAILED',
+      details: 'Password mismatch',
+      ipAddress,
+    }).catch(() => {});
     const err: any = new Error('Invalid email or password');
     err.statusCode = 401;
     err.code = 'UNAUTHORIZED';
@@ -92,7 +134,18 @@ export async function login(input: LoginInput): Promise<AuthTokens> {
   const refreshToken = signRefreshToken({ userId: user._id.toString() });
   const refreshHash = await bcrypt.hash(refreshToken, 10);
   user.refreshTokenHash = refreshHash;
+  user.lastLoginAt = new Date();
+  user.loginCount = (user.loginCount || 0) + 1;
   await user.save();
+
+  await AuditLog.create({
+    userId: user._id,
+    userEmail: user.email,
+    action: 'USER_LOGIN',
+    status: 'SUCCESS',
+    details: `User logged in successfully (Total logins: ${user.loginCount})`,
+    ipAddress,
+  }).catch(() => {});
 
   return {
     accessToken,
@@ -105,6 +158,7 @@ export async function login(input: LoginInput): Promise<AuthTokens> {
     },
   };
 }
+
 
 export async function refresh(oldRefreshToken: string): Promise<{ accessToken: string; refreshToken: string }> {
   let decoded: { userId: string };

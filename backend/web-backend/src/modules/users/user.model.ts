@@ -11,6 +11,8 @@ export interface IUser extends Document {
   refreshTokenHash?: string;
   failedLoginAttempts: number;
   lockUntil?: Date;
+  lastLoginAt?: Date;
+  loginCount: number;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -29,6 +31,8 @@ const UserSchema = new Schema<IUser>(
     refreshTokenHash: { type: String },
     failedLoginAttempts: { type: Number, default: 0 },
     lockUntil: { type: Date },
+    lastLoginAt: { type: Date },
+    loginCount: { type: Number, default: 0 },
   },
   {
     timestamps: true,

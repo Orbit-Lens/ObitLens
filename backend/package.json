@@ -9,6 +9,8 @@
     "start": "npm --prefix web-backend start",
     "lint": "npm --prefix web-backend run lint",
     "install:web": "npm --prefix web-backend install",
+    "seed": "npm --prefix web-backend run seed",
+    "test:db": "npm --prefix web-backend run test:db",
     "dev:worker": "cd processing-service && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
     "test:worker": "cd processing-service && pytest -v tests/test_pipeline.py"
   },

@@ -19,6 +19,7 @@ import projectRoutes from './modules/projects/project.routes.js';
 import imageRoutes from './modules/images/image.routes.js';
 import jobRoutes from './modules/jobs/job.routes.js';
 import metricsRoutes from './modules/metrics/metrics.routes.js';
+import contactRoutes from './modules/contact/contact.routes.js';
 
 export function createApp() {
   const app = express();
@@ -121,6 +122,7 @@ export function createApp() {
   app.use('/api/v1/images', imageRoutes);
   app.use('/api/v1/jobs', jobRoutes);
   app.use('/api/v1/metrics', metricsRoutes);
+  app.use('/api/v1/contact', contactRoutes);
 
   // 11. Handle 404 for unknown endpoints
   app.use('*', (req: Request, res: Response) => {
