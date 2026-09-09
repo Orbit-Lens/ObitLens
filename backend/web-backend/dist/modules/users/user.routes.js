@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_controller_js_1 = require("./user.controller.js");
+const requireAuth_js_1 = require("../../middleware/requireAuth.js");
+const validate_js_1 = require("../../middleware/validate.js");
+const user_schema_js_1 = require("./user.schema.js");
+const router = (0, express_1.Router)();
+router.use(requireAuth_js_1.requireAuth);
+router.get('/me', user_controller_js_1.getProfileHandler);
+router.put('/me', (0, validate_js_1.validate)({ body: user_schema_js_1.updateUserSchema }), user_controller_js_1.updateProfileHandler);
+router.get('/me/export', user_controller_js_1.exportDataHandler);
+router.delete('/me', (0, validate_js_1.validate)({ body: user_schema_js_1.deleteAccountSchema }), user_controller_js_1.deleteAccountHandler);
+exports.default = router;

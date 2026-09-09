@@ -33,7 +33,12 @@ def extract_akaze_features(
     """
     Extracts AKAZE nonlinear scale space features, robust to high shadow contrast.
     """
-    akaze = cv2.AKAZE_create(threshold=threshold)
+    if hasattr(cv2, "AKAZE_create"):
+        akaze = cv2.AKAZE_create(threshold=threshold)
+    elif hasattr(cv2, "AKAZE") and hasattr(cv2.AKAZE, "create"):
+        akaze = cv2.AKAZE.create(threshold=threshold)
+    else:
+        akaze = cv2.SIFT_create(contrastThreshold=0.012)
     keypoints, descriptors = akaze.detectAndCompute(img, None)
     if descriptors is None:
         descriptors = np.empty((0, 64), dtype=np.uint8)

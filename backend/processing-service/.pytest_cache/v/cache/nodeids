@@ -1,0 +1,14 @@
+[
+  "tests/test_algorithms.py::test_data_contracts",
+  "tests/test_algorithms.py::test_distribution_grid",
+  "tests/test_algorithms.py::test_end_to_end_synthetic_registration",
+  "tests/test_algorithms.py::test_evaluation_targets",
+  "tests/test_algorithms.py::test_features_and_matching",
+  "tests/test_algorithms.py::test_geometric_estimators",
+  "tests/test_algorithms.py::test_illumination_invariance",
+  "tests/test_algorithms.py::test_preprocessing",
+  "tests/test_algorithms.py::test_pyramid_levels",
+  "tests/test_pipeline.py::test_end_to_end_registration_accuracy",
+  "tests/test_pipeline.py::test_preprocessing",
+  "tests/test_pipeline.py::test_pyramid_construction"
+]

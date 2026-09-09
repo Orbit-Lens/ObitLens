@@ -53,7 +53,7 @@ async function runTests() {
     // -------------------------------------------------------------
     {
       const res = await fetch(`${BASE_URL}/health`);
-      const body = await res.json();
+      const body: any = await res.json();
       logResult({
         category: '1. System & Health',
         testName: 'Liveness Probe',
@@ -68,7 +68,7 @@ async function runTests() {
 
     {
       const res = await fetch(`${BASE_URL}/ready`);
-      const body = await res.json();
+      const body: any = await res.json();
       logResult({
         category: '1. System & Health',
         testName: 'Readiness Probe',
@@ -97,7 +97,7 @@ async function runTests() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const body = await res.json();
+      const body: any = await res.json();
 
       // Check DB directly
       const dbUser = await db.collection('users').findOne({ email: testEmail });
@@ -183,7 +183,7 @@ async function runTests() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const body = await res.json();
+      const body: any = await res.json();
       testUserToken = body.data?.accessToken || testUserToken;
 
       logResult({
@@ -227,7 +227,7 @@ async function runTests() {
       const res = await fetch(`${BASE_URL}/api/v1/users/me`, {
         headers: { Authorization: `Bearer ${testUserToken}` },
       });
-      const body = await res.json();
+      const body: any = await res.json();
       const returnedName = body.data?.name || body.data?.user?.name;
 
       logResult({
@@ -303,7 +303,7 @@ async function runTests() {
         },
         body: JSON.stringify(payload),
       });
-      const body = await res.json();
+      const body: any = await res.json();
 
       // Verify in DB directly scoped to current test user
       const dbProj = await db.collection('projects').findOne({ userId: dbUserObjId, name: 'Lunar Crater Alignment Project' });
@@ -375,7 +375,7 @@ async function runTests() {
         },
         body: JSON.stringify(payload),
       });
-      const body = await res.json();
+      const body: any = await res.json();
 
       const dbImg = await db.collection('images').findOne({ userId: dbUserObjId, name: 'Source OHRC Image 001' });
       sourceImageId = dbImg?._id.toString() || body.data?.imageId || '';
@@ -507,7 +507,7 @@ async function runTests() {
         },
         body: JSON.stringify(payload),
       });
-      const body = await res.json();
+      const body: any = await res.json();
 
       // Check DB
       const dbJob = await db.collection('jobs').findOne({ userId: dbUserObjId, sourceImageId: new mongoose.Types.ObjectId(sourceImageId) });
@@ -598,7 +598,7 @@ async function runTests() {
       const res = await fetch(`${BASE_URL}/api/v1/metrics/overview`, {
         headers: { Authorization: `Bearer ${testUserToken}` },
       });
-      const body = await res.json();
+      const body: any = await res.json();
 
       logResult({
         category: '7. Metrics',

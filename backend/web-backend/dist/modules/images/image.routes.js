@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const image_controller_js_1 = require("./image.controller.js");
+const requireAuth_js_1 = require("../../middleware/requireAuth.js");
+const validate_js_1 = require("../../middleware/validate.js");
+const rateLimiters_js_1 = require("../../middleware/rateLimiters.js");
+const image_schema_js_1 = require("./image.schema.js");
+const router = (0, express_1.Router)();
+router.use(requireAuth_js_1.requireAuth);
+router.post('/upload-url', rateLimiters_js_1.uploadLimiter, (0, validate_js_1.validate)({ body: image_schema_js_1.requestUploadUrlSchema }), image_controller_js_1.requestUploadHandler);
+router.post('/:id/confirm', (0, validate_js_1.validate)({ body: image_schema_js_1.confirmUploadSchema }), image_controller_js_1.confirmUploadHandler);
+router.get('/', image_controller_js_1.getImagesHandler);
+router.get('/:id', image_controller_js_1.getImageByIdHandler);
+router.get('/:id/download-url', image_controller_js_1.getImageDownloadUrlHandler);
+router.put('/:id', (0, validate_js_1.validate)({ body: image_schema_js_1.updateImageSchema }), image_controller_js_1.updateImageHandler);
+router.delete('/:id', image_controller_js_1.deleteImageHandler);
+exports.default = router;

@@ -2,6 +2,7 @@ import os
 import json
 import tempfile
 import logging
+import urllib.request
 from typing import Optional, Dict, Any
 import boto3
 from botocore.config import Config
@@ -26,13 +27,45 @@ def get_s3_client():
 
 def download_file_to_temp(storage_key: str) -> str:
     """
-    Downloads an image/raster from S3 to a local temp file.
+    Downloads an image/raster from a remote HTTP/HTTPS URL (e.g. Cloudinary, S3, HuggingFace),
+    or from AWS S3, to a local temp file.
     If storage_key points directly to a local filesystem path (e.g. in development/tests),
     returns the path directly.
     """
     if os.path.exists(storage_key):
         return storage_key
 
+    # Handle direct HTTP/HTTPS URLs (e.g. Cloudinary, presigned S3 URLs, CDNs)
+    if storage_key.startswith(("http://", "https://")):
+        url_path = storage_key.split("?")[0]
+        ext = os.path.splitext(url_path)[1] or ".tif"
+        temp_file = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
+        temp_path = temp_file.name
+        temp_file.close()
+
+        try:
+            logger.info(f"Streaming remote dataset from URL {storage_key} -> {temp_path}")
+            req = urllib.request.Request(
+                storage_key,
+                headers={"User-Agent": "OrbitLens-ProcessingService/1.0"}
+            )
+            with urllib.request.urlopen(req, timeout=180) as response, open(temp_path, "wb") as f:
+                while True:
+                    chunk = response.read(65536)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+            return temp_path
+        except Exception as e:
+            logger.error(f"Failed to stream dataset from URL ({e})")
+            if os.path.exists(temp_path):
+                try:
+                    os.unlink(temp_path)
+                except Exception:
+                    pass
+            raise e
+
+    # Fallback to AWS S3 bucket download
     s3 = get_s3_client()
     ext = os.path.splitext(storage_key)[1] or ".tif"
     temp_file = tempfile.NamedTemporaryFile(suffix=ext, delete=False)
