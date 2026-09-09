@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-surface":"#131b2e","tertiary-fixed-dim":"#ffb77d","primary-container":"#0b1b3d","on-tertiary-fixed":"#2f1500","secondary-fixed-dim":"#93ccff","secondary":"#006398","primary-fixed":"#dae2ff","inverse-on-surface":"#eef0ff","background":"#faf8ff","error-container":"#ffdad6","on-tertiary-fixed-variant":"#6e3900","surface":"#faf8ff","surface-tint":"#505e83","tertiary-fixed":"#ffdcc3","error":"#ba1a1a","outline-variant":"#c5c6cf","surface-dim":"#d2d9f4","on-error":"#ffffff","secondary-container":"#5bb8fe","on-primary-fixed":"#0a1a3c","on-error-container":"#93000a","on-primary-fixed-variant":"#38466a","tertiary":"#050100","surface-container-lowest":"#ffffff","on-secondary-container":"#00476e","secondary-fixed":"#cce5ff","surface-bright":"#faf8ff","on-primary-container":"#7684ac","on-secondary-fixed-variant":"#004b73","surface-variant":"#dae2fd","on-secondary-fixed":"#001d31","primary":"#00020a","on-surface-variant":"#45464e","tertiary-container":"#301600","on-tertiary":"#ffffff","inverse-surface":"#283044","surface-container-high":"#e2e7ff","inverse-primary":"#b7c6f1","on-background":"#131b2e","on-primary":"#ffffff","on-tertiary-container":"#c96d00","outline":"#75777f","surface-container-low":"#f2f3ff","on-secondary":"#ffffff","surface-container":"#eaedff","surface-container-highest":"#dae2fd","primary-fixed-dim":"#b7c6f1"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"space-sm":"0.5rem","space-xs":"0.25rem","space-2xl":"2rem","space-xl":"1.5rem","space-lg":"1rem","space-2xs":"0.125rem","panel-gap":"0.75rem","table-row-compact":"1.75rem","space-md":"0.75rem","gutter-canvas":"0.5rem"},fontFamily:{"display-lg-mobile":["Inter"],"headline-md":["Inter"],"display-lg":["Inter"],"headline-sm":["Inter"],"body-md":["Inter"],"mono-data-lg":["JetBrains Mono"],"label-caps":["Inter"],"mono-data-sm":["JetBrains Mono"],"mono-data-md":["JetBrains Mono"],"body-sm":["Inter"]},fontSize:{"display-lg-mobile":["24px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"700"}],"headline-md":["20px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"600"}],"display-lg":["32px",{lineHeight:"40px",letterSpacing:"-0.02em",fontWeight:"700"}],"headline-sm":["16px",{lineHeight:"24px",letterSpacing:"0em",fontWeight:"600"}],"body-md":["14px",{lineHeight:"20px",letterSpacing:"0em",fontWeight:"400"}],"mono-data-lg":["14px",{lineHeight:"20px",letterSpacing:"-0.01em",fontWeight:"600"}],"label-caps":["11px",{lineHeight:"14px",letterSpacing:"0.06em",fontWeight:"600"}],"mono-data-sm":["11px",{lineHeight:"14px",letterSpacing:"0.02em",fontWeight:"400"}],"mono-data-md":["12px",{lineHeight:"16px",letterSpacing:"0em",fontWeight:"500"}],"body-sm":["12px",{lineHeight:"16px",letterSpacing:"0.01em",fontWeight:"400"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-secondary selection:text-on-secondary"><header class="fixed top-0 left-0 right-0 h-16 z-50 bg-primary-container text-inverse-on-surface shadow-[0_1px_8px_rgba(0,0,0,0.18)] flex items-center justify-between px-space-lg select-none"><div class="flex items-center gap-space-md"><img alt="Emblem style logo icon for Indian Space Research Organisation lunar science mission, circular seal with stylized satellite orbit, lunar crescent and crater topography, navy blue and saffron and teal accents, vector flat badge emblem style on white background" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALWZSA3DZdAVe3VZ-9ZRTjwOFzm1D2YstZTBz5tJUxzFjD9BlMLg-lZCW2hzacsj0e6totkrayScP9kJJIT8hEcdFhYKAssYwUPm1Yj4bjCaOL5bgx-uI9AX2oMTJfC9wVEYq-4NlneDGmEf3MEnRCHAUoEYJUSOeLnNs1XT-JGe-7YJNAA-JtdHbiXylWkVKL2e3_4rg_5haXX56ZJFNpFoDdqNIu9mmP4YJQZ7ORTkIBcAxMwJ5O"/><div class="flex flex-col"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm uppercase tracking-wider text-on-primary">Indian Lunar Remote Sensing</span><span class="px-space-xs py-space-2xs bg-secondary text-on-secondary rounded font-mono-data-sm text-mono-data-sm font-semibold">PDS-4 NODE</span></div><span class="font-body-sm text-body-sm text-on-primary-container leading-none">Orbital Photogrammetry &amp; Surface Analysis | ISRO / Department of Space</span></div></div><div class="hidden xl:flex items-center gap-space-lg font-mono-data-sm text-mono-data-sm"><div class="flex items-center gap-space-xs bg-primary/40 px-space-sm py-space-xs rounded"><span class="text-on-primary-container font-label-caps text-label-caps uppercase">Govt:</span><span class="text-on-primary font-medium">DOS | ISRO</span></div><div class="flex items-center gap-space-xs bg-primary/40 px-space-sm py-space-xs rounded"><span class="inline-block w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span><span class="font-label-caps text-label-caps text-on-primary font-semibold">DSN ONLINE</span></div><div class="flex items-center gap-space-xs bg-primary/40 px-space-sm py-space-xs rounded"><span class="text-on-primary-container font-label-caps text-label-caps uppercase">Mission:</span><span class="text-on-primary font-medium">CHANDRAYAAN-3</span></div><div class="flex items-center gap-space-xs bg-primary/40 px-space-sm py-space-xs rounded"><span class="text-on-primary-container font-label-caps text-label-caps uppercase">Target:</span><span class="text-secondary-fixed font-medium">Lunar South Pole (89.9°S)</span></div></div><div class="flex items-center gap-space-md"><div class="hidden md:flex flex-col text-right font-mono-data-sm text-mono-data-sm"><span class="text-on-primary font-medium">Dr. A. Sharma</span><span class="text-on-primary-container text-body-sm">Sr. Scientist, Remote Sensing</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><aside class="fixed left-0 top-16 bottom-7 w-64 z-40 bg-primary-container text-inverse-on-surface overflow-y-auto flex flex-col shadow-[1px_0_10px_rgba(0,0,0,0.06)]"><nav class="flex-1 px-space-sm py-space-md flex flex-col gap-space-md" data-active-classes="bg-secondary text-on-secondary font-semibold shadow-inner"><div class="flex flex-col gap-space-2xs"><span class="px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-primary-container tracking-widest">Workspace</span><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs rounded transition-colors bg-secondary text-on-secondary font-semibold shadow-inner" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="new-analysis" href="#"><span class="material-symbols-outlined text-[18px]">biotech</span><span>New Analysis</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="correspondence" href="#"><span class="material-symbols-outlined text-[18px]">forum</span><span>Correspondence</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="registration" href="#"><span class="material-symbols-outlined text-[18px]">app_registration</span><span>Registration</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="results" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span>Results</span></a></div><div class="flex flex-col gap-space-2xs"><span class="px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-primary-container tracking-widest">Data</span><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="datasets" href="#"><span class="material-symbols-outlined text-[18px]">dataset</span><span>Datasets</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="mission-archive" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span>Mission Archive</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="processing-history" href="#"><span class="material-symbols-outlined text-[18px]">manage_history</span><span>Processing History</span></a></div><div class="flex flex-col gap-space-2xs"><span class="px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-primary-container tracking-widest">Methods</span><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="analysis-methods" href="#"><span class="material-symbols-outlined text-[18px]">function</span><span>Analysis Methods</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="calibration" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span>Calibration</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="documentation" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span><span>Documentation</span></a></div><div class="flex flex-col gap-space-2xs mt-auto"><span class="px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-primary-container tracking-widest">System</span><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>Settings</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded text-on-primary-container hover:bg-primary hover:text-on-primary transition-colors font-body-sm text-body-sm" data-path="help" href="#"><span class="material-symbols-outlined text-[18px]">help_center</span><span>Help</span></a></div></nav></aside><div class="pl-64"><main class="relative pt-16 pb-7 min-h-screen w-full px-space-lg bg-surface text-on-surface"><div class="flex flex-col w-full gap-space-lg pb-space-2xl">
+<!-- Top Operational Context Strip & Breadcrumb -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md pt-space-xs">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+<span>ISRO Portal</span>
+<span>›</span>
+<span>Workspace</span>
+<span>›</span>
+<span class="text-secondary font-semibold">Dashboard</span>
+</div>
+<div class="flex items-baseline gap-space-md mt-space-2xs">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Analysis Dashboard</h1>
+<span class="hidden md:inline font-body-sm text-body-sm text-on-surface-variant">
+          Monitor lunar image correspondence, photogrammetric registration, scientific processing and multi-sensor analysis.
+        </span>
+</div>
+</div>
+<!-- Quick Ephemeris & Node Badge Group -->
+<div class="flex items-center flex-wrap gap-space-xs font-mono-data-sm text-mono-data-sm">
+<span class="px-space-sm py-space-2xs bg-surface-container-high rounded text-on-surface font-medium flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[15px] text-secondary">satellite_alt</span>
+<span>CHANDRAYAAN-3 &amp; CH-2 TMC-2/OHRC</span>
+</span>
+<span class="px-space-sm py-space-2xs bg-surface-container-high rounded text-on-surface-variant">
+        SPICE: <strong class="text-on-surface font-semibold">de421 / ch2_v02</strong>
+</span>
+<span class="px-space-sm py-space-2xs bg-surface-container rounded text-on-surface-variant">
+        CRS: <strong class="text-on-surface">IAU_LUNAR_2000</strong>
+</span>
+</div>
+</div>
+<!-- Top Real-Time Scientific Health Banner -->
+<div class="bg-primary-container text-inverse-on-surface rounded-xl p-space-md shadow-md flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-y-space-xs gap-x-space-lg font-mono-data-sm text-mono-data-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+<span class="font-semibold text-inverse-on-surface">SYSTEM ONLINE</span>
+<span class="text-on-primary-container text-body-sm">(LATENCY 24ms)</span>
+</div>
+<div class="hidden sm:block w-px h-4 bg-primary/60"></div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-semibold text-inverse-on-surface">DATA CALIBRATED</span>
+<span class="text-on-primary-container text-body-sm">(RADIOMETRIC LEVEL-2B)</span>
+</div>
+<div class="hidden md:block w-px h-4 bg-primary/60"></div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+<span class="font-semibold text-inverse-on-surface">CUDA 12.4 ACCELERATION</span>
+<span class="text-on-primary-container text-body-sm">(4x A100 TENSOR)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm self-end lg:self-auto">
+<span class="text-on-primary-container">MISSION CLOCK:</span>
+<span class="px-space-sm py-space-2xs bg-primary/50 text-secondary-fixed rounded font-semibold tracking-wider">
+        2024-10-08 14:24:19 UTC
+      </span>
+</div>
+</div>
+<!-- Key Scientific Metrics Cards (4 columns) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Analyses Completed</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">task_alt</span>
+</div>
+<div class="my-space-sm">
+<div class="font-mono-data-lg text-display-lg text-on-surface font-bold leading-none tracking-tight">128</div>
+</div>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<span class="text-secondary font-semibold">+14 this cycle</span>
+<span class="px-space-xs py-space-2xs bg-surface-container-low rounded font-mono-data-sm text-mono-data-sm">99.2% success</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Images Processed</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">layers</span>
+</div>
+<div class="my-space-sm">
+<div class="font-mono-data-lg text-display-lg text-on-surface font-bold leading-none tracking-tight">342</div>
+</div>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<span class="font-mono-data-sm text-mono-data-sm text-on-surface font-medium">1.84 TB PDS4/GeoTIFF</span>
+<span class="text-secondary font-mono-data-sm text-mono-data-sm">16-bit DN</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Verified Matches</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">hub</span>
+</div>
+<div class="my-space-sm">
+<div class="font-mono-data-lg text-display-lg text-on-surface font-bold leading-none tracking-tight">24,681</div>
+</div>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<span class="text-on-surface-variant">Mean Inlier Ratio:</span>
+<span class="font-mono-data-sm text-mono-data-sm text-secondary font-semibold">91.4% (RANSAC)</span>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Mean Registration Error</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">straighten</span>
+</div>
+<div class="my-space-sm flex items-baseline gap-space-xs">
+<span class="font-mono-data-lg text-display-lg text-on-surface font-bold leading-none tracking-tight">0.84</span>
+<span class="font-mono-data-sm text-mono-data-sm text-on-surface-variant uppercase">px</span>
+</div>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<span class="text-on-surface-variant">RMSE Equivalent:</span>
+<span class="font-mono-data-sm text-mono-data-sm text-[#065f46] font-semibold">0.18 m Ground</span>
+</div>
+</div>
+</div>
+<!-- Primary Visual Middle Section: Processing Activity & Lunar Ortho Sensor Visualizer -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+<!-- Processing Activity Bar/Line Chart (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">Photogrammetric Pipeline Activity</span>
+<span class="px-space-xs py-space-2xs bg-surface-container text-on-surface-variant rounded font-mono-data-sm text-mono-data-sm">30 Days</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Comparative telemetry of daily dataset processing runs per sensor payload.</p>
+</div>
+<!-- Sensor Legend -->
+<div class="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm">
+<div class="flex items-center gap-1">
+<span class="w-3 h-2.5 rounded bg-primary-container"></span>
+<span class="text-on-surface-variant">OHRC</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-3 h-2.5 rounded bg-secondary"></span>
+<span class="text-on-surface-variant">TMC-2</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-3 h-2.5 rounded bg-secondary-container"></span>
+<span class="text-on-surface-variant">IIRS</span>
+</div>
+</div>
+</div>
+<!-- Histogram Graphic -->
+<div class="my-space-md w-full overflow-x-auto">
+<div class="min-w-[480px]">
+<!-- Top Peak Annotation Tag -->
+<div class="flex justify-end pr-14 mb-1">
+<span class="px-space-xs py-space-2xs bg-surface-container-high rounded text-on-surface font-mono-data-sm text-mono-data-sm">
+              ▲ Peak: Orbit 1245 (42 products)
+            </span>
+</div>
+<!-- SVG Bar Visualizer with Baseline Grid -->
+<svg class="w-full h-44 text-on-surface-variant select-none" fill="none" viewbox="0 0 540 180">
+<!-- Grid lines -->
+<line stroke="currentColor" stroke-dasharray="3 3" stroke-opacity="0.12" x1="30" x2="530" y1="30" y2="30"></line>
+<line stroke="currentColor" stroke-dasharray="3 3" stroke-opacity="0.12" x1="30" x2="530" y1="70" y2="70"></line>
+<line stroke="currentColor" stroke-dasharray="3 3" stroke-opacity="0.12" x1="30" x2="530" y1="110" y2="110"></line>
+<line stroke="currentColor" stroke-opacity="0.25" x1="30" x2="530" y1="150" y2="150"></line>
+<!-- Y Axis labels -->
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="end" x="24" y="34">40</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="end" x="24" y="74">25</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="end" x="24" y="114">10</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="end" x="24" y="153">0</text>
+<!-- Bars: 18 sampled daily slots -->
+<!-- Slot 1 -->
+<rect class="fill-primary-container" height="35" width="7" x="42" y="115"></rect>
+<rect class="fill-secondary" height="25" width="7" x="50" y="125"></rect>
+<rect class="fill-secondary-container" height="12" width="7" x="58" y="138"></rect>
+<!-- Slot 2 -->
+<rect class="fill-primary-container" height="52" width="7" x="69" y="98"></rect>
+<rect class="fill-secondary" height="40" width="7" x="77" y="110"></rect>
+<rect class="fill-secondary-container" height="18" width="7" x="85" y="132"></rect>
+<!-- Slot 3 -->
+<rect class="fill-primary-container" height="65" width="7" x="96" y="85"></rect>
+<rect class="fill-secondary" height="48" width="7" x="104" y="102"></rect>
+<rect class="fill-secondary-container" height="22" width="7" x="112" y="128"></rect>
+<!-- Slot 4 -->
+<rect class="fill-primary-container" height="45" width="7" x="123" y="105"></rect>
+<rect class="fill-secondary" height="32" width="7" x="131" y="118"></rect>
+<rect class="fill-secondary-container" height="15" width="7" x="139" y="135"></rect>
+<!-- Slot 5 -->
+<rect class="fill-primary-container" height="78" width="7" x="150" y="72"></rect>
+<rect class="fill-secondary" height="62" width="7" x="158" y="88"></rect>
+<rect class="fill-secondary-container" height="30" width="7" x="166" y="120"></rect>
+<!-- Slot 6 -->
+<rect class="fill-primary-container" height="60" width="7" x="177" y="90"></rect>
+<rect class="fill-secondary" height="46" width="7" x="185" y="104"></rect>
+<rect class="fill-secondary-container" height="21" width="7" x="193" y="129"></rect>
+<!-- Slot 7 -->
+<rect class="fill-primary-container" height="90" width="7" x="204" y="60"></rect>
+<rect class="fill-secondary" height="72" width="7" x="212" y="78"></rect>
+<rect class="fill-secondary-container" height="35" width="7" x="220" y="115"></rect>
+<!-- Slot 8 -->
+<rect class="fill-primary-container" height="70" width="7" x="231" y="80"></rect>
+<rect class="fill-secondary" height="55" width="7" x="239" y="95"></rect>
+<rect class="fill-secondary-container" height="20" width="7" x="247" y="130"></rect>
+<!-- Slot 9 -->
+<rect class="fill-primary-container" height="82" width="7" x="258" y="68"></rect>
+<rect class="fill-secondary" height="66" width="7" x="266" y="84"></rect>
+<rect class="fill-secondary-container" height="28" width="7" x="274" y="122"></rect>
+<!-- Slot 10 -->
+<rect class="fill-primary-container" height="98" width="7" x="285" y="52"></rect>
+<rect class="fill-secondary" height="80" width="7" x="293" y="70"></rect>
+<rect class="fill-secondary-container" height="38" width="7" x="301" y="112"></rect>
+<!-- Slot 11 -->
+<rect class="fill-primary-container" height="72" width="7" x="312" y="78"></rect>
+<rect class="fill-secondary" height="58" width="7" x="320" y="92"></rect>
+<rect class="fill-secondary-container" height="25" width="7" x="328" y="125"></rect>
+<!-- Slot 12 (PEAK ORBIT 1245) -->
+<rect class="fill-primary-container" height="118" width="7" x="339" y="32"></rect>
+<rect class="fill-secondary" height="102" width="7" x="347" y="48"></rect>
+<rect class="fill-secondary-container" height="65" width="7" x="355" y="85"></rect>
+<!-- Slot 13 -->
+<rect class="fill-primary-container" height="86" width="7" x="366" y="64"></rect>
+<rect class="fill-secondary" height="71" width="7" x="374" y="79"></rect>
+<rect class="fill-secondary-container" height="32" width="7" x="382" y="118"></rect>
+<!-- Slot 14 -->
+<rect class="fill-primary-container" height="92" width="7" x="393" y="58"></rect>
+<rect class="fill-secondary" height="76" width="7" x="401" y="74"></rect>
+<rect class="fill-secondary-container" height="40" width="7" x="409" y="110"></rect>
+<!-- Slot 15 -->
+<rect class="fill-primary-container" height="80" width="7" x="420" y="70"></rect>
+<rect class="fill-secondary" height="65" width="7" x="428" y="85"></rect>
+<rect class="fill-secondary-container" height="28" width="7" x="436" y="122"></rect>
+<!-- Slot 16 -->
+<rect class="fill-primary-container" height="100" width="7" x="447" y="50"></rect>
+<rect class="fill-secondary" height="84" width="7" x="455" y="66"></rect>
+<rect class="fill-secondary-container" height="42" width="7" x="463" y="108"></rect>
+<!-- Slot 17 -->
+<rect class="fill-primary-container" height="106" width="7" x="474" y="44"></rect>
+<rect class="fill-secondary" height="90" width="7" x="482" y="60"></rect>
+<rect class="fill-secondary-container" height="50" width="7" x="490" y="100"></rect>
+<!-- Slot 18 (Today) -->
+<rect class="fill-primary-container" height="112" width="7" x="501" y="38"></rect>
+<rect class="fill-secondary" height="96" width="7" x="509" y="54"></rect>
+<rect class="fill-secondary-container" height="54" width="7" x="517" y="96"></rect>
+<!-- X Axis ticks & dates -->
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="middle" x="50" y="168">SEP 08</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="middle" x="160" y="168">SEP 15</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="middle" x="270" y="168">SEP 22</text>
+<text class="font-mono-data-sm text-[10px] font-semibold" fill="#006398" text-anchor="middle" x="350" y="168">OCT 01*</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="middle" x="450" y="168">OCT 06</text>
+<text class="font-mono-data-sm text-[10px]" fill="currentColor" text-anchor="middle" x="515" y="168">TODAY</text>
+</svg>
+</div>
+</div>
+<!-- Footnote summary -->
+<div class="flex flex-wrap items-center justify-between text-on-surface-variant font-mono-data-sm text-mono-data-sm pt-space-xs">
+<span>Aggregate Band Alignment Rate: <strong class="text-on-surface">98.4%</strong></span>
+<span>Co-registration Kernel: <strong class="text-secondary">Akaze + Affine RANSAC</strong></span>
+</div>
+</div>
+<!-- Payload Coverage & Reference Imagery Visualizer (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Sensor Distribution Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">pie_chart</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Instrument Coverage Ratio</span>
+</div>
+<span class="font-mono-data-sm text-mono-data-sm text-on-surface-variant">Total: 342 Scenes</span>
+</div>
+<!-- Telemetry Progress Stack Bars -->
+<div class="flex flex-col gap-space-sm my-space-xs">
+<!-- OHRC -->
+<div>
+<div class="flex justify-between font-mono-data-sm text-mono-data-sm mb-1">
+<span class="text-on-surface font-semibold">OHRC (High Resolution 0.25 m/px)</span>
+<span class="text-on-surface font-semibold">42% • 144 scenes</span>
+</div>
+<div class="w-full h-2 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded" style="width: 42%"></div>
+</div>
+</div>
+<!-- TMC-2 -->
+<div>
+<div class="flex justify-between font-mono-data-sm text-mono-data-sm mb-1">
+<span class="text-on-surface font-semibold">TMC-2 Triplet Stereo (5.0 m/px)</span>
+<span class="text-on-surface font-semibold">34% • 116 scenes</span>
+</div>
+<div class="w-full h-2 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary rounded" style="width: 34%"></div>
+</div>
+</div>
+<!-- IIRS -->
+<div>
+<div class="flex justify-between font-mono-data-sm text-mono-data-sm mb-1">
+<span class="text-on-surface font-semibold">IIRS Hyperspectral (250 bands)</span>
+<span class="text-on-surface font-semibold">16% • 55 scenes</span>
+</div>
+<div class="w-full h-2 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary-container rounded" style="width: 16%"></div>
+</div>
+</div>
+<!-- External Reference -->
+<div>
+<div class="flex justify-between font-mono-data-sm text-mono-data-sm mb-1">
+<span class="text-on-surface font-semibold">External Ground Control (LROC NAC)</span>
+<span class="text-on-surface font-semibold">8% • 27 scenes</span>
+</div>
+<div class="w-full h-2 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-surface-tint rounded" style="width: 8%"></div>
+</div>
+</div>
+</div>
+<div class="pt-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant flex items-center justify-between">
+<span class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+<span>Radiometric Coeff v4.2 Loaded</span>
+</span>
+<span class="text-secondary font-medium">Auto-calibrated</span>
+</div>
+</div>
+<!-- Active Lunar Target Micro-Preview Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">Target Footprint Inspection</span>
+<span class="px-space-xs py-space-2xs bg-secondary text-on-secondary rounded font-mono-data-sm text-mono-data-sm">TMC-2 / OHRC</span>
+</div>
+<span class="font-mono-data-sm text-mono-data-sm text-secondary font-semibold">ORBIT 1245</span>
+</div>
+<!-- Lunar Imagery Teaser Frame -->
+<div class="relative w-full h-32 rounded-lg overflow-hidden bg-primary">
+<img class="w-full h-full object-cover opacity-90" data-alt="Monochrome satellite imagery of high-resolution lunar impact crater with prominent central peak and radiating bright ejecta rays, captured by lunar orbiter terrain mapping camera in stark black and white high contrast space telemetry style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2WDj_UepUPb7ABR58ni7UOGB53LQECpL6U8gmdbvFrKpHg0Ai_qRKadxjKDk1P_EVzJTduqOQGfK12s87b76A3O9gm_-dJyHc9RBNonwUrke1Wgu8e7otjzav_HwjsWCQXhEMLBsUlXt7136hBI9AUPJs_PRMpcmsboFgW7gJiPMzziStgux2lMiE4tWMGVlp6v9-7Ub9n7qLMwxwEoQjGPe0dLg3VJObFZU7yRPNdeEx63t6uhZ6"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent"></div>
+<div class="absolute top-2 left-2 flex items-center gap-space-xs">
+<span class="px-space-xs py-space-2xs bg-primary/80 backdrop-blur text-inverse-on-surface rounded font-mono-data-sm text-mono-data-sm">
+              LAT: 45.25°S | LON: 128.92°E
+            </span>
+</div>
+<div class="absolute bottom-2 left-2 right-2 flex items-center justify-between font-mono-data-sm text-mono-data-sm text-inverse-on-surface">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary-fixed">wb_sunny</span>
+<span>Sun Elevation: 18.4°</span>
+</span>
+<span class="bg-secondary px-space-xs py-space-2xs rounded text-[10px] uppercase font-semibold">
+              Orthorectified 5m
+            </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+<span>Target Region: <strong class="text-on-surface">Manzinus C / South Pole Margin</strong></span>
+<a class="text-secondary hover:underline flex items-center gap-1 font-medium" href="#">
+<span>Explore 3D Mesh</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Workspace: Data Table + Live Telemetry Terminal -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md">
+<!-- Recent Scientific Analysis Runs (8 cols) -->
+<div class="xl:col-span-8 bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">Recent Scientific Analysis Runs</span>
+<span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-mono-data-sm text-mono-data-sm rounded font-medium">
+              5 Active Tasks
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">PDS-4 compliant photogrammetric registration batches and inlier verification logs.</p>
+</div>
+<!-- Segmented Tab Filter -->
+<div class="flex items-center bg-surface-container-low p-space-2xs rounded-lg font-mono-data-sm text-mono-data-sm">
+<button class="px-space-sm py-space-2xs rounded bg-primary-container text-on-primary font-semibold shadow-sm">ALL</button>
+<button class="px-space-sm py-space-2xs rounded text-on-surface-variant hover:text-on-surface transition-colors">COMPLETED</button>
+<button class="px-space-sm py-space-2xs rounded text-on-surface-variant hover:text-on-surface transition-colors">IN PROGRESS</button>
+<button class="px-space-sm py-space-2xs rounded text-on-surface-variant hover:text-on-surface transition-colors">CALIBRATED</button>
+</div>
+</div>
+<!-- High-Density Government Planetary Data Standard (PDS-4) Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono-data-sm text-mono-data-sm border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant uppercase font-label-caps text-label-caps">
+<th class="py-space-xs px-space-sm font-semibold">Analysis ID</th>
+<th class="py-space-xs px-space-sm font-semibold">Ref / Source Image</th>
+<th class="py-space-xs px-space-sm font-semibold">Sensor Pair</th>
+<th class="py-space-xs px-space-sm font-semibold text-right">Matches</th>
+<th class="py-space-xs px-space-sm font-semibold">Inlier Ratio</th>
+<th class="py-space-xs px-space-sm font-semibold text-right">Error</th>
+<th class="py-space-xs px-space-sm font-semibold">Status</th>
+<th class="py-space-xs px-space-sm font-semibold">Acquisition</th>
+<th class="py-space-xs px-space-sm font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1: Completed -->
+<tr class="hover:bg-surface-container-low/60 transition-colors bg-surface-container-lowest">
+<td class="py-space-sm px-space-sm font-semibold text-secondary">#ANL-2024-8921</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col gap-0.5">
+<span class="text-on-surface font-medium">CH2_OHRC_0421</span>
+<span class="text-on-surface-variant text-[10px]">CH2_TMC2_1187</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<span class="px-space-xs py-space-2xs bg-surface-container rounded text-on-surface text-[10px]">OHRC / TMC-2</span>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface font-medium">842 / 1,146</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-16 h-1.5 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-[#10b981]" style="width: 91.4%"></div>
+</div>
+<span class="text-on-surface font-medium">91.4%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface">0.72 px</td>
+<td class="py-space-sm px-space-sm">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs rounded bg-[#ecfdf5] text-[#065f46] font-semibold text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+<span>COMPLETED</span>
+</span>
+</td>
+<td class="py-space-sm px-space-sm text-on-surface-variant">2024-10-08 04:12</td>
+<td class="py-space-sm px-space-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="View In Matrix">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Download PDS4">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Log">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: In Progress -->
+<tr class="hover:bg-surface-container-low/60 transition-colors bg-surface-container-low/30">
+<td class="py-space-sm px-space-sm font-semibold text-secondary">#ANL-2024-8920</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col gap-0.5">
+<span class="text-on-surface font-medium">CH3_LAND_0019</span>
+<span class="text-on-surface-variant text-[10px]">CH2_OHRC_0389</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<span class="px-space-xs py-space-2xs bg-surface-container rounded text-on-surface text-[10px]">LPDC / OHRC</span>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface font-medium">619 / 750</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-16 h-1.5 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 82.5%"></div>
+</div>
+<span class="text-on-surface font-medium">82.5%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface">1.04 px</td>
+<td class="py-space-sm px-space-sm">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs rounded bg-[#fffbeb] text-[#92400e] font-semibold text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse"></span>
+<span>IN PROGRESS</span>
+</span>
+</td>
+<td class="py-space-sm px-space-sm text-on-surface-variant">2024-10-08 02:44</td>
+<td class="py-space-sm px-space-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="View In Matrix">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Download PDS4">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Log">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Calibrated -->
+<tr class="hover:bg-surface-container-low/60 transition-colors bg-surface-container-lowest">
+<td class="py-space-sm px-space-sm font-semibold text-secondary">#ANL-2024-8919</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col gap-0.5">
+<span class="text-on-surface font-medium">CH2_IIRS_0884</span>
+<span class="text-on-surface-variant text-[10px]">CH2_TMC2_1140</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<span class="px-space-xs py-space-2xs bg-surface-container rounded text-on-surface text-[10px]">IIRS / TMC-2</span>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface font-medium">1,208 / 1,320</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-16 h-1.5 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary" style="width: 91.5%"></div>
+</div>
+<span class="text-on-surface font-medium">91.5%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface">0.68 px</td>
+<td class="py-space-sm px-space-sm">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs rounded bg-surface-container-high text-secondary font-semibold text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>CALIBRATED</span>
+</span>
+</td>
+<td class="py-space-sm px-space-sm text-on-surface-variant">2024-10-07 22:15</td>
+<td class="py-space-sm px-space-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="View In Matrix">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Download PDS4">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Log">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Verified -->
+<tr class="hover:bg-surface-container-low/60 transition-colors bg-surface-container-lowest">
+<td class="py-space-sm px-space-sm font-semibold text-secondary">#ANL-2024-8918</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col gap-0.5">
+<span class="text-on-surface font-medium">CH2_TMC2_1092</span>
+<span class="text-on-surface-variant text-[10px]">LROC_NAC_M138</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<span class="px-space-xs py-space-2xs bg-surface-container rounded text-on-surface text-[10px]">TMC-2 / LROC</span>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface font-medium">2,410 / 2,522</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-16 h-1.5 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 95.5%"></div>
+</div>
+<span class="text-on-surface font-medium">95.5%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface">0.45 px</td>
+<td class="py-space-sm px-space-sm">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs rounded bg-surface-variant text-primary-container font-semibold text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>VERIFIED</span>
+</span>
+</td>
+<td class="py-space-sm px-space-sm text-on-surface-variant">2024-10-07 19:08</td>
+<td class="py-space-sm px-space-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="View In Matrix">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Download PDS4">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Log">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Completed -->
+<tr class="hover:bg-surface-container-low/60 transition-colors bg-surface-container-lowest">
+<td class="py-space-sm px-space-sm font-semibold text-secondary">#ANL-2024-8917</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col gap-0.5">
+<span class="text-on-surface font-medium">CH2_OHRC_0410</span>
+<span class="text-on-surface-variant text-[10px]">CH2_OHRC_0411</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<span class="px-space-xs py-space-2xs bg-surface-container rounded text-on-surface text-[10px]">OHRC Mosaic</span>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface font-medium">3,120 / 3,450</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-16 h-1.5 rounded bg-surface-container overflow-hidden">
+<div class="h-full bg-[#10b981]" style="width: 90.4%"></div>
+</div>
+<span class="text-on-surface font-medium">90.4%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-sm text-right text-on-surface">0.59 px</td>
+<td class="py-space-sm px-space-sm">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs rounded bg-[#ecfdf5] text-[#065f46] font-semibold text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+<span>COMPLETED</span>
+</span>
+</td>
+<td class="py-space-sm px-space-sm text-on-surface-variant">2024-10-07 14:50</td>
+<td class="py-space-sm px-space-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="View In Matrix">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Download PDS4">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-secondary" title="Log">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Bottom Control Strip -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm mt-space-md pt-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+<span>Showing 5 of 128 registered analyses across 3 polar corridors</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-space-2xs rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors">Previous</button>
+<span class="px-space-sm py-space-2xs bg-primary text-on-primary rounded font-semibold">1</span>
+<button class="px-space-sm py-space-2xs rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors">2</button>
+<button class="px-space-sm py-space-2xs rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors">3</button>
+<button class="px-space-sm py-space-2xs rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Right Telemetry & Pipeline Console Log (4 cols) -->
+<div class="xl:col-span-4 flex flex-col gap-space-md">
+<!-- Real-Time Terminal Card -->
+<div class="bg-primary-container text-inverse-on-surface rounded-xl p-space-md shadow-md flex flex-col h-full justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">terminal</span>
+<span class="font-headline-sm text-headline-sm text-on-primary">Pipeline Telemetry Stream</span>
+</div>
+<span class="flex items-center gap-1 font-mono-data-sm text-mono-data-sm text-[#10b981]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-ping"></span>
+<span>LIVE</span>
+</span>
+</div>
+<!-- Terminal Output Window -->
+<div class="bg-primary rounded-lg p-space-sm font-mono-data-sm text-[11px] leading-relaxed flex flex-col gap-space-xs overflow-hidden h-72 border border-primary-container">
+<div class="text-on-primary-container">14:24:18 [CLUSTER] Heartbeat ACK from SAC-AHM-LUNAR-04</div>
+<div class="text-secondary-fixed">14:23:45 [PDS-4] XML label validated for bundle urn:isro:ch2:tmc2:orbit1245</div>
+<div class="text-inverse-on-surface">14:23:12 [CUDA] Kernel 'rad_stretch_16bit' finished on Device 0 (14.2ms)</div>
+<div class="text-[#10b981]">14:22:01 [NODE-4] CUDA GPU-0 compute allocated for ephemeris alignment</div>
+<div class="text-inverse-on-surface">14:21:49 [FLANN] Fast approximate k-d tree built for 2,481 OHRC features</div>
+<div class="text-secondary-fixed">14:21:30 [SPICE] Kernel ck/ch2_att_2024.bc verified</div>
+<div class="text-on-primary-container">14:20:55 [DSN-32] Telemetry telemetry packet de-commutated (Bitrate 4.2 Mbps)</div>
+<div class="text-inverse-on-surface">14:20:11 [GEO-REF] Reprojecting to Polar Stereographic 89.9°S... OK</div>
+<div class="text-[#10b981]">14:19:33 [RANSAC] Fundamental matrix estimated with 91.4% inliers</div>
+<div class="text-on-primary-container">14:18:50 [CACHE] Evicted L1 orthomosaic tiles to NVMe staging pool</div>
+</div>
+<!-- Terminal Quick Action Commands -->
+<div class="flex items-center justify-between mt-space-sm pt-space-xs font-mono-data-sm text-mono-data-sm">
+<span class="text-on-primary-container">Buffers: 48.2 MB / 512 MB</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-xs py-space-2xs bg-primary text-secondary-fixed rounded hover:bg-surface-tint transition-colors">Flush</button>
+<button class="px-space-xs py-space-2xs bg-secondary text-on-secondary rounded hover:bg-secondary-container hover:text-on-secondary-container transition-colors font-medium">Export Dump</button>
+</div>
+</div>
+</div>
+<!-- Mission Target Status Overview Mini-Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Active Ephemeris Vector</span>
+<span class="px-space-xs py-space-2xs bg-[#ecfdf5] text-[#065f46] rounded font-mono-data-sm text-mono-data-sm font-semibold">DE-421 LOCK</span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs my-space-xs font-mono-data-sm text-mono-data-sm">
+<div class="bg-surface-container-low p-space-xs rounded">
+<span class="text-on-surface-variant text-[10px] block">ORBITAL ALTITUDE</span>
+<span class="text-on-surface font-bold text-mono-data-md">100.42 km</span>
+</div>
+<div class="bg-surface-container-low p-space-xs rounded">
+<span class="text-on-surface-variant text-[10px] block">GROUND VELOCITY</span>
+<span class="text-on-surface font-bold text-mono-data-md">1.632 km/s</span>
+</div>
+<div class="bg-surface-container-low p-space-xs rounded">
+<span class="text-on-surface-variant text-[10px] block">SUB-SOLAR LAT</span>
+<span class="text-on-surface font-bold text-mono-data-md">1.45° N</span>
+</div>
+<div class="bg-surface-container-low p-space-xs rounded">
+<span class="text-on-surface-variant text-[10px] block">SUB-SOLAR LON</span>
+<span class="text-on-surface font-bold text-mono-data-md">148.22° W</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-mono-data-sm text-mono-data-sm text-on-surface-variant pt-space-xs">
+<span>SPICE Frame: <strong class="text-on-surface">MOON_ME</strong></span>
+<span class="text-secondary font-medium">J2000 Epoch Synced</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple tab filtering state micro-interaction
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (['ALL', 'COMPLETED', 'IN PROGRESS', 'CALIBRATED'].includes(btn.innerText.trim())) {
+        const parent = btn.parentElement;
+        parent.querySelectorAll('button').forEach(b => {
+          b.className = 'px-space-sm py-space-2xs rounded text-on-surface-variant hover:text-on-surface transition-colors';
+        });
+        btn.className = 'px-space-sm py-space-2xs rounded bg-primary-container text-on-primary font-semibold shadow-sm';
+      }
+    });
+  });
+</script></main></div><footer class="fixed bottom-0 left-0 right-0 h-7 z-50 bg-primary text-inverse-on-surface flex items-center justify-between px-space-md font-mono-data-sm text-mono-data-sm select-none shadow-[0_-1px_4px_rgba(0,0,0,0.2)]"><div class="flex items-center gap-space-md text-on-primary-container"><span class="text-on-primary font-semibold">ISRO Scientific Processing Node: SAC-AHM-LUNAR-04</span><span class="hidden sm:inline text-outline-variant">|</span><span class="hidden sm:inline flex items-center gap-space-2xs"><span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span><span class="text-on-primary">Node Status: ONLINE</span></span><span class="hidden md:inline text-outline-variant">|</span><span class="hidden md:inline text-on-surface-variant">Ephemeris Data: SPICE-CH2-DE421</span></div><div class="flex items-center gap-space-md font-mono-data-sm text-on-primary-container"><span class="hidden lg:inline text-on-surface-variant">CRS: Lunar 2000 Sphere IAU/IAG</span><span class="hidden lg:inline text-outline-variant">|</span><span class="text-secondary-fixed font-semibold">Latency: 28ms</span></div></footer></body></html>
