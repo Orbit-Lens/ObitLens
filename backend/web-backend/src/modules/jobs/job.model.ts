@@ -25,10 +25,21 @@ export interface IJobMetrics {
   sunAngleDeltaAzimuth?: number;
   sunAngleDeltaElevation?: number;
   confidenceWarning?: boolean;
+  ssim?: number;
+  mutualInformation?: number;
+  psnr?: number;
+  transformationMatrix?: number[][];
+  scaleRatio?: string;
+  azimuthRotationDeg?: number;
+  translationDeltaX?: number;
+  translationDeltaY?: number;
+  shearDistortion?: number;
 }
 
 export interface IJobArtifacts {
   registeredImageStorageKey?: string;
+  registeredPreviewStorageKey?: string;
+  differenceMapStorageKey?: string;
   matchPointsStorageKey?: string;
   metricsReportStorageKey?: string;
   previewOverlayStorageKey?: string;
@@ -114,9 +125,20 @@ const JobSchema = new Schema<IJob>(
       sunAngleDeltaAzimuth: Number,
       sunAngleDeltaElevation: Number,
       confidenceWarning: Boolean,
+      ssim: Number,
+      mutualInformation: Number,
+      psnr: Number,
+      transformationMatrix: Schema.Types.Mixed,
+      scaleRatio: String,
+      azimuthRotationDeg: Number,
+      translationDeltaX: Number,
+      translationDeltaY: Number,
+      shearDistortion: Number,
     },
     artifacts: {
       registeredImageStorageKey: String,
+      registeredPreviewStorageKey: String,
+      differenceMapStorageKey: String,
       matchPointsStorageKey: String,
       metricsReportStorageKey: String,
       previewOverlayStorageKey: String,

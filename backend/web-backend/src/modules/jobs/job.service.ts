@@ -162,6 +162,8 @@ export async function getJobArtifacts(
   jobId: string
 ): Promise<{
   registeredImageUrl?: string;
+  registeredPreviewUrl?: string;
+  differenceMapUrl?: string;
   matchPointsUrl?: string;
   metricsReportUrl?: string;
   previewOverlayUrl?: string;
@@ -171,6 +173,12 @@ export async function getJobArtifacts(
   const result: any = {};
   if (job.artifacts?.registeredImageStorageKey) {
     result.registeredImageUrl = await generatePresignedDownloadUrl(job.artifacts.registeredImageStorageKey);
+  }
+  if (job.artifacts?.registeredPreviewStorageKey) {
+    result.registeredPreviewUrl = await generatePresignedDownloadUrl(job.artifacts.registeredPreviewStorageKey);
+  }
+  if (job.artifacts?.differenceMapStorageKey) {
+    result.differenceMapUrl = await generatePresignedDownloadUrl(job.artifacts.differenceMapStorageKey);
   }
   if (job.artifacts?.matchPointsStorageKey) {
     result.matchPointsUrl = await generatePresignedDownloadUrl(job.artifacts.matchPointsStorageKey);

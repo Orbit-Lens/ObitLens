@@ -1,29 +1,136 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getToken } from "@/lib/auth";
 
-export default function NewAnalysisPage() {
+interface LunarImage {
+  _id: string;
+  name: string;
+  filename: string;
+  format: string;
+  sensor: string;
+  resolutionMetersPerPixel: number;
+  sunAzimuthDeg: number;
+  sunElevationDeg: number;
+  storageKey: string;
+  width?: number;
+  height?: number;
+}
+
+function NewAnalysisContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const refIdParam = searchParams.get("refId");
+  const srcIdParam = searchParams.get("srcId");
+
+  const [images, setImages] = useState<LunarImage[]>([]);
+  const [refImageId, setRefImageId] = useState<string>("");
+  const [srcImageId, setSrcImageId] = useState<string>("");
+
   const [detector, setDetector] = useState<"SIFT" | "ORB" | "SuperPoint">("SIFT");
   const [matcher, setMatcher] = useState<"FLANN" | "LightGlue" | "SuperGlue">("FLANN");
   const [keypointBudget, setKeypointBudget] = useState(5000);
   const [estimator, setEstimator] = useState<"RANSAC" | "USAC" | "MAGSAC++">("MAGSAC++");
   const [matrixModel, setMatrixModel] = useState<"Homography" | "Affine" | "Rigid">("Homography");
+  const [illuminationCorrection, setIlluminationCorrection] = useState(true);
+  const [reprojThreshold, setReprojThreshold] = useState(2.0);
+
   const [isExecuting, setIsExecuting] = useState(false);
   const [execStatus, setExecStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleRunPipeline = () => {
+  // Load available catalog images
+  useEffect(() => {
+    async function loadCatalog() {
+      const token = getToken();
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      try {
+        const res = await fetch("/api/v1/images?limit=50", { headers });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data && json.data.length > 0) {
+            const list: LunarImage[] = json.data;
+            setImages(list);
+
+            const initialRef = refIdParam && list.some((i) => i._id === refIdParam)
+              ? refIdParam
+              : (list.find((i) => i.sensor === "OHRC")?._id || list[0]._id);
+
+            const initialSrc = srcIdParam && list.some((i) => i._id === srcIdParam)
+              ? srcIdParam
+              : (list.find((i) => i.sensor === "TMC-2" && i._id !== initialRef)?._id ||
+                 list.find((i) => i._id !== initialRef)?._id ||
+                 list[0]._id);
+
+            setRefImageId(initialRef);
+            setSrcImageId(initialSrc);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load images for analysis:", err);
+      }
+    }
+    loadCatalog();
+  }, [refIdParam, srcIdParam]);
+
+  const refImage = images.find((i) => i._id === refImageId) || images[0];
+  const srcImage = images.find((i) => i._id === srcImageId) || images[1] || images[0];
+
+  const handleRunPipeline = async () => {
+    if (!refImageId || !srcImageId) {
+      setErrorMessage("Please select both a reference and a source image.");
+      return;
+    }
+    if (refImageId === srcImageId) {
+      setErrorMessage("Source and Reference images must be different.");
+      return;
+    }
+
     setIsExecuting(true);
-    setExecStatus("EXECUTING SIFT / MAGSAC++...");
-    setTimeout(() => {
-      setExecStatus("ANALYSIS COMPLETE (3,842 TIE-POINTS)");
+    setErrorMessage("");
+    setExecStatus("DISPATCHING PHOTOGRAMMETRIC PIPELINE...");
+
+    const token = getToken();
+    try {
+      const res = await fetch("/api/v1/jobs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          sourceImageId: srcImageId,
+          referenceImageId: refImageId,
+          algorithm: detector === "SuperPoint" ? "learned" : "classical",
+          transformModel: matrixModel.toLowerCase() === "affine" ? "affine" : "homography",
+          parameters: {
+            coverageTargetCells: 64,
+            ratioThreshold: 0.75,
+            ransacReprojThreshold: reprojThreshold,
+            maxPyramidLevels: 4,
+            illuminationCorrection,
+          },
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.error?.message || "Failed to create registration job");
+      }
+
+      setExecStatus("REGISTRATION QUEUED • OPENING WORKSPACE...");
       setTimeout(() => {
-        router.push("/registration");
-      }, 1200);
-    }, 1800);
+        router.push(`/registration?jobId=${json.data._id}`);
+      }, 1000);
+    } catch (err: any) {
+      setIsExecuting(false);
+      setErrorMessage(err.message || "Failed to start pipeline analysis");
+    }
   };
 
   return (
@@ -45,6 +152,19 @@ export default function NewAnalysisPage() {
           <span className="text-on-surface-variant">NODE: SAC-AHM-04</span>
         </div>
       </div>
+
+      {/* ERROR BANNER */}
+      {errorMessage && (
+        <div className="mb-space-sm p-space-sm bg-error-container text-on-error-container rounded-lg font-mono-data-sm text-mono-data-sm flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">error</span>
+            <span>{errorMessage}</span>
+          </div>
+          <button onClick={() => setErrorMessage("")} className="hover:opacity-75">
+            <span className="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </div>
+      )}
 
       {/* WORKFLOW STEPPER */}
       <div className="mt-space-xs mb-space-md p-space-sm bg-surface-container-low rounded-xl shadow-sm">
@@ -95,10 +215,12 @@ export default function NewAnalysisPage() {
             <div className="flex items-center gap-space-sm">
               <span className="w-2 h-2 rounded-full bg-secondary-container"></span>
               <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed">Frame A • Reference Master</span>
-              <span className="font-headline-sm text-headline-sm text-on-primary">REFERENCE IMAGE (PRIMARY FRAME)</span>
+              <span className="font-headline-sm text-headline-sm text-on-primary truncate">REFERENCE FRAME</span>
             </div>
             <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm">
-              <span className="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-semibold">OHRC-CAM</span>
+              <span className="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-semibold">
+                {refImage?.sensor || "OHRC"}
+              </span>
             </div>
           </div>
           <div className="relative w-full h-80 bg-primary-container overflow-hidden group">
@@ -115,55 +237,52 @@ export default function NewAnalysisPage() {
             </div>
             <div className="absolute top-space-sm left-space-sm flex flex-wrap gap-1.5 pointer-events-none">
               <span className="px-2 py-0.5 rounded bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-mono-data-sm font-semibold backdrop-blur-sm shadow-sm">
-                OHRC
+                {refImage?.sensor || "OHRC"}
               </span>
               <span className="px-2 py-0.5 rounded bg-primary-container/90 text-secondary-fixed-dim font-mono-data-sm text-mono-data-sm backdrop-blur-sm shadow-sm">
-                0.25 m/px GSD
+                {refImage?.resolutionMetersPerPixel || 0.25} m/px GSD
               </span>
               <span className="px-2 py-0.5 rounded bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-mono-data-sm backdrop-blur-sm shadow-sm">
-                GeoTIFF PDS4
+                {refImage?.format || "GEOTIFF"}
               </span>
-              <span className="px-2 py-0.5 rounded bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-mono-data-sm backdrop-blur-sm shadow-sm">
-                4096 × 4096 px
-              </span>
-            </div>
-            <div className="absolute bottom-space-sm right-space-sm px-2 py-1 rounded bg-primary/80 backdrop-blur-sm text-on-primary font-mono-data-sm text-mono-data-sm flex items-center gap-2">
-              <span>Scale: 1:25,000</span>
-              <div className="w-10 h-1 bg-secondary"></div>
-              <span>500 m</span>
             </div>
           </div>
           <div className="p-space-md bg-surface-container-low flex flex-col gap-space-sm">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-xs font-mono-data-sm text-mono-data-sm">
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Orbit No.</span>
-                <span className="text-on-surface font-semibold">1245</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Sensor</span>
+                <span className="text-on-surface font-semibold">{refImage?.sensor || "OHRC"}</span>
               </div>
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Geographic Target</span>
-                <span className="text-on-surface font-semibold truncate">South Pole Rim</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Product</span>
+                <span className="text-on-surface font-semibold truncate">{refImage?.name || "CH2_OHRC_0421"}</span>
               </div>
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
                 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Sun Angle</span>
-                <span className="text-on-surface font-semibold">18.4° Solar Alt</span>
+                <span className="text-on-surface font-semibold">{refImage?.sunElevationDeg || 18.4}° Alt</span>
               </div>
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">PDS Product UID</span>
-                <span className="text-secondary font-semibold truncate">CH2_OHRC_20241008</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Azimuth</span>
+                <span className="text-secondary font-semibold truncate">{refImage?.sunAzimuthDeg || 120.0}°</span>
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-space-xs pt-space-xs">
               <div className="flex items-center gap-space-xs">
-                <button className="px-space-sm py-1 rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors flex items-center gap-1 shadow-sm">
-                  <span className="material-symbols-outlined text-[14px]">cached</span> Change Frame
-                </button>
-                <button className="px-space-sm py-1 rounded bg-surface-container-highest text-on-surface font-mono-data-sm text-mono-data-sm font-medium hover:bg-surface-variant transition-colors flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">info</span> View Metadata
-                </button>
+                <select
+                  value={refImageId}
+                  onChange={(e) => setRefImageId(e.target.value)}
+                  className="px-space-sm py-1 rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors cursor-pointer focus:outline-none"
+                >
+                  {images.map((img) => (
+                    <option key={img._id} value={img._id} className="bg-surface-container text-on-surface">
+                      {img.name} ({img.sensor} • {img.resolutionMetersPerPixel}m)
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="flex items-center gap-space-xs">
                 <span className="px-space-xs py-0.5 rounded bg-surface-container font-mono-data-sm text-mono-data-sm text-on-surface-variant">
-                  Spectral: <strong className="text-on-surface font-semibold">PAN (450–900 nm)</strong>
+                  GSD: <strong className="text-on-surface font-semibold">{refImage?.resolutionMetersPerPixel || 0.25} m/px</strong>
                 </span>
               </div>
             </div>
@@ -176,10 +295,12 @@ export default function NewAnalysisPage() {
             <div className="flex items-center gap-space-sm">
               <span className="w-2 h-2 rounded-full bg-secondary"></span>
               <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed">Frame B • Registration Target</span>
-              <span className="font-headline-sm text-headline-sm text-inverse-on-surface">SOURCE IMAGE (TO BE REGISTERED)</span>
+              <span className="font-headline-sm text-headline-sm text-inverse-on-surface truncate">SOURCE FRAME</span>
             </div>
             <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm">
-              <span className="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-semibold">TMC-2 STEREO</span>
+              <span className="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-semibold">
+                {srcImage?.sensor || "TMC-2"}
+              </span>
             </div>
           </div>
           <div className="relative w-full h-80 bg-primary-container overflow-hidden group">
@@ -196,55 +317,52 @@ export default function NewAnalysisPage() {
             </div>
             <div className="absolute top-space-sm left-space-sm flex flex-wrap gap-1.5 pointer-events-none">
               <span className="px-2 py-0.5 rounded bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-mono-data-sm font-semibold backdrop-blur-sm shadow-sm">
-                TMC-2
+                {srcImage?.sensor || "TMC-2"}
               </span>
               <span className="px-2 py-0.5 rounded bg-primary-container/90 text-secondary-fixed-dim font-mono-data-sm text-mono-data-sm backdrop-blur-sm shadow-sm">
-                5.0 m/px GSD
+                {srcImage?.resolutionMetersPerPixel || 5.0} m/px GSD
               </span>
               <span className="px-2 py-0.5 rounded bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-mono-data-sm backdrop-blur-sm shadow-sm">
-                GeoTIFF Level-2B
+                {srcImage?.format || "GEOTIFF"}
               </span>
-              <span className="px-2 py-0.5 rounded bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-mono-data-sm backdrop-blur-sm shadow-sm">
-                2048 × 2048 px
-              </span>
-            </div>
-            <div className="absolute bottom-space-sm right-space-sm px-2 py-1 rounded bg-primary/80 backdrop-blur-sm text-on-primary font-mono-data-sm text-mono-data-sm flex items-center gap-2">
-              <span>Scale: 1:100,000</span>
-              <div className="w-8 h-1 bg-secondary"></div>
-              <span>2 km</span>
             </div>
           </div>
           <div className="p-space-md bg-surface-container-low flex flex-col gap-space-sm">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-xs font-mono-data-sm text-mono-data-sm">
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Orbit No.</span>
-                <span className="text-on-surface font-semibold">1187</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Sensor</span>
+                <span className="text-on-surface font-semibold">{srcImage?.sensor || "TMC-2"}</span>
               </div>
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Geographic Target</span>
-                <span className="text-on-surface font-semibold truncate">Manzinus C</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Product</span>
+                <span className="text-on-surface font-semibold truncate">{srcImage?.name || "CH2_TMC2_1187"}</span>
               </div>
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
                 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Sun Angle</span>
-                <span className="text-on-surface font-semibold">22.1° Solar Alt</span>
+                <span className="text-on-surface font-semibold">{srcImage?.sunElevationDeg || 21.4}° Alt</span>
               </div>
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">PDS Product UID</span>
-                <span className="text-secondary font-semibold truncate">CH2_TMC2_20240915</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Azimuth</span>
+                <span className="text-secondary font-semibold truncate">{srcImage?.sunAzimuthDeg || 122.1}°</span>
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-space-xs pt-space-xs">
               <div className="flex items-center gap-space-xs">
-                <button className="px-space-sm py-1 rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors flex items-center gap-1 shadow-sm">
-                  <span className="material-symbols-outlined text-[14px]">cached</span> Change Frame
-                </button>
-                <button className="px-space-sm py-1 rounded bg-surface-container-highest text-on-surface font-mono-data-sm text-mono-data-sm font-medium hover:bg-surface-variant transition-colors flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">grid_4x4</span> Resample Grid
-                </button>
+                <select
+                  value={srcImageId}
+                  onChange={(e) => setSrcImageId(e.target.value)}
+                  className="px-space-sm py-1 rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors cursor-pointer focus:outline-none"
+                >
+                  {images.map((img) => (
+                    <option key={img._id} value={img._id} className="bg-surface-container text-on-surface">
+                      {img.name} ({img.sensor} • {img.resolutionMetersPerPixel}m)
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="flex items-center gap-space-xs">
                 <span className="px-space-xs py-0.5 rounded bg-surface-container font-mono-data-sm text-mono-data-sm text-on-surface-variant">
-                  Geometry: <strong className="text-on-surface font-semibold">Stereo Nadir (0°)</strong>
+                  GSD: <strong className="text-on-surface font-semibold">{srcImage?.resolutionMetersPerPixel || 5.0} m/px</strong>
                 </span>
               </div>
             </div>
@@ -268,70 +386,40 @@ export default function NewAnalysisPage() {
             <thead>
               <tr className="bg-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase">
                 <th className="py-2.5 px-space-md font-semibold">Parameter / Sensor State</th>
-                <th className="py-2.5 px-space-md font-semibold">Reference Image (OHRC)</th>
-                <th className="py-2.5 px-space-md font-semibold">Source Image (TMC-2)</th>
+                <th className="py-2.5 px-space-md font-semibold">Reference Image ({refImage?.sensor || "OHRC"})</th>
+                <th className="py-2.5 px-space-md font-semibold">Source Image ({srcImage?.sensor || "TMC-2"})</th>
                 <th className="py-2.5 px-space-md font-semibold">Delta &amp; Alignment Verification</th>
               </tr>
             </thead>
             <tbody className="divide-y-0 text-on-surface">
               <tr className="hover:bg-surface-container-low transition-colors">
-                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Center Latitude</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">85.2418° S</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">85.2492° S</td>
+                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Ground Sampling Distance (GSD)</td>
+                <td className="py-2.5 px-space-md font-semibold text-on-surface">{refImage?.resolutionMetersPerPixel || 0.25} m/px</td>
+                <td className="py-2.5 px-space-md font-semibold text-on-surface">{srcImage?.resolutionMetersPerPixel || 5.0} m/px</td>
                 <td className="py-2.5 px-space-md">
                   <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high font-medium text-on-surface">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                    Δ 0.0074° (~820 m) • Within Overlap Envelope
+                    Scale Ratio 1 : {((srcImage?.resolutionMetersPerPixel || 5.0) / (refImage?.resolutionMetersPerPixel || 0.25)).toFixed(1)}x
                   </span>
                 </td>
               </tr>
               <tr className="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Center Longitude</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">128.9204° E</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">128.9110° E</td>
-                <td className="py-2.5 px-space-md">
-                  <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high font-medium text-on-surface">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                    Δ 0.0094° (~105 m)
-                  </span>
-                </td>
-              </tr>
-              <tr className="hover:bg-surface-container-low transition-colors">
                 <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Solar Elevation</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">18.42°</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">22.10°</td>
+                <td className="py-2.5 px-space-md font-semibold text-on-surface">{refImage?.sunElevationDeg || 18.4}°</td>
+                <td className="py-2.5 px-space-md font-semibold text-on-surface">{srcImage?.sunElevationDeg || 21.4}°</td>
                 <td className="py-2.5 px-space-md">
                   <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
-                    Δ 3.68° • Shadow Parallax Warning: Minor
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+                    Δ {Math.abs((refImage?.sunElevationDeg || 18.4) - (srcImage?.sunElevationDeg || 21.4)).toFixed(2)}° • Minimal Shadow Delta
                   </span>
-                </td>
-              </tr>
-              <tr className="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Solar Azimuth</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">312.4°</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">309.8°</td>
-                <td className="py-2.5 px-space-md text-on-surface-variant font-mono-data-sm">
-                  Δ 2.6° (Illumination Vector Co-aligned)
                 </td>
               </tr>
               <tr className="hover:bg-surface-container-low transition-colors">
-                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Sensor Emission Angle</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">0.85°</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">2.14°</td>
+                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Solar Azimuth</td>
+                <td className="py-2.5 px-space-md font-semibold text-on-surface">{refImage?.sunAzimuthDeg || 120.0}°</td>
+                <td className="py-2.5 px-space-md font-semibold text-on-surface">{srcImage?.sunAzimuthDeg || 122.1}°</td>
                 <td className="py-2.5 px-space-md text-on-surface-variant font-mono-data-sm">
-                  Δ 1.29° (Off-Nadir Distortion Minimal)
-                </td>
-              </tr>
-              <tr className="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                <td className="py-2.5 px-space-md font-medium text-on-surface-variant">Geodetic Datum / CRS</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">IAU_2000_MOON</td>
-                <td className="py-2.5 px-space-md font-semibold text-on-surface">IAU_2000_MOON</td>
-                <td className="py-2.5 px-space-md">
-                  <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high font-medium text-on-surface">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                    Identical Geodesic Datum
-                  </span>
+                  Δ {Math.abs((refImage?.sunAzimuthDeg || 120.0) - (srcImage?.sunAzimuthDeg || 122.1)).toFixed(1)}° (Illumination Vector Co-aligned)
                 </td>
               </tr>
             </tbody>
@@ -357,17 +445,22 @@ export default function NewAnalysisPage() {
             </div>
             <div className="flex flex-col gap-space-sm mt-space-xs">
               <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
-                <input defaultChecked type="checkbox" className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4" />
+                <input
+                  type="checkbox"
+                  checked={illuminationCorrection}
+                  onChange={(e) => setIlluminationCorrection(e.target.checked)}
+                  className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4"
+                />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Radiometric Normalization</span>
-                  <span className="font-body-sm text-body-sm text-on-surface-variant">Level-2B Sensor Gain &amp; Solar Flux correction</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant">Sensor Gain &amp; Solar Flux correction</span>
                 </div>
               </label>
               <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
                 <input defaultChecked type="checkbox" className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4" />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Contrast Normalization</span>
-                  <span className="font-body-sm text-body-sm text-on-surface-variant">CLAHE adaptive histogram equalization (Clip limit: 2.4)</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant">CLAHE adaptive histogram equalization</span>
                 </div>
               </label>
               <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
@@ -381,7 +474,7 @@ export default function NewAnalysisPage() {
                 <input type="checkbox" className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4" />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Shadow Mask Exclusion</span>
-                  <span className="font-body-sm text-body-sm text-on-surface-variant">Threshold solar incidence angle &gt; 82° in crater floors</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant">Exclude extreme shadowing in crater floors</span>
                 </div>
               </label>
             </div>
@@ -516,7 +609,15 @@ export default function NewAnalysisPage() {
               <div className="grid grid-cols-3 gap-space-xs">
                 <div className="flex flex-col p-space-xs bg-surface-container-low rounded">
                   <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Inlier Error</span>
-                  <span className="font-mono-data-md text-mono-data-md font-semibold text-on-surface">2.0 px</span>
+                  <select
+                    value={reprojThreshold}
+                    onChange={(e) => setReprojThreshold(Number(e.target.value))}
+                    className="bg-transparent font-mono-data-md text-mono-data-md font-semibold text-on-surface focus:outline-none cursor-pointer"
+                  >
+                    <option value={1.5}>1.5 px</option>
+                    <option value={2.0}>2.0 px</option>
+                    <option value={3.0}>3.0 px</option>
+                  </select>
                 </div>
                 <div className="flex flex-col p-space-xs bg-surface-container-low rounded">
                   <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Max Iter</span>
@@ -531,8 +632,8 @@ export default function NewAnalysisPage() {
               <div className="flex items-center gap-space-sm p-space-sm rounded bg-surface-container-high text-on-surface">
                 <span className="material-symbols-outlined text-secondary text-[20px]">memory</span>
                 <div className="flex flex-col min-w-0">
-                  <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">CUDA ACCELERATION</span>
-                  <span className="font-mono-data-sm text-mono-data-sm font-medium truncate">CuPy / TensorRT Enabled</span>
+                  <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">ACCELERATION</span>
+                  <span className="font-mono-data-sm text-mono-data-sm font-medium truncate">Multi-core OpenMP / CUDA</span>
                 </div>
               </div>
             </div>
@@ -545,14 +646,25 @@ export default function NewAnalysisPage() {
         <div className="flex items-center gap-space-md font-mono-data-sm text-mono-data-sm">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-ping"></span>
-            <span className="text-secondary-fixed font-semibold">ESTIMATED RUNTIME: ~4.2s</span>
+            <span className="text-secondary-fixed font-semibold">
+              {isExecuting ? execStatus : "SYSTEM READY FOR PIPELINE RUN"}
+            </span>
           </div>
           <span className="text-on-primary-container hidden sm:inline">•</span>
-          <span className="text-on-primary-container hidden sm:inline">Allocated Cluster: NVIDIA A100 Tensor Core (SAC-NODE-04)</span>
+          <span className="text-on-primary-container hidden sm:inline">Ref: {refImage?.name} ↔ Src: {srcImage?.name}</span>
         </div>
 
         <div className="flex items-center gap-space-md w-full md:w-auto justify-end">
-          <button className="px-space-md py-2 rounded font-mono-data-sm text-mono-data-sm font-medium text-inverse-on-surface hover:bg-primary transition-colors flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              setDetector("SIFT");
+              setMatrixModel("Homography");
+              setKeypointBudget(5000);
+              setReprojThreshold(2.0);
+              setIlluminationCorrection(true);
+            }}
+            className="px-space-md py-2 rounded font-mono-data-sm text-mono-data-sm font-medium text-inverse-on-surface hover:bg-primary transition-colors flex items-center gap-1.5"
+          >
             <span className="material-symbols-outlined text-[16px]">restart_alt</span>
             Reset to Default ISRO Profile
           </button>
@@ -563,7 +675,7 @@ export default function NewAnalysisPage() {
             disabled={isExecuting}
             className={`px-space-xl py-2.5 rounded text-on-secondary font-headline-sm text-headline-sm font-semibold shadow-[0_0_15px_rgba(91,184,254,0.4)] transition-all flex items-center gap-2 ${
               isExecuting
-                ? "bg-[#10b981] text-white"
+                ? "bg-[#10b981] text-white cursor-not-allowed"
                 : "bg-secondary hover:bg-secondary-container hover:text-on-secondary-container"
             }`}
           >
@@ -584,3 +696,12 @@ export default function NewAnalysisPage() {
     </div>
   );
 }
+
+export default function NewAnalysisPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center font-mono">Loading Analysis Workstation...</div>}>
+      <NewAnalysisContent />
+    </Suspense>
+  );
+}
+

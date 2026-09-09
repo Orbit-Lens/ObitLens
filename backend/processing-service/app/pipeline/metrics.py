@@ -91,3 +91,99 @@ def format_match_points_geojson(
         "type": "FeatureCollection",
         "features": features,
     }
+
+def compute_image_similarity_metrics(
+    warped_img: np.ndarray,
+    ref_img: np.ndarray
+) -> Dict[str, Optional[float]]:
+    """
+    Computes SSIM, Mutual Information (MI), and PSNR between warped source and reference images.
+    """
+    try:
+        w = warped_img.astype(np.float32)
+        r = ref_img.astype(np.float32)
+        if w.max() > 1.0:
+            w = w / 255.0
+        if r.max() > 1.0:
+            r = r / 255.0
+
+        if w.shape[:2] != r.shape[:2]:
+            import cv2
+            w = cv2.resize(w, (r.shape[1], r.shape[0]))
+
+        mask = (w > 0.001) & (r > 0.001)
+        if np.sum(mask) < 100:
+            return {"ssim": None, "mutualInformation": None, "psnr": None}
+
+        # 1. PSNR
+        mse = np.mean((w[mask] - r[mask]) ** 2)
+        if mse <= 1e-10:
+            psnr = 99.0
+        else:
+            psnr = float(10 * np.log10(1.0 / mse))
+
+        # 2. SSIM (Structural Similarity)
+        try:
+            from skimage.metrics import structural_similarity as ssim_fn
+            ssim_val = float(ssim_fn(w, r, data_range=1.0))
+        except Exception:
+            mu_w = float(np.mean(w[mask]))
+            mu_r = float(np.mean(r[mask]))
+            sigma_w2 = float(np.var(w[mask]))
+            sigma_r2 = float(np.var(r[mask]))
+            sigma_wr = float(np.mean((w[mask] - mu_w) * (r[mask] - mu_r)))
+            c1, c2 = 0.01 ** 2, 0.03 ** 2
+            ssim_val = float(((2 * mu_w * mu_r + c1) * (2 * sigma_wr + c2)) / ((mu_w ** 2 + mu_r ** 2 + c1) * (sigma_w2 + sigma_r2 + c2)))
+
+        # 3. Mutual Information via joint 2D histogram
+        bins = 32
+        hist_2d, _, _ = np.histogram2d(w[mask], r[mask], bins=bins)
+        pxy = hist_2d / float(np.sum(hist_2d))
+        px = np.sum(pxy, axis=1)
+        py = np.sum(pxy, axis=0)
+        px_py = px[:, None] * py[None, :]
+        nz = (pxy > 0) & (px_py > 0)
+        mi_val = float(np.sum(pxy[nz] * np.log2(pxy[nz] / px_py[nz])))
+
+        return {
+            "ssim": round(float(ssim_val), 4),
+            "mutualInformation": round(float(mi_val), 2),
+            "psnr": round(float(psnr), 2),
+        }
+    except Exception as e:
+        logger.warning(f"Failed to compute similarity metrics: {e}")
+        return {"ssim": None, "mutualInformation": None, "psnr": None}
+
+def generate_difference_map(
+    warped_src: np.ndarray,
+    ref_img: np.ndarray
+) -> np.ndarray:
+    """
+    Renders a remote sensing difference visualization (Panel 3) showing
+    pixel-wise photometric residual & elevation displacement heatmap.
+    Returns RGB uint8 image for web display.
+    """
+    import cv2
+    w = warped_src.astype(np.float32)
+    r = ref_img.astype(np.float32)
+    if w.max() > 1.0:
+        w = w / 255.0
+    if r.max() > 1.0:
+        r = r / 255.0
+
+    if w.shape[:2] != r.shape[:2]:
+        w = cv2.resize(w, (r.shape[1], r.shape[0]))
+
+    diff = np.abs(w - r)
+    diff_norm = np.clip(diff * 2.5, 0.0, 1.0)
+    diff_uint8 = (diff_norm * 255).astype(np.uint8)
+    diff_color = cv2.applyColorMap(diff_uint8, cv2.COLORMAP_TURBO)
+
+    ref_gray = (r * 255).astype(np.uint8)
+    if len(ref_gray.shape) == 2:
+        ref_bgr = cv2.cvtColor(ref_gray, cv2.COLOR_GRAY2BGR)
+    else:
+        ref_bgr = ref_gray
+
+    composite = cv2.addWeighted(diff_color, 0.65, ref_bgr, 0.35, 0)
+    return composite

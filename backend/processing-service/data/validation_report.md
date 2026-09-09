@@ -1,5 +1,5 @@
 # OrbitLens Validation Report
-**Generated:** 2026-09-08T17:15:00.068592
+**Generated:** 2026-09-09T17:45:30.360755
 
 ### Reconciled Problem Statement Targets (File 2 §3)
 - **RMSE:** <= 0.5 px (<= 1.0 px for scale ratio > 50:1)

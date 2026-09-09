@@ -36,10 +36,20 @@ export async function generatePresignedDownloadUrl(
   key: string,
   expiresInSeconds = 3600 // 1 hour
 ): Promise<string> {
-  const command = new GetObjectCommand({
-    Bucket: env.S3_BUCKET,
-    Key: key,
-  });
+  if (!key) return '';
+  if (key.startsWith('http://') || key.startsWith('https://') || key.startsWith('/')) {
+    return key;
+  }
 
-  return await getSignedUrl(s3Client, command, { expiresIn: expiresInSeconds });
+  try {
+    const command = new GetObjectCommand({
+      Bucket: env.S3_BUCKET,
+      Key: key,
+    });
+
+    return await getSignedUrl(s3Client, command, { expiresIn: expiresInSeconds });
+  } catch (error) {
+    // If S3 signing fails (e.g. offline dev), return key or placeholder
+    return key;
+  }
 }

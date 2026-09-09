@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { getUser, fetchCurrentUser, logoutUser, UserProfile } from "@/lib/auth";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -10,6 +12,16 @@ interface AppShellProps {
 
 export default function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
+  useEffect(() => {
+    const cached = getUser();
+    if (cached) setUser(cached);
+    fetchCurrentUser().then((u) => {
+      if (u) setUser(u);
+    });
+  }, []);
 
   const navGroups = [
     {
@@ -109,19 +121,74 @@ export default function AppShell({ children }: AppShellProps) {
           </div>
         </div>
 
-        {/* User Profile */}
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex flex-col text-right font-mono text-xs">
-            <span className="text-white font-semibold">Dr. A. Sharma</span>
-            <span className="text-on-primary-container text-[11px]">
-              Sr. Scientist, Remote Sensing
+        {/* Dynamic User Profile with Dropdown */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowUserMenu((prev) => !prev)}
+            className="flex items-center gap-3 p-1.5 rounded-lg hover:bg-white/5 transition-colors text-left select-none focus:outline-none"
+          >
+            <div className="hidden md:flex flex-col text-right font-mono text-xs">
+              <span className="text-white font-semibold">{user?.name || "Dr. A. Sharma"}</span>
+              <span className="text-on-primary-container text-[11px]">
+                {user?.role === "admin"
+                  ? "Mission Admin / Lead"
+                  : user?.role === "researcher"
+                  ? "Research Scientist"
+                  : "Sr. Scientist, Remote Sensing"}
+              </span>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-secondary/80 border border-white/10 flex items-center justify-center text-white shadow-xs font-bold text-sm">
+              {user?.name ? user.name.charAt(0).toUpperCase() : "S"}
+            </div>
+            <span className="material-symbols-outlined text-[18px] text-on-primary-container">
+              {showUserMenu ? "expand_less" : "expand_more"}
             </span>
-          </div>
-          <div className="w-9 h-9 rounded-lg bg-secondary/80 border border-white/10 flex items-center justify-center text-white shadow-xs">
-            <span className="material-symbols-outlined text-[18px]">
-              person
-            </span>
-          </div>
+          </button>
+
+          {/* User Dropdown Menu */}
+          {showUserMenu && (
+            <div className="absolute right-0 mt-2 w-64 bg-surface-container-lowest rounded-lg shadow-xl border border-outline-variant/30 py-2 z-50 text-on-surface font-body-sm">
+              <div className="px-4 py-2 border-b border-surface-container">
+                <div className="font-semibold text-on-surface text-body-md truncate">{user?.name || "Dr. A. Sharma"}</div>
+                <div className="font-mono-data-sm text-[11px] text-on-surface-variant truncate">{user?.email || "sakthivel@orbitlens.app"}</div>
+                <div className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#ecfdf5] text-[#065f46] text-[10px] font-semibold uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+                  {user?.role || "Admin"} • Verified
+                </div>
+              </div>
+
+              <div className="py-1">
+                <Link
+                  href="/settings"
+                  onClick={() => setShowUserMenu(false)}
+                  className="flex items-center gap-2.5 px-4 py-2 hover:bg-surface-container text-on-surface hover:text-secondary transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[18px]">manage_accounts</span>
+                  <span>Account &amp; Security Profile</span>
+                </Link>
+                <Link
+                  href="/help"
+                  onClick={() => setShowUserMenu(false)}
+                  className="flex items-center gap-2.5 px-4 py-2 hover:bg-surface-container text-on-surface hover:text-secondary transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[18px]">help_center</span>
+                  <span>ISRO SAC Support &amp; Help</span>
+                </Link>
+              </div>
+
+              <div className="border-t border-surface-container pt-1">
+                <button
+                  type="button"
+                  onClick={() => logoutUser()}
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-error hover:bg-error-container/30 transition-colors text-left font-medium"
+                >
+                  <span className="material-symbols-outlined text-[18px]">logout</span>
+                  <span>Sign Out of Workstation</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 

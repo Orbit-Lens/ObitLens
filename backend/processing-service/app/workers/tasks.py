@@ -18,7 +18,12 @@ from app.pipeline.matching import match_descriptors, extract_match_points
 from app.pipeline.geometry import estimate_transform
 from app.pipeline.coverage import filter_uniform_coverage
 from app.pipeline.warp import warp_source_to_reference, create_preview_composite, save_geotiff
-from app.pipeline.metrics import compute_metrics, format_match_points_geojson
+from app.pipeline.metrics import (
+    compute_metrics,
+    format_match_points_geojson,
+    compute_image_similarity_metrics,
+    generate_difference_map,
+)
 
 logger = logging.getLogger("orbitlens.worker")
 
@@ -191,16 +196,31 @@ async def run_registration_pipeline(job_payload: Dict[str, Any]):
         temp_dir = tempfile.mkdtemp()
         warped_path = os.path.join(temp_dir, f"registered_{job_id}.tif")
         preview_path = os.path.join(temp_dir, f"preview_{job_id}.png")
+        diff_path = os.path.join(temp_dir, f"diff_{job_id}.png")
+        reg_disp_path = os.path.join(temp_dir, f"reg_disp_{job_id}.png")
+
         save_geotiff(warped_src, warped_path)
         cv2.imwrite(preview_path, preview_img)
 
+        # Real difference map generator
+        diff_img = generate_difference_map(warped_src, ref_raw)
+        cv2.imwrite(diff_path, diff_img)
+
+        # Real web-displayable registered image preview (8-bit grayscale/RGB)
+        reg_disp_uint8 = np.clip(warped_src * 255.0, 0, 255).astype(np.uint8)
+        cv2.imwrite(reg_disp_path, reg_disp_uint8)
+
         # Upload artifacts to Object Storage
         reg_s3_key = f"artifacts/{job_id}/registered_product.tif"
+        reg_disp_s3_key = f"artifacts/{job_id}/registered_preview.png"
+        diff_s3_key = f"artifacts/{job_id}/difference_map.png"
         prev_s3_key = f"artifacts/{job_id}/preview_overlay.png"
         points_s3_key = f"artifacts/{job_id}/match_points.geojson"
         report_s3_key = f"artifacts/{job_id}/metrics_report.json"
 
         upload_file(warped_path, reg_s3_key, content_type="image/tiff")
+        upload_file(reg_disp_path, reg_disp_s3_key, content_type="image/png")
+        upload_file(diff_path, diff_s3_key, content_type="image/png")
         upload_file(preview_path, prev_s3_key, content_type="image/png")
 
         # ── Stage 7: Quantitative Evaluation Metrics (98%) ──────────────────
@@ -214,12 +234,22 @@ async def run_registration_pipeline(job_payload: Dict[str, Any]):
             ref_meta=ref_meta,
         )
 
+        # Compute live SSIM, MI, and PSNR image similarity metrics
+        sim_metrics = compute_image_similarity_metrics(warped_src, ref_raw)
+        metrics.update(sim_metrics)
+
+        # Transformation matrix serialization
+        if hasattr(matrix, "tolist"):
+            metrics["transformationMatrix"] = matrix.tolist()
+
         geojson_points = format_match_points_geojson(filt_src, filt_ref, inlier_residuals)
         upload_json(geojson_points, points_s3_key)
         upload_json(metrics, report_s3_key)
 
         artifacts = {
             "registeredImageStorageKey": reg_s3_key,
+            "registeredPreviewStorageKey": reg_disp_s3_key,
+            "differenceMapStorageKey": diff_s3_key,
             "previewOverlayStorageKey": prev_s3_key,
             "matchPointsStorageKey": points_s3_key,
             "metricsReportStorageKey": report_s3_key,

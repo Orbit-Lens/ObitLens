@@ -4,19 +4,32 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { loginUser } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [govId, setGovId] = useState("scientist.isro@gov.in");
-  const [passKey, setPassKey] = useState("");
+  const [govId, setGovId] = useState("sakthivel@orbitlens.app");
+  const [passKey, setPassKey] = useState("Password123");
   const [tokenPin, setTokenPin] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showKeypad, setShowKeypad] = useState(false);
   const [hwBinding, setHwBinding] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/dashboard");
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    const result = await loginUser(govId, passKey);
+    setIsLoading(false);
+
+    if (result.success) {
+      router.push("/dashboard");
+    } else {
+      setErrorMessage(result.error || "Authentication failed. Please verify credentials.");
+    }
   };
 
   const appendPin = (num: string) => {
@@ -154,6 +167,14 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {/* Error Alert Display */}
+              {errorMessage && (
+                <div className="mb-space-md p-space-sm bg-error-container text-error rounded-md flex items-center gap-space-xs border border-error/20">
+                  <span className="material-symbols-outlined text-body-md shrink-0">error</span>
+                  <span className="font-body-sm text-body-sm font-medium">{errorMessage}</span>
+                </div>
+              )}
+
               {/* Authentication Form */}
               <form className="flex flex-col gap-space-md" onSubmit={handleLogin}>
                 {/* Institutional ID Input */}
@@ -207,11 +228,12 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* Security Token / SmartCard PIN */}
+                {/* Security Token / SmartCard PIN (Soft-launch stub per spec) */}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <label className="text-label-caps font-label-caps text-on-surface-variant uppercase" htmlFor="tokenPin">
-                      Hardware Security Token / SmartCard PIN
+                    <label className="text-label-caps font-label-caps text-on-surface-variant uppercase flex items-center gap-1.5" htmlFor="tokenPin">
+                      <span>Hardware Security Token / SmartCard PIN</span>
+                      <span className="px-1.5 py-0.2 bg-surface-container-high text-outline text-[10px] rounded">Preview</span>
                     </label>
                     <button
                       type="button"
@@ -230,7 +252,7 @@ export default function LoginPage() {
                       maxLength={8}
                       value={tokenPin}
                       onChange={(e) => setTokenPin(e.target.value)}
-                      placeholder="6-8 Digit PIN / RSA SecurID"
+                      placeholder="6-8 Digit PIN / RSA SecurID (Optional)"
                       className="w-full h-9 pl-9 pr-3 text-mono-data-md font-mono-data-md bg-surface-container-lowest rounded text-on-surface tracking-widest outline-none focus:bg-surface-bright focus:shadow-[0_0_0_2px_#006398] transition-all"
                     />
                   </div>
@@ -277,19 +299,25 @@ export default function LoginPage() {
                 <div className="flex flex-col gap-space-xs mt-2">
                   <button
                     type="submit"
-                    className="w-full h-11 bg-primary-container hover:bg-secondary text-on-primary font-headline-sm text-headline-sm rounded flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
+                    disabled={isLoading}
+                    className="w-full h-11 bg-primary-container hover:bg-secondary disabled:opacity-50 text-on-primary font-headline-sm text-headline-sm rounded flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
                   >
-                    <span>Sign In to Analysis Workstation</span>
-                    <span className="material-symbols-outlined text-body-md">arrow_forward</span>
+                    <span>{isLoading ? "Authenticating Workstation..." : "Sign In to Analysis Workstation"}</span>
+                    <span className="material-symbols-outlined text-body-md">
+                      {isLoading ? "sync" : "arrow_forward"}
+                    </span>
                   </button>
                   {/* Gov SSO Alternative */}
                   <button
                     type="button"
-                    onClick={() => router.push("/dashboard")}
+                    onClick={() => {
+                      setGovId("sakthivel@orbitlens.app");
+                      setPassKey("Password123");
+                    }}
                     className="w-full h-9 bg-surface-container-low hover:bg-surface-container-high text-on-surface font-body-md text-body-md rounded flex items-center justify-center gap-2 transition-all"
                   >
                     <span className="material-symbols-outlined text-secondary text-body-md">verified_user</span>
-                    <span>Sign in with Gov e-Pramaan / Institutional SSO</span>
+                    <span>Load Default ISRO Research Credentials</span>
                   </button>
                 </div>
               </form>

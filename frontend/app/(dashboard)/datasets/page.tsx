@@ -1,102 +1,81 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getToken } from "@/lib/auth";
+
+interface LunarImage {
+  _id: string;
+  name: string;
+  filename: string;
+  format: string;
+  sensor: string;
+  resolutionMetersPerPixel: number;
+  sunAzimuthDeg: number;
+  sunElevationDeg: number;
+  storageKey: string;
+  width?: number;
+  height?: number;
+  fileSizeBytes?: number;
+  status?: string;
+  createdAt?: string;
+}
 
 export default function DatasetsPage() {
   const router = useRouter();
   const [selectedPayload, setSelectedPayload] = useState("ALL");
-  const [selectedDataset, setSelectedDataset] = useState("CH2_OHRC_0421");
-  const [searchQuery, setSearchQuery] = useState("CH2_OHRC_0421");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [apiImages, setApiImages] = useState<LunarImage[]>([]);
+  const [selectedImageId, setSelectedImageId] = useState<string>("");
 
-  const datasets = [
-    {
-      uid: "CH2_OHRC_0421",
-      fullUid: "CH2_OHRC_20241008_0421_v2",
-      thumb: "/images/crater-terrain-reference.png",
-      instrument: "OHRC / PAN",
-      mode: "Telescopic CCD (0.25m)",
-      gsd: "0.25 m/px",
-      dim: "4096×4096",
-      date: "2024-10-08",
-      time: "04:12:18 UTC",
-      target: "South Pole Rim",
-      level: "Level-2B Calibrated",
-      levelColor: "bg-[#ecfdf5] text-[#065f46] dot-[#10b981]",
-    },
-    {
-      uid: "CH2_TMC2_1187",
-      fullUid: "CH2_TMC2_20240915_1187_v1",
-      thumb: "/images/crater-terrain-reference.png",
-      instrument: "TMC-2 / Stereo",
-      mode: "Fore-Aft-Nadir Triplet",
-      gsd: "5.00 m/px",
-      dim: "2048×8192",
-      date: "2024-09-15",
-      time: "11:34:02 UTC",
-      target: "Manzinus C",
-      level: "Orthorectified",
-      levelColor: "bg-surface-container text-on-surface-variant dot-secondary",
-    },
-    {
-      uid: "CH2_IIRS_0821",
-      fullUid: "CH2_IIRS_20240820_0821_v3",
-      thumb: "/images/difference-map-visualization.png",
-      instrument: "IIRS / Hyperspec",
-      mode: "256 Contiguous Bands",
-      gsd: "20.0 m/px",
-      dim: "1024×4096",
-      date: "2024-08-20",
-      time: "18:49:50 UTC",
-      target: "Amundsen Basin",
-      level: "Level-2B Calibrated",
-      levelColor: "bg-[#ecfdf5] text-[#065f46] dot-[#10b981]",
-    },
-    {
-      uid: "CH2_OHRC_0398",
-      fullUid: "CH2_OHRC_20240712_0398_v1",
-      thumb: "/images/crater-terrain-reference.png",
-      instrument: "OHRC / PAN",
-      mode: "Telescopic CCD (0.28m)",
-      gsd: "0.28 m/px",
-      dim: "4096×4096",
-      date: "2024-07-12",
-      time: "09:18:41 UTC",
-      target: "Shackleton Crater",
-      level: "Level-2B Calibrated",
-      levelColor: "bg-[#ecfdf5] text-[#065f46] dot-[#10b981]",
-    },
-    {
-      uid: "CH2_TMC2_1104",
-      fullUid: "CH2_TMC2_20240602_1104_v1",
-      thumb: "/images/crater-terrain-reference.png",
-      instrument: "TMC-2 / Stereo",
-      mode: "Triplet Strip Ingestion",
-      gsd: "5.00 m/px",
-      dim: "2048×4096",
-      date: "2024-06-02",
-      time: "22:04:15 UTC",
-      target: "De Gerlache Floor",
-      level: "Level-1 Raw",
-      levelColor: "bg-surface-container text-on-surface-variant dot-outline",
-    },
-    {
-      uid: "LROC_NAC_M114",
-      fullUid: "LROC_NAC_M1145229188RE",
-      thumb: "/images/crater-terrain-reference.png",
-      instrument: "LROC NAC / Mono",
-      mode: "Reference Archive (NASA)",
-      gsd: "0.50 m/px",
-      dim: "5064×52224",
-      date: "2023-11-19",
-      time: "14:02:11 UTC",
-      target: "South Pole Rim",
-      level: "Orthorectified",
-      levelColor: "bg-surface-container text-on-surface-variant dot-secondary",
-    },
-  ];
+  useEffect(() => {
+    async function loadImages() {
+      const token = getToken();
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      try {
+        const res = await fetch("/api/v1/images?limit=50", { headers });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data && json.data.length > 0) {
+            setApiImages(json.data);
+            setSelectedImageId(json.data[0]._id);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load images:", err);
+      }
+    }
+    loadImages();
+  }, []);
+
+  // Filter images based on payload and search query
+  const filteredImages = apiImages.filter((img) => {
+    const matchesPayload =
+      selectedPayload === "ALL" ||
+      img.sensor.toUpperCase().includes(selectedPayload.toUpperCase().replace("-", ""));
+    const matchesQuery =
+      searchQuery === "" ||
+      img.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      img.sensor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      img.filename.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesPayload && matchesQuery;
+  });
+
+  const selectedImage = apiImages.find((i) => i._id === selectedImageId) || apiImages[0];
+
+  const handleLaunchWorkstation = () => {
+    if (!selectedImage) {
+      router.push("/new-analysis");
+      return;
+    }
+    // Find a paired image of different sensor or different ID
+    const paired = apiImages.find((i) => i._id !== selectedImage._id) || apiImages[0];
+    router.push(`/new-analysis?refId=${selectedImage._id}&srcId=${paired ? paired._id : ""}`);
+  };
 
   return (
     <div className="flex flex-col w-full pb-12">
@@ -211,7 +190,7 @@ export default function DatasetsPage() {
         <div className="xl:col-span-8 flex flex-col gap-space-sm bg-surface-container-lowest rounded-lg p-space-sm shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-space-xs py-space-2xs bg-surface-container-low rounded">
             <div className="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm">
-              <span className="font-bold text-on-surface">6 Granules Found</span>
+              <span className="font-bold text-on-surface">{filteredImages.length} Granules Found</span>
               <span className="text-outline">|</span>
               <span className="text-on-surface-variant">PDS4 Collection: <code className="text-secondary font-mono-data-sm">urn:isro:ch2:science_archive:data_calibrated</code></span>
             </div>
@@ -233,19 +212,18 @@ export default function DatasetsPage() {
                   <th className="py-space-xs px-space-xs">Instrument / Mode</th>
                   <th className="py-space-xs px-space-xs text-right">GSD</th>
                   <th className="py-space-xs px-space-xs text-center">Raster Dim</th>
-                  <th className="py-space-xs px-space-xs">Acq UTC</th>
-                  <th className="py-space-xs px-space-xs">Target Morph</th>
+                  <th className="py-space-xs px-space-xs">Sun Elevation</th>
                   <th className="py-space-xs px-space-xs">PDS Level</th>
                   <th className="py-space-xs px-space-xs text-center">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-container-high">
-                {datasets.map((item) => {
-                  const isSelected = selectedDataset === item.uid;
+                {filteredImages.map((item) => {
+                  const isSelected = selectedImage?._id === item._id;
                   return (
                     <tr
-                      key={item.uid}
-                      onClick={() => setSelectedDataset(item.uid)}
+                      key={item._id}
+                      onClick={() => setSelectedImageId(item._id)}
                       className={`transition-colors cursor-pointer ${
                         isSelected
                           ? "bg-secondary-fixed/40 hover:bg-secondary-fixed/60"
@@ -258,35 +236,34 @@ export default function DatasetsPage() {
                       <td className="py-space-xs px-space-xs font-semibold text-secondary">
                         <div className="flex items-center gap-space-2xs">
                           <span className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-secondary" : "bg-outline-variant"}`}></span>
-                          <span>{item.uid}</span>
+                          <span>{item.name}</span>
                         </div>
                       </td>
                       <td className="py-space-xs px-space-xs">
                         <div className="w-10 h-10 rounded overflow-hidden bg-primary shadow-xs relative">
-                          <Image src={item.thumb} alt={item.uid} fill className="object-cover" />
+                          <Image src="/images/crater-terrain-reference.png" alt={item.name} fill className="object-cover" />
                         </div>
                       </td>
                       <td className="py-space-xs px-space-xs">
                         <div className="flex flex-col">
-                          <span className="font-bold text-on-surface">{item.instrument}</span>
-                          <span className="text-on-surface-variant font-mono-data-sm text-[10px]">{item.mode}</span>
+                          <span className="font-bold text-on-surface">{item.sensor}</span>
+                          <span className="text-on-surface-variant font-mono-data-sm text-[10px]">{item.format}</span>
                         </div>
                       </td>
-                      <td className="py-space-xs px-space-xs text-right font-bold text-on-surface">{item.gsd}</td>
-                      <td className="py-space-xs px-space-xs text-center text-on-surface-variant">{item.dim}</td>
+                      <td className="py-space-xs px-space-xs text-right font-bold text-on-surface">{item.resolutionMetersPerPixel} m/px</td>
+                      <td className="py-space-xs px-space-xs text-center text-on-surface-variant">
+                        {item.width && item.height ? `${item.width}×${item.height}` : "4096×4096"}
+                      </td>
                       <td className="py-space-xs px-space-xs">
                         <div className="flex flex-col">
-                          <span className="text-on-surface font-medium">{item.date}</span>
-                          <span className="text-on-surface-variant font-mono-data-sm text-[10px]">{item.time}</span>
+                          <span className="text-on-surface font-medium">{item.sunElevationDeg || 18.4}° Alt</span>
+                          <span className="text-on-surface-variant font-mono-data-sm text-[10px]">{item.sunAzimuthDeg || 120.0}° Az</span>
                         </div>
                       </td>
                       <td className="py-space-xs px-space-xs">
-                        <span className="px-space-xs py-space-2xs bg-surface-container rounded text-on-surface text-[11px]">{item.target}</span>
-                      </td>
-                      <td className="py-space-xs px-space-xs">
-                        <span className={`inline-flex items-center gap-space-2xs px-space-xs py-space-2xs rounded text-[11px] font-semibold ${item.levelColor}`}>
-                          <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
-                          {item.level}
+                        <span className="inline-flex items-center gap-space-2xs px-space-xs py-space-2xs rounded text-[11px] font-semibold bg-[#ecfdf5] text-[#065f46]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+                          Level-2B Calibrated
                         </span>
                       </td>
                       <td className="py-space-xs px-space-xs text-center">
@@ -295,7 +272,7 @@ export default function DatasetsPage() {
                             ? "bg-primary text-on-primary hover:bg-secondary"
                             : "bg-surface-container text-on-surface hover:bg-surface-container-high"
                         }`}>
-                          {isSelected ? "Inspect" : "Select"}
+                          {isSelected ? "Active" : "Inspect"}
                         </button>
                       </td>
                     </tr>
@@ -307,14 +284,12 @@ export default function DatasetsPage() {
 
           <div className="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs px-space-xs text-on-surface-variant font-mono-data-sm text-mono-data-sm">
             <div className="flex items-center gap-space-xs">
-              <span>Displaying 1–6 of 1,482 archive records</span>
+              <span>Displaying 1–{filteredImages.length} of {apiImages.length} archive records</span>
               <span className="text-outline">|</span>
-              <span className="text-on-surface font-medium">Selected: 1 Granule (34.2 MB)</span>
+              <span className="text-on-surface font-medium">Selected: 1 Granule ({((selectedImage?.fileSizeBytes || 33554432) / 1048576).toFixed(1)} MB)</span>
             </div>
             <div className="flex items-center gap-space-xs">
               <span className="px-space-sm py-space-2xs bg-primary text-on-primary rounded font-bold">1</span>
-              <button className="px-space-sm py-space-2xs bg-surface-container rounded text-on-surface hover:bg-surface-container-high">2</button>
-              <button className="px-space-sm py-space-2xs bg-surface-container rounded text-on-surface hover:bg-surface-container-high">3</button>
             </div>
           </div>
         </div>
@@ -328,10 +303,10 @@ export default function DatasetsPage() {
                 <span className="font-mono-data-sm text-mono-data-sm text-secondary font-bold">CALIBRATED L2B</span>
               </div>
               <span className="font-mono-data-lg text-mono-data-lg text-on-surface font-bold mt-space-2xs tracking-tight">
-                {selectedDataset}
+                {selectedImage?.name || "CH2_OHRC_0421"}
               </span>
               <span className="font-body-sm text-body-sm text-on-surface-variant">
-                High Resolution Optical Imaging Camera (OHRC) Nadir Frame
+                {selectedImage?.sensor || "OHRC"} Lunar Science Orbital Product Frame
               </span>
             </div>
             <div className="flex items-center gap-space-2xs">
@@ -358,8 +333,8 @@ export default function DatasetsPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-[#ffb77d] animate-ping"></div>
               </div>
               <div className="absolute top-2 left-2 px-space-xs py-space-2xs bg-primary-container/85 text-inverse-on-surface font-mono-data-sm text-[10px] rounded backdrop-blur">
-                <div>ORBIT: 1245 | IMG: 89</div>
-                <div className="text-secondary-fixed">SUN ELEV: 18.4°</div>
+                <div>SENSOR: {selectedImage?.sensor || "OHRC"}</div>
+                <div className="text-secondary-fixed">SUN ELEV: {selectedImage?.sunElevationDeg || 18.4}°</div>
               </div>
               <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between px-space-xs py-space-2xs bg-primary-container/90 text-inverse-on-surface font-mono-data-sm text-[10px] rounded backdrop-blur">
                 <span>85.2418° S, 128.9204° E</span>
@@ -376,11 +351,11 @@ export default function DatasetsPage() {
             <div className="grid grid-cols-2 gap-x-space-md gap-y-space-xs font-mono-data-sm text-mono-data-sm">
               <div className="flex flex-col">
                 <span className="text-on-surface-variant font-label-caps text-[10px] uppercase">Pixel Ground Scale</span>
-                <span className="text-on-surface font-semibold">0.250 m/px @ 100km</span>
+                <span className="text-on-surface font-semibold">{selectedImage?.resolutionMetersPerPixel || 0.25} m/px</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-on-surface-variant font-label-caps text-[10px] uppercase">Solar Incidence (i)</span>
-                <span className="text-on-surface font-semibold">81.58° (Grazing)</span>
+                <span className="text-on-surface font-semibold">{((90 - (selectedImage?.sunElevationDeg || 18.4))).toFixed(2)}° (Grazing)</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-on-surface-variant font-label-caps text-[10px] uppercase">Ephemeris Kernel</span>
@@ -390,8 +365,8 @@ export default function DatasetsPage() {
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="text-on-surface-variant font-label-caps text-[10px] uppercase">Radiometric Units</span>
-                <span className="text-on-surface font-semibold">W / (m² · sr · μm)</span>
+                <span className="text-on-surface-variant font-label-caps text-[10px] uppercase">File Size</span>
+                <span className="text-on-surface font-semibold">{((selectedImage?.fileSizeBytes || 33554432) / 1048576).toFixed(1)} MB</span>
               </div>
             </div>
           </div>
@@ -399,7 +374,7 @@ export default function DatasetsPage() {
           {/* Actions */}
           <div className="flex flex-col gap-space-xs pt-space-xs">
             <button
-              onClick={() => router.push("/new-analysis")}
+              onClick={handleLaunchWorkstation}
               className="w-full py-space-sm bg-primary-container text-on-primary hover:bg-secondary rounded font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-space-xs shadow transition-all"
             >
               <span className="material-symbols-outlined text-[20px] text-secondary-fixed">biotech</span>
