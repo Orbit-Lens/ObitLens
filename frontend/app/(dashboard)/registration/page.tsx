@@ -63,7 +63,6 @@ function RegistrationContent() {
   const [selectedJobId, setSelectedJobId] = useState<string>("");
   const [job, setJob] = useState<JobData | null>(null);
   const [artifacts, setArtifacts] = useState<JobArtifacts>({});
-  const [loading, setLoading] = useState(true);
   const [flickerState, setFlickerState] = useState<"ref" | "src">("ref");
   const [swipePosition, setSwipePosition] = useState(50);
 
@@ -88,8 +87,6 @@ function RegistrationContent() {
         }
       } catch (err) {
         console.error("Failed to fetch jobs:", err);
-      } finally {
-        setLoading(false);
       }
     }
     loadJobs();

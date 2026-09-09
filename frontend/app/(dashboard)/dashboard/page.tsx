@@ -5,10 +5,67 @@ import Image from "next/image";
 import Link from "next/link";
 import { getToken } from "@/lib/auth";
 
+interface MetricOverview {
+  totalCompletedJobs: number;
+  avgRmse: number;
+  avgInlierRatio: number;
+  avgInlierCount: number;
+  totalImagesProcessed: number;
+  totalVerifiedMatches: number;
+  meanRegistrationError: number;
+}
+
+interface SensorCoverageItem {
+  sensor: string;
+  count: number;
+  percentage: number;
+}
+
+interface ActivityDay {
+  date: string;
+  total?: number;
+  ohrc?: number;
+  tmc2?: number;
+  iirs?: number;
+}
+
+interface RawRegistrationJob {
+  _id: string;
+  referenceImageId?: { name?: string; sensor?: string };
+  sourceImageId?: { name?: string; sensor?: string };
+  metrics?: {
+    inlierCount?: number;
+    totalCandidateMatches?: number;
+    inlierRatio?: number;
+    rmse?: number;
+  };
+  status: string;
+  createdAt: string;
+}
+
+interface MetricsDataResponse {
+  overview?: MetricOverview;
+  sensorCoverage?: SensorCoverageItem[];
+  pipelineActivity30Days?: ActivityDay[];
+  recentRegistrations?: RawRegistrationJob[];
+}
+
+interface DashboardRunItem {
+  id: string;
+  refImage: string;
+  srcImage: string;
+  sensorPair: string;
+  matches: string;
+  inlierRatio: number;
+  error: string;
+  status: string;
+  statusColor: string;
+  date: string;
+}
+
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"ALL" | "COMPLETED" | "IN_PROGRESS" | "CALIBRATED">("ALL");
-  const [metricsData, setMetricsData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [metricsData, setMetricsData] = useState<MetricsDataResponse | null>(null);
 
   useEffect(() => {
     const token = getToken();
@@ -21,11 +78,10 @@ export default function DashboardPage() {
           setMetricsData(res.data);
         }
       })
-      .catch((err) => console.error("Error fetching metrics:", err))
-      .finally(() => setLoading(false));
+      .catch((err) => console.error("Error fetching metrics:", err));
   }, []);
 
-  const overview = metricsData?.overview || {
+  const overview: MetricOverview = metricsData?.overview || {
     totalCompletedJobs: 16,
     avgRmse: 0.565,
     avgInlierRatio: 0.921,
@@ -35,16 +91,16 @@ export default function DashboardPage() {
     meanRegistrationError: 0.53,
   };
 
-  const sensorCoverage = metricsData?.sensorCoverage || [
+  const sensorCoverage: SensorCoverageItem[] = metricsData?.sensorCoverage || [
     { sensor: "OHRC", count: 4, percentage: 50.0 },
     { sensor: "TMC-2", count: 2, percentage: 25.0 },
     { sensor: "IIRS", count: 1, percentage: 12.5 },
     { sensor: "LRO_NAC", count: 1, percentage: 12.5 },
   ];
 
-  const activityDays = metricsData?.pipelineActivity30Days || [];
-  const maxDayTotal = Math.max(...activityDays.map((d: any) => d.total || 0), 2);
-  const peakDay = activityDays.reduce((prev: any, current: any) =>
+  const activityDays: ActivityDay[] = metricsData?.pipelineActivity30Days || [];
+  const maxDayTotal = Math.max(...activityDays.map((d: ActivityDay) => d.total || 0), 2);
+  const peakDay = activityDays.reduce((prev: ActivityDay | undefined, current: ActivityDay) =>
     (current.total || 0) > (prev?.total || 0) ? current : prev,
     activityDays[0]
   );
@@ -100,8 +156,8 @@ export default function DashboardPage() {
     },
   ];
 
-  const recentRegistrations = (metricsData?.recentRegistrations?.length > 0)
-    ? metricsData.recentRegistrations.map((job: any) => ({
+  const recentRegistrations: DashboardRunItem[] = (metricsData?.recentRegistrations && metricsData.recentRegistrations.length > 0)
+    ? metricsData.recentRegistrations.map((job: RawRegistrationJob) => ({
         id: `#JOB-${job._id.slice(-6).toUpperCase()}`,
         refImage: job.referenceImageId?.name || "Ref Frame",
         srcImage: job.sourceImageId?.name || "Src Frame",
@@ -115,7 +171,7 @@ export default function DashboardPage() {
       }))
     : fallbackRuns;
 
-  const filteredRuns = recentRegistrations.filter((run: any) => {
+  const filteredRuns = recentRegistrations.filter((run: DashboardRunItem) => {
     if (activeTab === "ALL") return true;
     if (activeTab === "COMPLETED") return run.status === "COMPLETED" || run.status === "VERIFIED";
     if (activeTab === "IN_PROGRESS") return run.status === "IN PROGRESS" || run.status === "QUEUED";
@@ -319,12 +375,12 @@ export default function DashboardPage() {
                 <text className="font-mono-data-sm text-[10px]" fill="currentColor" textAnchor="end" x="24" y="153">0</text>
                 
                 {/* Dynamically Render 30 Grouped Daily Bars */}
-                {activityDays.map((day: any, idx: number) => {
+                {activityDays.map((day: ActivityDay, idx: number) => {
                   const xBase = 36 + idx * 16.2;
                   const scale = 110 / (maxDayTotal || 1);
-                  const hOhrc = Math.min(110, Math.max(day.ohrc > 0 ? 12 : 2, day.ohrc * scale * 0.9));
-                  const hTmc = Math.min(110, Math.max(day.tmc2 > 0 ? 10 : 2, day.tmc2 * scale * 0.9));
-                  const hIirs = Math.min(110, Math.max(day.iirs > 0 ? 8 : 2, day.iirs * scale * 0.9));
+                  const hOhrc = Math.min(110, Math.max((day.ohrc ?? 0) > 0 ? 12 : 2, (day.ohrc ?? 0) * scale * 0.9));
+                  const hTmc = Math.min(110, Math.max((day.tmc2 ?? 0) > 0 ? 10 : 2, (day.tmc2 ?? 0) * scale * 0.9));
+                  const hIirs = Math.min(110, Math.max((day.iirs ?? 0) > 0 ? 8 : 2, (day.iirs ?? 0) * scale * 0.9));
 
                   return (
                     <g key={day.date || idx}>
@@ -385,7 +441,7 @@ export default function DashboardPage() {
 
             {/* Dynamic Sensor Coverage Stacked Progress Bars */}
             <div className="flex flex-col gap-space-sm my-space-xs">
-              {sensorCoverage.map((item: any) => {
+              {sensorCoverage.map((item: SensorCoverageItem) => {
                 const colorClass =
                   item.sensor === "OHRC"
                     ? "bg-primary-container"
@@ -501,7 +557,7 @@ export default function DashboardPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-container/60">
-              {filteredRuns.map((run: any) => (
+              {filteredRuns.map((run: DashboardRunItem) => (
                 <tr key={run.id} className="hover:bg-surface-container-low/60 transition-colors">
                   <td className="py-3 px-3 font-bold text-secondary">{run.id}</td>
                   <td className="py-3 px-3 font-semibold text-on-surface">{run.refImage}</td>

@@ -5,14 +5,12 @@ import Link from "next/link";
 import { getUser, fetchCurrentUser, logoutUser, UserProfile } from "@/lib/auth";
 
 export default function SettingsPage() {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(() => (typeof window !== "undefined" ? getUser() : null));
   const [gpuAcceleration, setGpuAcceleration] = useState(true);
   const [ephemerisSync, setEphemerisSync] = useState(true);
   const [subPixelRefine, setSubPixelRefine] = useState(true);
 
   useEffect(() => {
-    const cached = getUser();
-    if (cached) setUser(cached);
     fetchCurrentUser().then((u) => {
       if (u) setUser(u);
     });

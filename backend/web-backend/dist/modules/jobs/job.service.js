@@ -148,6 +148,12 @@ async function getJobArtifacts(userId, jobId) {
     if (job.artifacts?.registeredImageStorageKey) {
         result.registeredImageUrl = await (0, storage_js_1.generatePresignedDownloadUrl)(job.artifacts.registeredImageStorageKey);
     }
+    if (job.artifacts?.registeredPreviewStorageKey) {
+        result.registeredPreviewUrl = await (0, storage_js_1.generatePresignedDownloadUrl)(job.artifacts.registeredPreviewStorageKey);
+    }
+    if (job.artifacts?.differenceMapStorageKey) {
+        result.differenceMapUrl = await (0, storage_js_1.generatePresignedDownloadUrl)(job.artifacts.differenceMapStorageKey);
+    }
     if (job.artifacts?.matchPointsStorageKey) {
         result.matchPointsUrl = await (0, storage_js_1.generatePresignedDownloadUrl)(job.artifacts.matchPointsStorageKey);
     }

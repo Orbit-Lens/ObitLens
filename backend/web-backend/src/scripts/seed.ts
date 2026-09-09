@@ -76,10 +76,10 @@ async function seed() {
 
   // 5. Seed Real Lunar Remote Sensing Images for testUser
   const userImageCount = await Image.countDocuments({ userId: testUser._id });
-  let seededImages = await Image.find({ userId: testUser._id });
+  let seededImages: any[] = await Image.find({ userId: testUser._id });
 
   if (userImageCount === 0) {
-    const sampleImages = [
+    const sampleImages: any[] = [
       {
         userId: testUser._id,
         projectId: defaultProject._id,

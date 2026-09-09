@@ -54,7 +54,10 @@ export async function loginUser(email: string, password: string): Promise<{ succ
 
     const json = await res.json();
     if (!res.ok || !json.success) {
-      const msg = json.error?.message || (json.error?.details ? json.error.details.map((d: any) => d.message).join(", ") : "Authentication failed");
+      const detailsMsg = Array.isArray(json.error?.details)
+        ? json.error.details.map((d: { message?: string }) => d.message).filter(Boolean).join(", ")
+        : "";
+      const msg = json.error?.message || detailsMsg || "Authentication failed";
       return { success: false, error: msg };
     }
 
@@ -68,8 +71,8 @@ export async function loginUser(email: string, password: string): Promise<{ succ
 
     setSession(accessToken, profile);
     return { success: true, user: profile, token: accessToken };
-  } catch (err: any) {
-    return { success: false, error: err.message || "Network connection error" };
+  } catch (err: unknown) {
+    return { success: false, error: err instanceof Error ? err.message : "Network connection error" };
   }
 }
 
@@ -89,6 +92,7 @@ export async function logoutUser(): Promise<void> {
     // Ignore network error on logout
   } finally {
     clearSession();
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.href = "/login";
   }
 }

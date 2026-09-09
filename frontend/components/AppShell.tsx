@@ -12,12 +12,10 @@ interface AppShellProps {
 
 export default function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(() => (typeof window !== "undefined" ? getUser() : null));
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
-    const cached = getUser();
-    if (cached) setUser(cached);
     fetchCurrentUser().then((u) => {
       if (u) setUser(u);
     });

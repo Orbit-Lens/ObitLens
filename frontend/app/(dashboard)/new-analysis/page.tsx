@@ -127,9 +127,9 @@ function NewAnalysisContent() {
       setTimeout(() => {
         router.push(`/registration?jobId=${json.data._id}`);
       }, 1000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setIsExecuting(false);
-      setErrorMessage(err.message || "Failed to start pipeline analysis");
+      setErrorMessage(err instanceof Error ? err.message : "Failed to start pipeline analysis");
     }
   };
 

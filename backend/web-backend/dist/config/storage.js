@@ -32,9 +32,20 @@ async function generatePresignedUploadUrl(key, contentType, expiresInSeconds = 9
  */
 async function generatePresignedDownloadUrl(key, expiresInSeconds = 3600 // 1 hour
 ) {
-    const command = new client_s3_1.GetObjectCommand({
-        Bucket: env_js_1.env.S3_BUCKET,
-        Key: key,
-    });
-    return await (0, s3_request_presigner_1.getSignedUrl)(exports.s3Client, command, { expiresIn: expiresInSeconds });
+    if (!key)
+        return '';
+    if (key.startsWith('http://') || key.startsWith('https://') || key.startsWith('/')) {
+        return key;
+    }
+    try {
+        const command = new client_s3_1.GetObjectCommand({
+            Bucket: env_js_1.env.S3_BUCKET,
+            Key: key,
+        });
+        return await (0, s3_request_presigner_1.getSignedUrl)(exports.s3Client, command, { expiresIn: expiresInSeconds });
+    }
+    catch (error) {
+        // If S3 signing fails (e.g. offline dev), return key or placeholder
+        return key;
+    }
 }
