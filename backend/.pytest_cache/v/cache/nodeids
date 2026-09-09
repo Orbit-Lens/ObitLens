@@ -1,0 +1,11 @@
+[
+  "backend/processing-service/tests/test_algorithms.py::test_data_contracts",
+  "backend/processing-service/tests/test_algorithms.py::test_distribution_grid",
+  "backend/processing-service/tests/test_algorithms.py::test_end_to_end_synthetic_registration",
+  "backend/processing-service/tests/test_algorithms.py::test_evaluation_targets",
+  "backend/processing-service/tests/test_algorithms.py::test_features_and_matching",
+  "backend/processing-service/tests/test_algorithms.py::test_geometric_estimators",
+  "backend/processing-service/tests/test_algorithms.py::test_illumination_invariance",
+  "backend/processing-service/tests/test_algorithms.py::test_preprocessing",
+  "backend/processing-service/tests/test_algorithms.py::test_pyramid_levels"
+]

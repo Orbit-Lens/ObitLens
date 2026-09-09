@@ -1,0 +1,67 @@
+[
+  {
+    "product_id": "urn:isro:isda:ch2_cho.iir:data_calibrated:ch2_iir_nci_20240616t1338294007_b_brw_d18",
+    "instrument": "IIRS",
+    "raw_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\iirs-nci\\browse\\calibrated\\20240616\\ch2_iir_nci_20240616T1338294007_b_brw_d18.png",
+    "label_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\iirs-nci\\browse\\calibrated\\20240616\\ch2_iir_nci_20240616T1338294007_b_brw_d18.xml",
+    "resolution_mpp": 82.7,
+    "sun_azimuth_deg": null,
+    "sun_elevation_deg": null,
+    "footprint": {},
+    "acquisition_time_utc": "2024-06-16T13:38:29.4007Z",
+    "bands": 1,
+    "converted_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\IIRS_urn_isro_isda_ch2_cho_iir_data.png"
+  },
+  {
+    "product_id": "urn:isro:isda:ch2_cho.ohr:data_calibrated:ch2_ohr_ncp_20210402t0546284043_b_brw_d18",
+    "instrument": "OHRC",
+    "raw_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\OHRC-1\\browse\\calibrated\\20210402\\ch2_ohr_ncp_20210402T0546284043_b_brw_d18.png",
+    "label_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\OHRC-1\\browse\\calibrated\\20210402\\ch2_ohr_ncp_20210402T0546284043_b_brw_d18.xml",
+    "resolution_mpp": 0.25,
+    "sun_azimuth_deg": null,
+    "sun_elevation_deg": null,
+    "footprint": {},
+    "acquisition_time_utc": "2021-04-02T05:46:28.4043Z",
+    "bands": 1,
+    "converted_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\OHRC_urn_isro_isda_ch2_cho_ohr_data.png"
+  },
+  {
+    "product_id": "urn:isro:isda:ch2_cho.ohr:data_calibrated:ch2_ohr_ncp_20210405t1606536730_b_brw_d18",
+    "instrument": "OHRC",
+    "raw_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\OHRC-2\\browse\\calibrated\\20210405\\ch2_ohr_ncp_20210405T1606536730_b_brw_d18.png",
+    "label_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\OHRC-2\\browse\\calibrated\\20210405\\ch2_ohr_ncp_20210405T1606536730_b_brw_d18.xml",
+    "resolution_mpp": 0.25,
+    "sun_azimuth_deg": null,
+    "sun_elevation_deg": null,
+    "footprint": {},
+    "acquisition_time_utc": "2021-04-05T16:06:53.6730Z",
+    "bands": 1,
+    "converted_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\OHRC_urn_isro_isda_ch2_cho_ohr_data.png"
+  },
+  {
+    "product_id": "urn:isro:isda:ch2_cho.ohr:data_calibrated:ch2_ohr_ncp_20211228t2209123959_b_brw_d18",
+    "instrument": "OHRC",
+    "raw_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\OHRC-3\\browse\\calibrated\\20211228\\ch2_ohr_ncp_20211228T2209123959_b_brw_d18.png",
+    "label_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\OHRC-3\\browse\\calibrated\\20211228\\ch2_ohr_ncp_20211228T2209123959_b_brw_d18.xml",
+    "resolution_mpp": 0.25,
+    "sun_azimuth_deg": null,
+    "sun_elevation_deg": null,
+    "footprint": {},
+    "acquisition_time_utc": "2021-12-28T22:09:12.3959Z",
+    "bands": 1,
+    "converted_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\OHRC_urn_isro_isda_ch2_cho_ohr_data.png"
+  },
+  {
+    "product_id": "urn:isro:isda:ch2_cho.tmc:data_derived:ch2_tmc_ndn_20250217t0120183473_b_bot_d18",
+    "instrument": "TMC2",
+    "raw_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\TMC\\browse\\derived\\20250217\\ch2_tmc_ndn_20250217T0120183473_b_bot_d18.png",
+    "label_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\datasets\\TMC\\browse\\derived\\20250217\\ch2_tmc_ndn_20250217T0120183473_b_bot_d18.xml",
+    "resolution_mpp": 5.0,
+    "sun_azimuth_deg": null,
+    "sun_elevation_deg": null,
+    "footprint": {},
+    "acquisition_time_utc": "2025-02-17T01:20:18.3473Z",
+    "bands": 1,
+    "converted_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\TMC2_urn_isro_isda_ch2_cho_tmc_data.png"
+  }
+]

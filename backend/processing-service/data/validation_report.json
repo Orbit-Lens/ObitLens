@@ -1,0 +1,401 @@
+{
+  "timestamp": "2026-09-08T17:15:00.068592",
+  "modes": {
+    "basic": {
+      "overall": {
+        "count": 8,
+        "mean_rmse": 0.4892,
+        "mean_inliers": 1998.8,
+        "mean_inlier_ratio": 0.7285,
+        "mean_spatial_coverage": 0.7069,
+        "success_rate": 0.625,
+        "success_count": 5
+      },
+      "synthetic": {
+        "count": 5,
+        "mean_rmse": 0.3053,
+        "mean_inliers": 3194.0,
+        "mean_inlier_ratio": 0.9942,
+        "mean_spatial_coverage": 0.9804,
+        "success_rate": 1.0,
+        "success_count": 5
+      },
+      "real": {
+        "count": 3,
+        "mean_rmse": 0.7957,
+        "mean_inliers": 6.7,
+        "mean_inlier_ratio": 0.2855,
+        "mean_spatial_coverage": 0.2512,
+        "success_rate": 0.0,
+        "success_count": 0
+      },
+      "by_tier": {
+        "OHRC-IIRS": {
+          "count": 2,
+          "mean_rmse": 0.7117,
+          "mean_inliers": 2024.5,
+          "mean_inlier_ratio": 0.6359,
+          "mean_spatial_coverage": 0.554,
+          "success_rate": 0.5,
+          "success_count": 1
+        },
+        "OHRC-OHRC": {
+          "count": 2,
+          "mean_rmse": 0.2323,
+          "mean_inliers": 2792.0,
+          "mean_inlier_ratio": 0.9955,
+          "mean_spatial_coverage": 0.9858,
+          "success_rate": 1.0,
+          "success_count": 2
+        },
+        "OHRC-TMC": {
+          "count": 2,
+          "mean_rmse": 0.4894,
+          "mean_inliers": 1922.5,
+          "mean_inlier_ratio": 0.6908,
+          "mean_spatial_coverage": 0.6078,
+          "success_rate": 0.5,
+          "success_count": 1
+        },
+        "TMC-IIRS": {
+          "count": 1,
+          "mean_rmse": 0.6664,
+          "mean_inliers": 6.0,
+          "mean_inlier_ratio": 0.1875,
+          "mean_spatial_coverage": 0.3753,
+          "success_rate": 0.0,
+          "success_count": 0
+        },
+        "TMC-TMC": {
+          "count": 1,
+          "mean_rmse": 0.38,
+          "mean_inliers": 2506.0,
+          "mean_inlier_ratio": 0.9956,
+          "mean_spatial_coverage": 0.9853,
+          "success_rate": 1.0,
+          "success_count": 1
+        }
+      },
+      "details": [
+        {
+          "pair_id": "SYNTH_OHRC_Affine_Easy",
+          "tier": "OHRC-OHRC",
+          "category": "synthetic",
+          "scale_ratio": 1.0,
+          "rmse": 0.2268,
+          "inlier_count": 2801,
+          "inlier_ratio": 0.9957,
+          "spatial_coverage": 0.985,
+          "raw_coverage": 0.9844,
+          "confidence_score": 0.965,
+          "registration_success": true,
+          "elapsed_sec": 0.19,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_OHRC_Homography_Med",
+          "tier": "OHRC-OHRC",
+          "category": "synthetic",
+          "scale_ratio": 1.0,
+          "rmse": 0.2378,
+          "inlier_count": 2783,
+          "inlier_ratio": 0.9954,
+          "spatial_coverage": 0.9865,
+          "raw_coverage": 0.9844,
+          "confidence_score": 0.9637,
+          "registration_success": true,
+          "elapsed_sec": 0.19,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_TMC_Affine_Med",
+          "tier": "TMC-TMC",
+          "category": "synthetic",
+          "scale_ratio": 1.0,
+          "rmse": 0.38,
+          "inlier_count": 2506,
+          "inlier_ratio": 0.9956,
+          "spatial_coverage": 0.9853,
+          "raw_coverage": 1.0,
+          "confidence_score": 0.9446,
+          "registration_success": true,
+          "elapsed_sec": 0.19,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_OHRC_TMC_Scale20x",
+          "tier": "OHRC-TMC",
+          "category": "synthetic",
+          "scale_ratio": 20.0,
+          "rmse": 0.391,
+          "inlier_count": 3836,
+          "inlier_ratio": 0.9904,
+          "spatial_coverage": 0.9574,
+          "raw_coverage": 0.875,
+          "confidence_score": 0.9355,
+          "registration_success": true,
+          "elapsed_sec": 0.22,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_OHRC_IIRS_Scale60x",
+          "tier": "OHRC-IIRS",
+          "category": "synthetic",
+          "scale_ratio": 60.0,
+          "rmse": 0.2907,
+          "inlier_count": 4044,
+          "inlier_ratio": 0.9939,
+          "spatial_coverage": 0.9877,
+          "raw_coverage": 1.0,
+          "confidence_score": 0.9563,
+          "registration_success": true,
+          "elapsed_sec": 0.25,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "REAL_OHRC_TMC_01",
+          "tier": "OHRC-TMC",
+          "category": "real",
+          "scale_ratio": 20.0,
+          "rmse": 0.5879,
+          "inlier_count": 9,
+          "inlier_ratio": 0.3913,
+          "spatial_coverage": 0.2581,
+          "raw_coverage": 0.0625,
+          "confidence_score": 0.5298,
+          "registration_success": false,
+          "elapsed_sec": 0.21,
+          "failure_reason": "Metrics fell below problem statement thresholds."
+        },
+        {
+          "pair_id": "REAL_TMC_IIRS_01",
+          "tier": "TMC-IIRS",
+          "category": "real",
+          "scale_ratio": 16.0,
+          "rmse": 0.6664,
+          "inlier_count": 6,
+          "inlier_ratio": 0.1875,
+          "spatial_coverage": 0.3753,
+          "raw_coverage": 0.0781,
+          "confidence_score": 0.4612,
+          "registration_success": false,
+          "elapsed_sec": 0.22,
+          "failure_reason": "Metrics fell below problem statement thresholds."
+        },
+        {
+          "pair_id": "REAL_OHRC_IIRS_01",
+          "tier": "OHRC-IIRS",
+          "category": "real",
+          "scale_ratio": 320.0,
+          "rmse": 1.1328,
+          "inlier_count": 5,
+          "inlier_ratio": 0.2778,
+          "spatial_coverage": 0.1203,
+          "raw_coverage": 0.0312,
+          "confidence_score": 0.3841,
+          "registration_success": false,
+          "elapsed_sec": 0.21,
+          "failure_reason": "Metrics fell below problem statement thresholds."
+        }
+      ]
+    },
+    "advanced": {
+      "overall": {
+        "count": 8,
+        "mean_rmse": 0.319,
+        "mean_inliers": 2180.8,
+        "mean_inlier_ratio": 0.71,
+        "mean_spatial_coverage": 0.613,
+        "success_rate": 0.625,
+        "success_count": 5
+      },
+      "synthetic": {
+        "count": 5,
+        "mean_rmse": 0.319,
+        "mean_inliers": 3488.0,
+        "mean_inlier_ratio": 0.9958,
+        "mean_spatial_coverage": 0.9808,
+        "success_rate": 1.0,
+        "success_count": 5
+      },
+      "real": {
+        "count": 3,
+        "mean_rmse": 999.0,
+        "mean_inliers": 2.0,
+        "mean_inlier_ratio": 0.2338,
+        "mean_spatial_coverage": 0.0,
+        "success_rate": 0.0,
+        "success_count": 0
+      },
+      "by_tier": {
+        "OHRC-IIRS": {
+          "count": 2,
+          "mean_rmse": 0.2956,
+          "mean_inliers": 2217.0,
+          "mean_inlier_ratio": 0.7115,
+          "mean_spatial_coverage": 0.4936,
+          "success_rate": 0.5,
+          "success_count": 1
+        },
+        "OHRC-OHRC": {
+          "count": 2,
+          "mean_rmse": 0.2749,
+          "mean_inliers": 3073.0,
+          "mean_inlier_ratio": 0.997,
+          "mean_spatial_coverage": 0.986,
+          "success_rate": 1.0,
+          "success_count": 2
+        },
+        "OHRC-TMC": {
+          "count": 2,
+          "mean_rmse": 0.3139,
+          "mean_inliers": 2034.0,
+          "mean_inlier_ratio": 0.4962,
+          "mean_spatial_coverage": 0.4788,
+          "success_rate": 0.5,
+          "success_count": 1
+        },
+        "TMC-IIRS": {
+          "count": 1,
+          "mean_rmse": 999.0,
+          "mean_inliers": 3.0,
+          "mean_inlier_ratio": 0.2727,
+          "mean_spatial_coverage": 0.0,
+          "success_rate": 0.0,
+          "success_count": 0
+        },
+        "TMC-TMC": {
+          "count": 1,
+          "mean_rmse": 0.4358,
+          "mean_inliers": 2795.0,
+          "mean_inlier_ratio": 0.9982,
+          "mean_spatial_coverage": 0.987,
+          "success_rate": 1.0,
+          "success_count": 1
+        }
+      },
+      "details": [
+        {
+          "pair_id": "SYNTH_OHRC_Affine_Easy",
+          "tier": "OHRC-OHRC",
+          "category": "synthetic",
+          "scale_ratio": 1.0,
+          "rmse": 0.3012,
+          "inlier_count": 3138,
+          "inlier_ratio": 0.9975,
+          "spatial_coverage": 0.9837,
+          "raw_coverage": 0.9844,
+          "confidence_score": 0.9556,
+          "registration_success": true,
+          "elapsed_sec": 0.24,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_OHRC_Homography_Med",
+          "tier": "OHRC-OHRC",
+          "category": "synthetic",
+          "scale_ratio": 1.0,
+          "rmse": 0.2486,
+          "inlier_count": 3008,
+          "inlier_ratio": 0.9964,
+          "spatial_coverage": 0.9884,
+          "raw_coverage": 1.0,
+          "confidence_score": 0.9631,
+          "registration_success": true,
+          "elapsed_sec": 0.24,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_TMC_Affine_Med",
+          "tier": "TMC-TMC",
+          "category": "synthetic",
+          "scale_ratio": 1.0,
+          "rmse": 0.4358,
+          "inlier_count": 2795,
+          "inlier_ratio": 0.9982,
+          "spatial_coverage": 0.987,
+          "raw_coverage": 1.0,
+          "confidence_score": 0.9386,
+          "registration_success": true,
+          "elapsed_sec": 0.25,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_OHRC_TMC_Scale20x",
+          "tier": "OHRC-TMC",
+          "category": "synthetic",
+          "scale_ratio": 20.0,
+          "rmse": 0.3139,
+          "inlier_count": 4068,
+          "inlier_ratio": 0.9924,
+          "spatial_coverage": 0.9577,
+          "raw_coverage": 0.875,
+          "confidence_score": 0.9467,
+          "registration_success": true,
+          "elapsed_sec": 0.27,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "SYNTH_OHRC_IIRS_Scale60x",
+          "tier": "OHRC-IIRS",
+          "category": "synthetic",
+          "scale_ratio": 60.0,
+          "rmse": 0.2956,
+          "inlier_count": 4431,
+          "inlier_ratio": 0.9944,
+          "spatial_coverage": 0.9873,
+          "raw_coverage": 1.0,
+          "confidence_score": 0.9558,
+          "registration_success": true,
+          "elapsed_sec": 0.31,
+          "failure_reason": null
+        },
+        {
+          "pair_id": "REAL_OHRC_TMC_01",
+          "tier": "OHRC-TMC",
+          "category": "real",
+          "scale_ratio": 20.0,
+          "rmse": 999.0,
+          "inlier_count": 0,
+          "inlier_ratio": 0.0,
+          "spatial_coverage": 0.0,
+          "raw_coverage": 0.0,
+          "confidence_score": 0.0,
+          "registration_success": false,
+          "elapsed_sec": 0.23,
+          "failure_reason": "Geometric verification failed to estimate a valid transformation."
+        },
+        {
+          "pair_id": "REAL_TMC_IIRS_01",
+          "tier": "TMC-IIRS",
+          "category": "real",
+          "scale_ratio": 16.0,
+          "rmse": 999.0,
+          "inlier_count": 3,
+          "inlier_ratio": 0.2727272727272727,
+          "spatial_coverage": 0.0,
+          "raw_coverage": 0.0,
+          "confidence_score": 0.0,
+          "registration_success": false,
+          "elapsed_sec": 0.2,
+          "failure_reason": "Geometric verification failed to estimate a valid transformation."
+        },
+        {
+          "pair_id": "REAL_OHRC_IIRS_01",
+          "tier": "OHRC-IIRS",
+          "category": "real",
+          "scale_ratio": 320.0,
+          "rmse": 999.0,
+          "inlier_count": 3,
+          "inlier_ratio": 0.42857142857142855,
+          "spatial_coverage": 0.0,
+          "raw_coverage": 0.0,
+          "confidence_score": 0.0,
+          "registration_success": false,
+          "elapsed_sec": 0.22,
+          "failure_reason": "Geometric verification failed to estimate a valid transformation."
+        }
+      ]
+    }
+  }
+}

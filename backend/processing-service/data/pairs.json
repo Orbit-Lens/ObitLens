@@ -1,0 +1,198 @@
+[
+  {
+    "pair_id": "SYNTH_OHRC_Affine_Easy",
+    "category": "synthetic",
+    "tier": "OHRC-OHRC",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_Affine_Easy_src.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_Affine_Easy_ref.png",
+      "instrument": "OHRC"
+    },
+    "scale_ratio": 1.0,
+    "sun_angle_delta_deg": 12.0,
+    "has_ground_truth": true,
+    "ground_truth_transform": [
+      [
+        1.0186021254496653,
+        0.05338267536780271,
+        -10.428109009271818
+      ],
+      [
+        -0.05338267536780271,
+        1.0186021254496653,
+        4.903820779043169
+      ]
+    ]
+  },
+  {
+    "pair_id": "SYNTH_OHRC_Homography_Med",
+    "category": "synthetic",
+    "tier": "OHRC-OHRC",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_Homography_Med_src.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_Homography_Med_ref.png",
+      "instrument": "OHRC"
+    },
+    "scale_ratio": 1.0,
+    "sun_angle_delta_deg": 24.0,
+    "has_ground_truth": true,
+    "ground_truth_transform": [
+      [
+        1.0221426585374471,
+        0.0078426409477431,
+        -12.0
+      ],
+      [
+        0.005907983940026337,
+        1.024076689221992,
+        10.0
+      ],
+      [
+        3.739149232795158e-06,
+        -3.767618467887686e-06,
+        1.0
+      ]
+    ]
+  },
+  {
+    "pair_id": "SYNTH_TMC_Affine_Med",
+    "category": "synthetic",
+    "tier": "TMC-TMC",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_TMC_Affine_Med_src.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_TMC_Affine_Med_ref.png",
+      "instrument": "OHRC"
+    },
+    "scale_ratio": 1.0,
+    "sun_angle_delta_deg": 36.0,
+    "has_ground_truth": true,
+    "ground_truth_transform": [
+      [
+        0.9776127692546277,
+        0.0683613442692428,
+        -5.769373062110848
+      ],
+      [
+        -0.0683613442692428,
+        0.9776127692546277,
+        35.23163520374146
+      ]
+    ]
+  },
+  {
+    "pair_id": "SYNTH_OHRC_TMC_Scale20x",
+    "category": "synthetic",
+    "tier": "OHRC-TMC",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_TMC_Scale20x_src.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_TMC_Scale20x_ref.png",
+      "instrument": "TMC2"
+    },
+    "scale_ratio": 20.0,
+    "sun_angle_delta_deg": 48.0,
+    "has_ground_truth": true,
+    "ground_truth_transform": [
+      [
+        1.0390101504451321,
+        0.045364162859949445,
+        -17.59982420610088
+      ],
+      [
+        -0.045364162859949445,
+        1.0390101504451321,
+        7.626627178193235
+      ]
+    ]
+  },
+  {
+    "pair_id": "SYNTH_OHRC_IIRS_Scale60x",
+    "category": "synthetic",
+    "tier": "OHRC-IIRS",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_IIRS_Scale60x_src.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\synthetic\\SYNTH_OHRC_IIRS_Scale60x_ref.png",
+      "instrument": "IIRS"
+    },
+    "scale_ratio": 60.0,
+    "sun_angle_delta_deg": 60.0,
+    "has_ground_truth": true,
+    "ground_truth_transform": [
+      [
+        1.0196504714750685,
+        0.026700487274030616,
+        -8.86584543976937
+      ],
+      [
+        -0.026700487274030616,
+        1.0196504714750685,
+        -0.19519595546569501
+      ]
+    ]
+  },
+  {
+    "pair_id": "REAL_OHRC_TMC_01",
+    "category": "real",
+    "tier": "OHRC-TMC",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\OHRC_urn_isro_isda_ch2_cho_ohr_data.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\TMC2_urn_isro_isda_ch2_cho_tmc_data.png",
+      "instrument": "TMC2"
+    },
+    "scale_ratio": 20.0,
+    "sun_angle_delta_deg": 167.3,
+    "has_ground_truth": false,
+    "ground_truth_transform": null
+  },
+  {
+    "pair_id": "REAL_TMC_IIRS_01",
+    "category": "real",
+    "tier": "TMC-IIRS",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\TMC2_urn_isro_isda_ch2_cho_tmc_data.png",
+      "instrument": "TMC2"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\IIRS_urn_isro_isda_ch2_cho_iir_data.png",
+      "instrument": "IIRS"
+    },
+    "scale_ratio": 16.0,
+    "sun_angle_delta_deg": 91.9,
+    "has_ground_truth": false,
+    "ground_truth_transform": null
+  },
+  {
+    "pair_id": "REAL_OHRC_IIRS_01",
+    "category": "real",
+    "tier": "OHRC-IIRS",
+    "source": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\OHRC_urn_isro_isda_ch2_cho_ohr_data.png",
+      "instrument": "OHRC"
+    },
+    "reference": {
+      "crop_path": "C:\\Users\\SAKTHIVEL  P\\Desktop\\SIH2026\\Orbit_Lens\\backend\\processing-service\\data\\normalized\\IIRS_urn_isro_isda_ch2_cho_iir_data.png",
+      "instrument": "IIRS"
+    },
+    "scale_ratio": 320.0,
+    "sun_angle_delta_deg": 75.4,
+    "has_ground_truth": false,
+    "ground_truth_transform": null
+  }
+]
