@@ -12,13 +12,25 @@ interface AppShellProps {
 
 export default function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
-  const [user, setUser] = useState<UserProfile | null>(() => (typeof window !== "undefined" ? getUser() : null));
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
-    fetchCurrentUser().then((u) => {
-      if (u) setUser(u);
-    });
+    let isMounted = true;
+    const loadSession = async () => {
+      const cachedUser = getUser();
+      if (cachedUser && isMounted) {
+        setUser(cachedUser);
+      }
+      const remoteUser = await fetchCurrentUser();
+      if (remoteUser && isMounted) {
+        setUser(remoteUser);
+      }
+    };
+    loadSession();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const navGroups = [
@@ -127,8 +139,10 @@ export default function AppShell({ children }: AppShellProps) {
             className="flex items-center gap-3 p-1.5 rounded-lg hover:bg-white/5 transition-colors text-left select-none focus:outline-none"
           >
             <div className="hidden md:flex flex-col text-right font-mono text-xs">
-              <span className="text-white font-semibold">{user?.name || "Dr. A. Sharma"}</span>
-              <span className="text-on-primary-container text-[11px]">
+              <span className="text-white font-semibold" suppressHydrationWarning>
+                {user?.name || "Dr. A. Sharma"}
+              </span>
+              <span className="text-on-primary-container text-[11px]" suppressHydrationWarning>
                 {user?.role === "admin"
                   ? "Mission Admin / Lead"
                   : user?.role === "researcher"
@@ -136,7 +150,10 @@ export default function AppShell({ children }: AppShellProps) {
                   : "Sr. Scientist, Remote Sensing"}
               </span>
             </div>
-            <div className="w-9 h-9 rounded-lg bg-secondary/80 border border-white/10 flex items-center justify-center text-white shadow-xs font-bold text-sm">
+            <div
+              className="w-9 h-9 rounded-lg bg-secondary/80 border border-white/10 flex items-center justify-center text-white shadow-xs font-bold text-sm"
+              suppressHydrationWarning
+            >
               {user?.name ? user.name.charAt(0).toUpperCase() : "S"}
             </div>
             <span className="material-symbols-outlined text-[18px] text-on-primary-container">
@@ -148,9 +165,16 @@ export default function AppShell({ children }: AppShellProps) {
           {showUserMenu && (
             <div className="absolute right-0 mt-2 w-64 bg-surface-container-lowest rounded-lg shadow-xl border border-outline-variant/30 py-2 z-50 text-on-surface font-body-sm">
               <div className="px-4 py-2 border-b border-surface-container">
-                <div className="font-semibold text-on-surface text-body-md truncate">{user?.name || "Dr. A. Sharma"}</div>
-                <div className="font-mono-data-sm text-[11px] text-on-surface-variant truncate">{user?.email || "sakthivel@orbitlens.app"}</div>
-                <div className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#ecfdf5] text-[#065f46] text-[10px] font-semibold uppercase tracking-wider">
+                <div className="font-semibold text-on-surface text-body-md truncate" suppressHydrationWarning>
+                  {user?.name || "Dr. A. Sharma"}
+                </div>
+                <div className="font-mono-data-sm text-[11px] text-on-surface-variant truncate" suppressHydrationWarning>
+                  {user?.email || "sakthivel@orbitlens.app"}
+                </div>
+                <div
+                  className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#ecfdf5] text-[#065f46] text-[10px] font-semibold uppercase tracking-wider"
+                  suppressHydrationWarning
+                >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
                   {user?.role || "Admin"} • Verified
                 </div>

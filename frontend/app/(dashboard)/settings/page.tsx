@@ -5,15 +5,27 @@ import Link from "next/link";
 import { getUser, fetchCurrentUser, logoutUser, UserProfile } from "@/lib/auth";
 
 export default function SettingsPage() {
-  const [user, setUser] = useState<UserProfile | null>(() => (typeof window !== "undefined" ? getUser() : null));
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [gpuAcceleration, setGpuAcceleration] = useState(true);
   const [ephemerisSync, setEphemerisSync] = useState(true);
   const [subPixelRefine, setSubPixelRefine] = useState(true);
 
   useEffect(() => {
-    fetchCurrentUser().then((u) => {
-      if (u) setUser(u);
-    });
+    let isMounted = true;
+    const loadSession = async () => {
+      const cachedUser = getUser();
+      if (cachedUser && isMounted) {
+        setUser(cachedUser);
+      }
+      const remoteUser = await fetchCurrentUser();
+      if (remoteUser && isMounted) {
+        setUser(remoteUser);
+      }
+    };
+    loadSession();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -69,20 +81,27 @@ export default function SettingsPage() {
         <div className="p-space-md grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md font-mono-data-sm text-mono-data-sm">
           <div className="p-space-sm bg-surface-container-low rounded flex flex-col gap-1">
             <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">Full Name</span>
-            <span className="font-bold text-on-surface text-body-md font-body-md">{user?.name || "Dr. A. Sharma"}</span>
+            <span className="font-bold text-on-surface text-body-md font-body-md" suppressHydrationWarning>
+              {user?.name || "Dr. A. Sharma"}
+            </span>
             <span className="text-[10px] text-secondary">Authorized Remote Sensing Operator</span>
           </div>
 
           <div className="p-space-sm bg-surface-container-low rounded flex flex-col gap-1">
             <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">Official Email</span>
-            <span className="font-medium text-on-surface text-mono-data-md">{user?.email || "sakthivel@orbitlens.app"}</span>
+            <span className="font-medium text-on-surface text-mono-data-md" suppressHydrationWarning>
+              {user?.email || "sakthivel@orbitlens.app"}
+            </span>
             <span className="text-[10px] text-on-surface-variant">Domain: ISRO SAC / Academic</span>
           </div>
 
           <div className="p-space-sm bg-surface-container-low rounded flex flex-col gap-1">
             <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">System Role</span>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="px-2 py-0.5 bg-primary-container text-on-primary rounded text-label-caps font-semibold uppercase text-[11px]">
+              <span
+                className="px-2 py-0.5 bg-primary-container text-on-primary rounded text-label-caps font-semibold uppercase text-[11px]"
+                suppressHydrationWarning
+              >
                 {user?.role || "Admin"}
               </span>
               <span className="text-[11px] text-on-surface-variant">Level-3 Privileges</span>
@@ -92,7 +111,9 @@ export default function SettingsPage() {
 
           <div className="p-space-sm bg-surface-container-low rounded flex flex-col gap-1">
             <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">Internal User Identifier</span>
-            <span className="font-mono-data-sm text-on-surface select-all">{user?.id || "6a9d6ad0f14be50d908ad7bc"}</span>
+            <span className="font-mono-data-sm text-on-surface select-all" suppressHydrationWarning>
+              {user?.id || "6a9d6ad0f14be50d908ad7bc"}
+            </span>
             <span className="text-[10px] text-on-surface-variant">MongoDB ObjectId hash</span>
           </div>
 

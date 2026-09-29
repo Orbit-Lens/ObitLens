@@ -1,0 +1,24 @@
+{
+  "name": "orbitlens-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OrbitLens - Indian Lunar Remote Sensing Portal",
+  "scripts": {
+    "dev": "concurrently -k -n \"frontend,backend,worker\" -c \"cyan.bold,green.bold,yellow.bold\" \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:worker\"",
+    "dev:all": "concurrently -k -n \"frontend,backend,worker\" -c \"cyan.bold,green.bold,yellow.bold\" \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:worker\"",
+    "dev:app": "concurrently -k -n \"frontend,backend\" -c \"cyan.bold,green.bold\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend/web-backend run dev",
+    "dev:worker": "python -m uvicorn app.main:app --app-dir backend/processing-service --host 0.0.0.0 --port 8000 --reload",
+    "install:all": "npm install && npm --prefix frontend install && npm --prefix backend/web-backend install",
+    "build": "npm --prefix frontend run build && npm --prefix backend/web-backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend/web-backend run build",
+    "start": "concurrently -k -n \"frontend,backend,worker\" -c \"cyan.bold,green.bold,yellow.bold\" \"npm --prefix frontend start\" \"npm --prefix backend/web-backend start\" \"python -m uvicorn app.main:app --app-dir backend/processing-service --host 0.0.0.0 --port 8000\"",
+    "seed": "npm --prefix backend/web-backend run seed",
+    "lint": "npm --prefix frontend run lint && npm --prefix backend/web-backend run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

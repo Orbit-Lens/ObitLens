@@ -66,6 +66,16 @@ interface DashboardRunItem {
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"ALL" | "COMPLETED" | "IN_PROGRESS" | "CALIBRATED">("ALL");
   const [metricsData, setMetricsData] = useState<MetricsDataResponse | null>(null);
+  const [missionClock, setMissionClock] = useState("UTC 2024-10-08 12:00:00");
+
+  useEffect(() => {
+    const updateClock = () => {
+      setMissionClock(`UTC ${new Date().toISOString().replace("T", " ").slice(0, 19)}`);
+    };
+    updateClock();
+    const timer = setInterval(updateClock, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const token = getToken();
@@ -241,8 +251,11 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm self-end lg:self-auto">
           <span className="text-on-primary-container">MISSION CLOCK:</span>
-          <span className="px-space-sm py-space-2xs bg-primary/50 text-secondary-fixed rounded font-semibold tracking-wider">
-            UTC {new Date().toISOString().replace("T", " ").slice(0, 19)}
+          <span
+            suppressHydrationWarning
+            className="px-space-sm py-space-2xs bg-primary/50 text-secondary-fixed rounded font-semibold tracking-wider"
+          >
+            {missionClock}
           </span>
         </div>
       </div>

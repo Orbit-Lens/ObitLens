@@ -12,7 +12,7 @@
     "seed": "npm --prefix web-backend run seed",
     "test:db": "npm --prefix web-backend run test:db",
     "dev:backend": "npm --prefix web-backend run dev",
-    "dev:worker": "cd processing-service && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
+    "dev:worker": "cd processing-service && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
     "test:worker": "cd processing-service && pytest -v tests/test_pipeline.py"
   },
   "keywords": [

@@ -11,7 +11,7 @@ import cv2
 import numpy as np
 from tests.data_gen.synthetic_pairs import generate_synthetic_pair
 
-DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "datasets"))
+DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "datasets"))
 OUTPUT_DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 PROCESSED_DIR = os.path.join(OUTPUT_DATA_DIR, "normalized")
 SYNTHETIC_DIR = os.path.join(OUTPUT_DATA_DIR, "synthetic")
