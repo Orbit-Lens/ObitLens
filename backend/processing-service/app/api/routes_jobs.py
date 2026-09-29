@@ -5,9 +5,6 @@ import hmac
 import logging
 
 from app.config import settings
-from app.workers.tasks import run_registration_pipeline
-from app.storage.s3_client import download_file_to_temp
-from app.pipeline.ingest import read_raster_image
 
 logger = logging.getLogger("orbitlens.api")
 router = APIRouter(prefix="/internal", tags=["Internal"])
@@ -54,7 +51,15 @@ async def submit_job(
     verify_internal_key(x_internal_key)
     
     logger.info(f"Received internal registration job request for job #{request.jobId}")
-    background_tasks.add_task(run_registration_pipeline, request.model_dump())
+    try:
+        from app.workers.tasks import run_registration_pipeline
+        background_tasks.add_task(run_registration_pipeline, request.model_dump())
+    except Exception as e:
+        logger.error(f"Failed to queue registration job #{request.jobId}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to queue job: {str(e)}"
+        )
 
     return {
         "success": True,
@@ -73,6 +78,8 @@ async def extract_metadata(
     verify_internal_key(x_internal_key)
 
     try:
+        from app.storage.s3_client import download_file_to_temp
+        from app.pipeline.ingest import read_raster_image
         temp_path = download_file_to_temp(request.storageKey)
         _, metadata = read_raster_image(temp_path, max_dimension=None)
         return {"success": True, "data": metadata}

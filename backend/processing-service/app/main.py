@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import logging
@@ -30,6 +30,26 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+async def root():
+    return {
+        "status": "online",
+        "service": "OrbitLens CV/ML Processing Service",
+        "version": "1.0.0",
+        "env": settings.env,
+        "timestamp": datetime.utcnow().isoformat(),
+        "endpoints": {
+            "health": "/health",
+            "ready": "/ready",
+            "docs": "/docs" if settings.env != "production" else "disabled in production",
+        },
+    }
+
+@app.get("/favicon.ico", include_in_schema=False)
+@app.get("/favicon.png", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204)
 
 @app.get("/health")
 async def health_check():
