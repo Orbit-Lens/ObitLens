@@ -27,7 +27,9 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (result.success) {
-      router.push("/dashboard");
+      const searchParams = new URLSearchParams(window.location.search);
+      const targetUrl = searchParams.get("from") || "/dashboard";
+      window.location.href = targetUrl;
     } else {
       setErrorMessage(result.error || "Authentication failed. Please verify credentials.");
     }

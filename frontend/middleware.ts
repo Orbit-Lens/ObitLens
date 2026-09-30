@@ -19,7 +19,8 @@ const PROTECTED_ROUTES = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("orbitlens_token")?.value;
+  const rawToken = request.cookies.get("orbitlens_token")?.value;
+  const token = rawToken && rawToken.trim() !== "" ? rawToken : null;
 
   // 1. Root route redirect
   if (pathname === "/") {
