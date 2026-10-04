@@ -130,7 +130,7 @@ export default function ProcessingHistoryPage() {
 
       {/* Controls & Filter Bar */}
       <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 w-full md:max-w-md">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">
             search
           </span>
@@ -139,33 +139,33 @@ export default function ProcessingHistoryPage() {
             placeholder="Search audit records by keyword, ID, operator..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 bg-surface-container-low border border-outline-variant/40 rounded-lg text-xs font-mono-data-sm focus:outline-none focus:border-secondary"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] bg-surface-container-low border border-outline-variant/40 rounded-lg text-xs font-mono-data-sm focus:outline-none focus:border-secondary"
           />
         </div>
 
-        <div className="flex items-center flex-wrap gap-2 font-mono-data-sm text-xs">
+        <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 font-mono-data-sm text-xs">
           <span className="text-on-surface-variant font-semibold">Operation:</span>
           {(["ALL", "REGISTRATION", "CALIBRATION", "SPICE", "INGESTION", "AUTH"] as const).map((op) => (
             <button
               key={op}
               onClick={() => setFilterOp(op)}
-              className={`px-2 py-1 rounded transition-colors ${
+              className={`px-2.5 py-1.5 min-h-[36px] rounded transition-colors ${
                 filterOp === op
-                  ? "bg-secondary text-white shadow-xs"
+                  ? "bg-secondary text-white shadow-xs font-semibold"
                   : "bg-surface-container text-on-surface-variant hover:text-on-surface"
               }`}
             >
               {op}
             </button>
           ))}
-          <span className="text-on-surface-variant font-semibold ml-2">Severity:</span>
+          <span className="text-on-surface-variant font-semibold ml-1 sm:ml-2">Severity:</span>
           {(["ALL", "SUCCESS", "INFO", "WARN"] as const).map((sev) => (
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
-              className={`px-2 py-1 rounded transition-colors ${
+              className={`px-2.5 py-1.5 min-h-[36px] rounded transition-colors ${
                 filterSeverity === sev
-                  ? "bg-primary-container text-white shadow-xs"
+                  ? "bg-primary-container text-white shadow-xs font-semibold"
                   : "bg-surface-container text-on-surface-variant hover:text-on-surface"
               }`}
             >

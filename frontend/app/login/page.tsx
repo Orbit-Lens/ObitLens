@@ -46,11 +46,11 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="w-full flex items-center justify-center min-h-screen p-space-lg bg-surface font-body-md text-on-surface antialiased">
-      <div className="flex flex-col w-full max-w-7xl mx-auto my-auto p-space-sm sm:p-space-lg">
-        <div className="w-full bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[760px]">
-          {/* LEFT COLUMN: High-Precision Orbital Imagery & Mission Telemetry */}
-          <div className="relative lg:col-span-7 bg-primary-container min-h-[520px] lg:min-h-full flex flex-col justify-between overflow-hidden">
+    <main className="w-full flex items-center justify-center min-h-screen p-2 sm:p-space-md lg:p-space-lg bg-surface font-body-md text-on-surface antialiased">
+      <div className="flex flex-col w-full max-w-7xl mx-auto my-auto">
+        <div className="w-full bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[760px]">
+          {/* ORBITAL IMAGERY & TELEMETRY: Order 2 on mobile (after form), Order 1 on desktop (left side) */}
+          <div className="order-2 lg:order-1 lg:col-span-7 bg-primary-container min-h-[300px] sm:min-h-[400px] lg:min-h-full relative flex flex-col justify-between overflow-hidden">
             {/* Lunar South Pole Imagery */}
             <div className="absolute inset-0 z-0">
               <Image
@@ -65,11 +65,11 @@ export default function LoginPage() {
             </div>
 
             {/* Top Overlay: Telemetry Tags & Calibration Markers */}
-            <div className="relative z-10 p-space-lg flex flex-col gap-space-sm">
+            <div className="relative z-10 p-4 sm:p-space-lg flex flex-col gap-space-sm">
               <div className="flex flex-wrap items-center gap-space-xs">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary-container/85 backdrop-blur-md rounded text-primary-fixed text-label-caps tracking-wider uppercase">
                   <span className="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
-                  LUNAR REMOTE SENSING SYSTEM // CHANDRAYAAN
+                  LUNAR REMOTE SENSING // CHANDRAYAAN
                 </span>
                 <span className="inline-flex items-center px-2.5 py-1 bg-surface-variant/25 backdrop-blur-md rounded text-inverse-on-surface text-mono-data-sm uppercase">
                   PAYLOAD: OHRC / SAC
@@ -99,8 +99,8 @@ export default function LoginPage() {
                     Coordinate Reference System
                   </div>
                   <div className="text-inverse-on-surface font-mono-data-md text-mono-data-md flex items-center justify-between">
-                    <span>IAU2000 Moon Orthographic (Lon: 0.0°, Lat: -90.0°)</span>
-                    <span className="material-symbols-outlined text-secondary-container text-body-md">
+                    <span className="truncate">IAU2000 Moon Orthographic (Lon: 0°, Lat: -90°)</span>
+                    <span className="material-symbols-outlined text-secondary-container text-body-md shrink-0 ml-1">
                       explore
                     </span>
                   </div>
@@ -108,10 +108,10 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Center Reticle Graphic */}
-            <div className="relative z-10 pointer-events-none flex items-center justify-center my-auto py-8">
-              <div className="w-36 h-36 rounded-full flex items-center justify-center relative opacity-60">
-                <div className="w-16 h-16 rounded-full bg-secondary/15 flex items-center justify-center">
+            {/* Center Reticle Graphic (desktop / tablet) */}
+            <div className="relative z-10 pointer-events-none hidden sm:flex items-center justify-center my-auto py-6">
+              <div className="w-32 h-32 rounded-full flex items-center justify-center relative opacity-60">
+                <div className="w-14 h-14 rounded-full bg-secondary/15 flex items-center justify-center">
                   <div className="w-1.5 h-1.5 bg-secondary-fixed rounded-full"></div>
                 </div>
                 <div className="absolute top-0 w-full flex justify-between px-2 text-label-caps text-secondary-fixed font-mono-data-sm">
@@ -126,27 +126,27 @@ export default function LoginPage() {
             </div>
 
             {/* Bottom Overlay Glass Console Banner */}
-            <div className="relative z-10 m-space-md p-space-md bg-primary/85 backdrop-blur-md rounded-lg">
+            <div className="relative z-10 m-3 sm:m-space-md p-3 sm:p-space-md bg-primary/85 backdrop-blur-md rounded-lg">
               <div className="flex items-center gap-space-xs text-secondary-container text-label-caps uppercase mb-1">
                 <span className="material-symbols-outlined text-body-sm">satellite_alt</span>
-                Operational Node: Space Applications Centre (SAC), Ahmedabad
+                Operational Node: SAC, Ahmedabad
               </div>
-              <h2 className="text-headline-sm font-headline-sm text-surface-bright mb-1 tracking-tight">
+              <h2 className="text-headline-sm font-headline-sm text-surface-bright mb-1 tracking-tight text-sm sm:text-base">
                 Indian Lunar Remote Sensing &amp; Image Analysis System
               </h2>
-              <p className="text-body-sm font-body-sm text-surface-variant leading-relaxed">
-                Multimodal correspondence, sub-pixel feature registration and elevation extraction for Chandrayaan-2/3 mission payloads.
+              <p className="text-body-sm font-body-sm text-surface-variant leading-relaxed text-xs sm:text-sm">
+                Multimodal correspondence, sub-pixel feature registration and elevation extraction for Chandrayaan-2/3 payloads.
               </p>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Secure Gov Access Portal */}
-          <div className="lg:col-span-5 bg-surface p-space-lg sm:p-space-xl flex flex-col justify-between">
+          {/* SECURE ACCESS PORTAL: Order 1 on mobile (first!), Order 2 on desktop (right side) */}
+          <div className="order-1 lg:order-2 lg:col-span-5 bg-surface p-4 sm:p-space-lg lg:p-space-xl flex flex-col justify-between">
             <div>
               {/* Institutional Header & Insignia */}
-              <div className="flex items-start justify-between mb-space-lg">
-                <div className="flex items-center gap-space-md">
-                  <div className="w-16 h-16 rounded-full bg-surface-container-high p-1 shadow-sm flex items-center justify-center overflow-hidden">
+              <div className="flex items-start justify-between mb-4 sm:mb-space-lg">
+                <div className="flex items-center gap-3 sm:gap-space-md">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-surface-container-high p-1 shadow-sm flex items-center justify-center overflow-hidden shrink-0">
                     <Image
                       src="/images/logo-emblem.png"
                       alt="ISRO Lunar Science Mission Emblem"
@@ -156,14 +156,14 @@ export default function LoginPage() {
                     />
                   </div>
                   <div>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container-high rounded text-primary-container text-label-caps tracking-wider uppercase font-semibold">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container-high rounded text-primary-container text-label-caps tracking-wider uppercase font-semibold text-[10px] sm:text-[11px]">
                       <span className="material-symbols-outlined text-body-sm text-error">lock</span>
-                      RESTRICTED GOVERNMENT ACCESS • LEVEL-3
+                      RESTRICTED ACCESS • LEVEL-3
                     </span>
-                    <h1 className="text-headline-md font-headline-md text-on-surface mt-1 tracking-tight">
+                    <h1 className="text-lg sm:text-headline-md font-headline-md text-on-surface mt-1 tracking-tight">
                       Lunar Image Analysis Portal
                     </h1>
-                    <p className="text-body-sm font-body-sm text-on-surface-variant">
+                    <p className="text-xs sm:text-body-sm font-body-sm text-on-surface-variant">
                       Government of India | Department of Space | ISRO SAC
                     </p>
                   </div>
@@ -179,11 +179,11 @@ export default function LoginPage() {
               )}
 
               {/* Authentication Form */}
-              <form className="flex flex-col gap-space-md" onSubmit={handleLogin}>
+              <form className="flex flex-col gap-3 sm:gap-space-md" onSubmit={handleLogin}>
                 {/* Institutional ID Input */}
                 <div className="flex flex-col gap-1">
-                  <label className="text-label-caps font-label-caps text-on-surface-variant uppercase flex justify-between" htmlFor="govId">
-                    <span>Institutional Identifier / Official Email</span>
+                  <label className="text-label-caps font-label-caps text-on-surface-variant uppercase flex justify-between flex-wrap gap-1" htmlFor="govId">
+                    <span>Official Email / Institutional ID</span>
                     <span className="text-secondary font-mono-data-sm lowercase">@isro.gov.in / @iisc.ac.in</span>
                   </label>
                   <div className="relative flex items-center">
@@ -195,18 +195,18 @@ export default function LoginPage() {
                       value={govId}
                       onChange={(e) => setGovId(e.target.value)}
                       placeholder="scientist.isro@gov.in"
-                      className="w-full h-9 pl-9 pr-3 text-body-md font-body-md bg-surface-container-lowest rounded text-on-surface outline-none focus:bg-surface-bright focus:shadow-[0_0_0_2px_#006398] transition-all"
+                      className="w-full h-11 pl-9 pr-3 text-sm sm:text-body-md font-body-md bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-on-surface outline-none focus:bg-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
                     />
                   </div>
                 </div>
 
                 {/* Digital Access Key Input */}
                 <div className="flex flex-col gap-1">
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center flex-wrap gap-1">
                     <label className="text-label-caps font-label-caps text-on-surface-variant uppercase" htmlFor="passKey">
                       Digital Access Key / Cryptographic Password
                     </label>
-                    <button type="button" className="text-secondary text-label-caps hover:underline">Revoke / Reset</button>
+                    <button type="button" className="text-secondary text-label-caps hover:underline p-1">Revoke / Reset</button>
                   </div>
                   <div className="relative flex items-center">
                     <span className="material-symbols-outlined absolute left-3 text-outline text-body-md">key</span>
@@ -217,12 +217,13 @@ export default function LoginPage() {
                       value={passKey}
                       onChange={(e) => setPassKey(e.target.value)}
                       placeholder="••••••••••••••••"
-                      className="w-full h-9 pl-9 pr-10 text-body-md font-mono-data-md bg-surface-container-lowest rounded text-on-surface outline-none focus:bg-surface-bright focus:shadow-[0_0_0_2px_#006398] transition-all"
+                      className="w-full h-11 pl-9 pr-12 text-sm sm:text-body-md font-mono-data-md bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-on-surface outline-none focus:bg-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 text-outline hover:text-on-surface"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      className="absolute right-1 w-10 h-10 flex items-center justify-center text-outline hover:text-on-surface"
                     >
                       <span className="material-symbols-outlined text-body-md">
                         {showPassword ? "visibility_off" : "visibility"}
@@ -233,7 +234,7 @@ export default function LoginPage() {
 
                 {/* Security Token / SmartCard PIN (Soft-launch stub per spec) */}
                 <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between flex-wrap gap-1">
                     <label className="text-label-caps font-label-caps text-on-surface-variant uppercase flex items-center gap-1.5" htmlFor="tokenPin">
                       <span>Hardware Security Token / SmartCard PIN</span>
                       <span className="px-1.5 py-0.2 bg-surface-container-high text-outline text-[10px] rounded">Preview</span>
@@ -241,7 +242,7 @@ export default function LoginPage() {
                     <button
                       type="button"
                       onClick={() => setShowKeypad(!showKeypad)}
-                      className="text-label-caps font-label-caps text-secondary flex items-center gap-1 hover:underline"
+                      className="text-label-caps font-label-caps text-secondary flex items-center gap-1 hover:underline p-1 min-h-[36px]"
                     >
                       <span className="material-symbols-outlined text-body-sm">dialpad</span>
                       Virtual Scrambler
@@ -256,19 +257,19 @@ export default function LoginPage() {
                       value={tokenPin}
                       onChange={(e) => setTokenPin(e.target.value)}
                       placeholder="6-8 Digit PIN / RSA SecurID (Optional)"
-                      className="w-full h-9 pl-9 pr-3 text-mono-data-md font-mono-data-md bg-surface-container-lowest rounded text-on-surface tracking-widest outline-none focus:bg-surface-bright focus:shadow-[0_0_0_2px_#006398] transition-all"
+                      className="w-full h-11 pl-9 pr-3 text-mono-data-md font-mono-data-md bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-on-surface tracking-widest outline-none focus:bg-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
                     />
                   </div>
 
                   {/* Virtual Keypad Drawer (Collapsible) */}
                   {showKeypad && (
-                    <div className="mt-2 p-2 bg-surface-container-low rounded grid grid-cols-5 gap-1">
+                    <div className="mt-2 p-2 bg-surface-container-low rounded-lg grid grid-cols-5 gap-1.5">
                       {["7", "2", "9", "1", "4", "0", "6", "3", "8"].map((digit) => (
                         <button
                           key={digit}
                           type="button"
                           onClick={() => appendPin(digit)}
-                          className="h-7 bg-surface-container-lowest rounded text-mono-data-sm font-mono-data-sm text-on-surface hover:bg-surface-variant"
+                          className="h-10 min-h-[40px] bg-surface-container-lowest rounded text-mono-data-sm font-semibold text-on-surface hover:bg-surface-variant active:scale-95 transition-transform"
                         >
                           {digit}
                         </button>
@@ -276,7 +277,7 @@ export default function LoginPage() {
                       <button
                         type="button"
                         onClick={clearPin}
-                        className="h-7 bg-error-container text-on-error-container rounded text-label-caps font-label-caps"
+                        className="h-10 min-h-[40px] bg-error-container text-on-error-container rounded text-label-caps font-bold active:scale-95 transition-transform"
                       >
                         DEL
                       </button>
@@ -285,25 +286,25 @@ export default function LoginPage() {
                 </div>
 
                 {/* Hardware Device Binding Checkbox */}
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-2.5 py-1">
                   <input
                     id="hwBinding"
                     type="checkbox"
                     checked={hwBinding}
                     onChange={(e) => setHwBinding(e.target.checked)}
-                    className="w-3.5 h-3.5 rounded bg-surface-container text-primary-container accent-primary-container cursor-pointer"
+                    className="w-4 h-4 rounded bg-surface-container text-primary-container accent-primary-container cursor-pointer shrink-0"
                   />
-                  <label htmlFor="hwBinding" className="text-body-sm font-body-sm text-on-surface-variant cursor-pointer select-none">
+                  <label htmlFor="hwBinding" className="text-xs sm:text-body-sm font-body-sm text-on-surface-variant cursor-pointer select-none">
                     Remember this scientific workstation (30-day hardware binding)
                   </label>
                 </div>
 
                 {/* Primary Submit Action */}
-                <div className="flex flex-col gap-space-xs mt-2">
+                <div className="flex flex-col gap-2.5 mt-1">
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-11 bg-primary-container hover:bg-secondary disabled:opacity-50 text-on-primary font-headline-sm text-headline-sm rounded flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
+                    className="w-full h-12 min-h-[44px] bg-primary-container hover:bg-secondary disabled:opacity-50 text-white font-headline-sm text-headline-sm rounded-lg flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] cursor-pointer"
                   >
                     <span>{isLoading ? "Authenticating Workstation..." : "Sign In to Analysis Workstation"}</span>
                     <span className="material-symbols-outlined text-body-md">
@@ -317,7 +318,7 @@ export default function LoginPage() {
                       setGovId("sakthivel@orbitlens.app");
                       setPassKey("Password123");
                     }}
-                    className="w-full h-9 bg-surface-container-low hover:bg-surface-container-high text-on-surface font-body-md text-body-md rounded flex items-center justify-center gap-2 transition-all"
+                    className="w-full h-11 min-h-[44px] bg-surface-container-low hover:bg-surface-container-high text-on-surface font-body-md text-xs sm:text-body-md rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer border border-outline-variant/30"
                   >
                     <span className="material-symbols-outlined text-secondary text-body-md">verified_user</span>
                     <span>Load Default ISRO Research Credentials</span>
@@ -326,18 +327,18 @@ export default function LoginPage() {
               </form>
 
               {/* Gateway Security Telemetry Box */}
-              <div className="mt-space-md p-space-sm bg-surface-container-low rounded flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
+              <div className="mt-4 sm:mt-space-md p-3 sm:p-space-sm bg-surface-container-low rounded-lg flex flex-col gap-1.5 border border-outline-variant/20">
+                <div className="flex items-center justify-between flex-wrap gap-1">
                   <div className="flex items-center gap-1.5 text-label-caps font-label-caps text-on-surface">
                     <span className="w-2 h-2 rounded-full bg-secondary-container"></span>
                     <span>AUTHENTICATION GATEWAY: ACTIVE (TLS 1.3 | SHA-384)</span>
                   </div>
                   <span className="text-mono-data-sm font-mono-data-sm text-secondary font-semibold">99.98% UPTIME</span>
                 </div>
-                <p className="text-body-sm font-body-sm text-on-surface-variant leading-normal">
+                <p className="text-xs sm:text-body-sm font-body-sm text-on-surface-variant leading-normal">
                   Notice: Unauthorized access to lunar spatial infrastructure is strictly prohibited under the Indian Space Policy &amp; Cyber Security Directives.
                 </p>
-                <div className="text-mono-data-sm font-mono-data-sm text-outline flex items-center justify-between pt-1">
+                <div className="text-mono-data-sm font-mono-data-sm text-outline flex items-center justify-between pt-1 text-[10px] sm:text-xs">
                   <span>Node: SAC-AHM-LUNAR-AUTH-01</span>
                   <span>EPHEMERIS: V2.4.12</span>
                 </div>
@@ -345,9 +346,9 @@ export default function LoginPage() {
             </div>
 
             {/* Regulatory Sub-Footer */}
-            <div className="mt-space-lg pt-space-xs text-center sm:text-left flex flex-col sm:flex-row items-center justify-between text-label-caps font-label-caps text-outline uppercase gap-1">
+            <div className="mt-4 sm:mt-space-lg pt-2 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between text-label-caps font-label-caps text-outline uppercase gap-1.5">
               <span>For authorized scientific &amp; institutional users only</span>
-              <span className="flex items-center gap-1 text-on-surface-variant font-mono-data-sm">
+              <span className="flex items-center gap-1 text-on-surface-variant font-mono-data-sm text-[10px] sm:text-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
                 ISRO Scientific Data Processing Node • Online
               </span>

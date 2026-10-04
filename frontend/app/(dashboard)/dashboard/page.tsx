@@ -369,15 +369,15 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Dynamic Histogram SVG */}
-          <div className="my-space-md w-full overflow-x-auto">
-            <div className="min-w-[480px]">
-              <div className="flex justify-end pr-8 mb-1">
-                <span className="px-space-xs py-space-2xs bg-surface-container-high rounded text-on-surface font-mono-data-sm text-mono-data-sm">
-                  ▲ Peak: {peakDay?.date || "Recent Orbit"} ({peakDay?.total || 1} runs)
-                </span>
-              </div>
-              <svg className="w-full h-44 text-on-surface-variant select-none" fill="none" viewBox="0 0 540 180">
+          {/* Dynamic Histogram SVG - Fully Responsive without hardcoded min-width */}
+          <div className="my-space-md w-full">
+            <div className="flex justify-end pr-2 sm:pr-8 mb-1">
+              <span className="px-space-xs py-space-2xs bg-surface-container-high rounded text-on-surface font-mono-data-sm text-[10px] sm:text-mono-data-sm">
+                ▲ Peak: {peakDay?.date || "Recent Orbit"} ({peakDay?.total || 1} runs)
+              </span>
+            </div>
+            <div className="w-full aspect-[540/180] max-h-48">
+              <svg className="w-full h-full text-on-surface-variant select-none" fill="none" viewBox="0 0 540 180" preserveAspectRatio="xMidYMid meet">
                 <line stroke="currentColor" strokeDasharray="3 3" strokeOpacity="0.12" x1="30" x2="530" y1="30" y2="30" />
                 <line stroke="currentColor" strokeDasharray="3 3" strokeOpacity="0.12" x1="30" x2="530" y1="70" y2="70" />
                 <line stroke="currentColor" strokeDasharray="3 3" strokeOpacity="0.12" x1="30" x2="530" y1="110" y2="110" />
@@ -433,7 +433,7 @@ export default function DashboardPage() {
               </svg>
             </div>
           </div>
-          <div className="flex flex-wrap items-center justify-between text-on-surface-variant font-mono-data-sm text-mono-data-sm pt-space-xs">
+          <div className="flex flex-wrap items-center justify-between text-on-surface-variant font-mono-data-sm text-xs sm:text-mono-data-sm pt-space-xs gap-1">
             <span>Aggregate Band Alignment Rate: <strong className="text-on-surface">98.4%</strong></span>
             <span>Co-registration Kernel: <strong className="text-secondary">Akaze + Affine RANSAC</strong></span>
           </div>
@@ -523,24 +523,24 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Scientific Analysis Runs Table */}
-      <div className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+      <div className="bg-surface-container-lowest rounded-xl p-3 sm:p-space-md shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
           <div className="flex items-center gap-space-sm">
             <h2 className="font-headline-sm text-headline-sm text-on-surface">
               Recent Scientific Analysis Runs
             </h2>
-            <span className="px-space-xs py-space-2xs bg-surface-container rounded font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+            <span className="hidden sm:inline px-space-xs py-space-2xs bg-surface-container rounded font-mono-data-sm text-mono-data-sm text-on-surface-variant">
               Live Pipeline Records
             </span>
           </div>
 
           {/* Segmented Filter Pills */}
-          <div className="flex items-center bg-surface-container-low p-1 rounded-lg font-mono-data-sm text-mono-data-sm">
+          <div className="flex items-center bg-surface-container-low p-1 rounded-lg font-mono-data-sm text-mono-data-sm overflow-x-auto">
             {(["ALL", "COMPLETED", "IN_PROGRESS", "CALIBRATED"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-space-sm py-1 rounded text-xs font-medium transition-all ${
+                className={`px-space-sm py-1.5 min-h-[36px] rounded text-xs font-medium whitespace-nowrap transition-all ${
                   activeTab === tab
                     ? "bg-primary-container text-on-primary shadow-xs"
                     : "text-on-surface-variant hover:text-on-surface"
@@ -552,67 +552,133 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Dense Scientific Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left font-mono-data-sm text-mono-data-sm">
-            <thead>
-              <tr className="border-b border-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">
-                <th className="py-2.5 px-3">Analysis ID</th>
-                <th className="py-2.5 px-3">Ref Image</th>
-                <th className="py-2.5 px-3">Src Image</th>
-                <th className="py-2.5 px-3">Sensor Pair</th>
-                <th className="py-2.5 px-3">Matches</th>
-                <th className="py-2.5 px-3">Inlier Ratio</th>
-                <th className="py-2.5 px-3">RMSE Error</th>
-                <th className="py-2.5 px-3">Status</th>
-                <th className="py-2.5 px-3">Completed (UTC)</th>
-                <th className="py-2.5 px-3 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-surface-container/60">
-              {filteredRuns.map((run: DashboardRunItem) => (
-                <tr key={run.id} className="hover:bg-surface-container-low/60 transition-colors">
-                  <td className="py-3 px-3 font-bold text-secondary">{run.id}</td>
-                  <td className="py-3 px-3 font-semibold text-on-surface">{run.refImage}</td>
-                  <td className="py-3 px-3 text-on-surface-variant">{run.srcImage}</td>
-                  <td className="py-3 px-3">
-                    <span className="px-2 py-0.5 bg-surface-container rounded text-[11px] font-medium text-on-surface">
-                      {run.sensorPair}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3">{run.matches}</td>
-                  <td className="py-3 px-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-secondary rounded-full"
-                          style={{ width: `${Math.min(100, run.inlierRatio)}%` }}
-                        ></div>
-                      </div>
-                      <span className="font-semibold text-on-surface">{run.inlierRatio}%</span>
+        {/* Mobile Stacked Card View (< md) */}
+        <div className="grid grid-cols-1 gap-3 md:hidden">
+          {filteredRuns.map((run: DashboardRunItem) => (
+            <div
+              key={run.id}
+              className="p-3.5 bg-surface-container-low rounded-xl border border-outline-variant/30 flex flex-col gap-2.5 font-mono-data-sm"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-secondary text-sm">{run.id}</span>
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase ${run.statusColor}`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+                  {run.status}
+                </span>
+              </div>
+
+              <div className="flex items-baseline justify-between text-xs">
+                <div className="font-semibold text-on-surface truncate mr-2">
+                  {run.refImage} ↔ {run.srcImage}
+                </div>
+                <span className="px-2 py-0.5 bg-surface-container rounded text-[10px] font-semibold text-on-surface shrink-0">
+                  {run.sensorPair}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-surface-container/60">
+                <div>
+                  <span className="text-on-surface-variant text-[11px] block">Matches:</span>
+                  <span className="font-semibold text-on-surface">{run.matches}</span>
+                </div>
+                <div>
+                  <span className="text-on-surface-variant text-[11px] block">Inlier Ratio:</span>
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex-1 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-secondary rounded-full"
+                        style={{ width: `${Math.min(100, run.inlierRatio)}%` }}
+                      ></div>
                     </div>
-                  </td>
-                  <td className="py-3 px-3 font-bold text-[#065f46]">{run.error}</td>
-                  <td className="py-3 px-3">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase ${run.statusColor}`}>
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                      {run.status}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 text-on-surface-variant text-[11px]">{run.date}</td>
-                  <td className="py-3 px-3 text-right">
-                    <Link
-                      href="/registration"
-                      className="px-2.5 py-1 bg-surface-container hover:bg-surface-container-high rounded text-xs font-semibold text-secondary hover:text-on-surface transition-colors inline-flex items-center gap-1"
-                    >
-                      <span>Inspect</span>
-                      <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                    </Link>
-                  </td>
+                    <span className="font-semibold text-on-surface text-[11px]">{run.inlierRatio}%</span>
+                  </div>
+                </div>
+                <div>
+                  <span className="text-on-surface-variant text-[11px] block">RMSE Error:</span>
+                  <span className="font-bold text-[#065f46]">{run.error}</span>
+                </div>
+                <div>
+                  <span className="text-on-surface-variant text-[11px] block">Completed:</span>
+                  <span className="text-on-surface-variant text-[11px]">{run.date}</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-surface-container/60 flex items-center justify-end">
+                <Link
+                  href="/registration"
+                  className="w-full sm:w-auto px-4 py-2 min-h-[44px] bg-primary-container text-on-primary hover:bg-secondary rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <span>Inspect Registration</span>
+                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Dense Scientific Table (md and up) */}
+        <div className="hidden md:block relative">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left font-mono-data-sm text-mono-data-sm">
+              <thead>
+                <tr className="border-b border-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">
+                  <th className="py-2.5 px-3">Analysis ID</th>
+                  <th className="py-2.5 px-3">Ref Image</th>
+                  <th className="py-2.5 px-3">Src Image</th>
+                  <th className="py-2.5 px-3">Sensor Pair</th>
+                  <th className="py-2.5 px-3">Matches</th>
+                  <th className="py-2.5 px-3">Inlier Ratio</th>
+                  <th className="py-2.5 px-3">RMSE Error</th>
+                  <th className="py-2.5 px-3">Status</th>
+                  <th className="py-2.5 px-3">Completed (UTC)</th>
+                  <th className="py-2.5 px-3 text-right">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-surface-container/60">
+                {filteredRuns.map((run: DashboardRunItem) => (
+                  <tr key={run.id} className="hover:bg-surface-container-low/60 transition-colors">
+                    <td className="py-3 px-3 font-bold text-secondary">{run.id}</td>
+                    <td className="py-3 px-3 font-semibold text-on-surface">{run.refImage}</td>
+                    <td className="py-3 px-3 text-on-surface-variant">{run.srcImage}</td>
+                    <td className="py-3 px-3">
+                      <span className="px-2 py-0.5 bg-surface-container rounded text-[11px] font-medium text-on-surface">
+                        {run.sensorPair}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3">{run.matches}</td>
+                    <td className="py-3 px-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-secondary rounded-full"
+                            style={{ width: `${Math.min(100, run.inlierRatio)}%` }}
+                          ></div>
+                        </div>
+                        <span className="font-semibold text-on-surface">{run.inlierRatio}%</span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-3 font-bold text-[#065f46]">{run.error}</td>
+                    <td className="py-3 px-3">
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase ${run.statusColor}`}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+                        {run.status}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-on-surface-variant text-[11px]">{run.date}</td>
+                    <td className="py-3 px-3 text-right">
+                      <Link
+                        href="/registration"
+                        className="px-3 py-1.5 min-h-[36px] bg-surface-container hover:bg-surface-container-high rounded text-xs font-semibold text-secondary hover:text-on-surface transition-colors inline-flex items-center gap-1"
+                      >
+                        <span>Inspect</span>
+                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

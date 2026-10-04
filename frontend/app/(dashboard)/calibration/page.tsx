@@ -85,10 +85,10 @@ export default function CalibrationPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-space-sm">
         <div>
-          <h1 className="font-headline-md text-headline-md text-on-surface uppercase font-bold tracking-tight">
+          <h1 className="font-headline-md text-headline-md text-on-surface uppercase font-bold tracking-tight text-xl sm:text-2xl">
             Radiometric &amp; Optical Calibration Rig
           </h1>
-          <p className="text-body-sm text-on-surface-variant">
+          <p className="text-body-sm text-on-surface-variant mt-1">
             Calibrate instrument flat-fields, optical distortion polynomials, and dark-current noise offsets for Chandrayaan payloads.
           </p>
         </div>
@@ -96,20 +96,20 @@ export default function CalibrationPage() {
           type="button"
           onClick={handleApplyCalibration}
           disabled={isApplying}
-          className="px-space-md py-2 bg-primary-container text-on-primary rounded hover:bg-secondary transition-colors font-body-sm font-semibold flex items-center gap-1.5 shadow-sm self-start"
+          className="w-full md:w-auto px-space-md py-2.5 min-h-[44px] bg-primary-container text-on-primary rounded hover:bg-secondary transition-colors font-body-sm font-semibold flex items-center justify-center gap-1.5 shadow-sm"
         >
-          <span className="material-symbols-outlined text-[16px]">tune</span>
+          <span className="material-symbols-outlined text-[18px]">tune</span>
           <span>{isApplying ? "Updating..." : "Commit Calibration Matrix"}</span>
         </button>
       </div>
 
       {/* Sensor Selection Tabs */}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {Object.keys(sensorProfiles).map((k) => (
           <button
             key={k}
             onClick={() => setSelectedSensor(k)}
-            className={`px-4 py-2 rounded-lg font-mono-data-sm text-xs font-semibold transition-all border ${
+            className={`flex-1 sm:flex-none px-4 py-2 min-h-[44px] rounded-lg font-mono-data-sm text-xs font-semibold transition-all border ${
               selectedSensor === k
                 ? "bg-primary-container text-white border-primary shadow-xs"
                 : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/30 hover:bg-surface-container-low"
@@ -123,7 +123,7 @@ export default function CalibrationPage() {
       {/* Sensor Status Banner */}
       <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col md:flex-row md:items-center justify-between gap-space-md">
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="font-headline-sm text-headline-sm font-bold text-on-surface">{calib.fullName}</span>
             <span className="px-2 py-0.5 bg-[#ecfdf5] text-[#065f46] rounded text-[11px] font-mono-data-sm font-bold">
               ● {calib.status}
@@ -131,7 +131,7 @@ export default function CalibrationPage() {
           </div>
           <span className="text-body-sm text-on-surface-variant font-mono-data-sm">{calib.gsd}</span>
         </div>
-        <div className="flex items-center gap-4 font-mono-data-sm text-xs text-on-surface-variant">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4 font-mono-data-sm text-xs text-on-surface-variant">
           <span>Matrix: <strong className="text-secondary font-semibold">{calib.flatFieldVersion}</strong></span>
           <span>Calibrated: <strong className="text-on-surface">{calib.lastCalibrated}</strong></span>
         </div>

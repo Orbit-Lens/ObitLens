@@ -133,23 +133,33 @@ function NewAnalysisContent() {
     }
   };
 
+  const [openSection, setOpenSection] = useState<{ [key: string]: boolean }>({
+    prep: true,
+    detect: true,
+    geom: true,
+  });
+
+  const toggleSection = (key: string) => {
+    setOpenSection((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   return (
-    <div className="flex flex-col w-full pb-12">
+    <div className="flex flex-col w-full pb-16">
       {/* BREADCRUMB & METADATA BAR */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-sm py-space-sm">
-        <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs sm:gap-space-sm py-space-sm">
+        <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant flex-wrap">
           <Link href="/dashboard" className="hover:text-secondary">ISRO Portal</Link>
           <span className="text-outline-variant">/</span>
           <span className="hover:text-secondary">Workspace</span>
           <span className="text-outline-variant">/</span>
           <span className="text-on-surface font-semibold">New Analysis</span>
         </div>
-        <div className="flex items-center gap-space-md font-mono-data-sm text-mono-data-sm">
-          <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-medium">
+        <div className="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm flex-wrap">
+          <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-medium text-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
             PIPELINE ID: <span className="text-secondary font-semibold">PR-LUNAR-2024-8849</span>
           </span>
-          <span className="text-on-surface-variant">NODE: SAC-AHM-04</span>
+          <span className="text-on-surface-variant text-xs">NODE: SAC-AHM-04</span>
         </div>
       </div>
 
@@ -160,7 +170,7 @@ function NewAnalysisContent() {
             <span className="material-symbols-outlined text-[18px]">error</span>
             <span>{errorMessage}</span>
           </div>
-          <button onClick={() => setErrorMessage("")} className="hover:opacity-75">
+          <button onClick={() => setErrorMessage("")} className="hover:opacity-75 p-1">
             <span className="material-symbols-outlined text-[16px]">close</span>
           </button>
         </div>
@@ -171,7 +181,7 @@ function NewAnalysisContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
           {/* Step 01 Active */}
           <div className="flex items-center gap-space-sm p-space-sm rounded-lg bg-primary text-on-primary shadow-sm">
-            <div className="w-6 h-6 rounded bg-secondary flex items-center justify-center font-mono-data-sm text-mono-data-sm font-bold text-on-secondary">
+            <div className="w-7 h-7 rounded bg-secondary flex items-center justify-center font-mono-data-sm text-mono-data-sm font-bold text-on-secondary shrink-0">
               <span className="material-symbols-outlined text-[16px]">check</span>
             </div>
             <div className="flex flex-col min-w-0">
@@ -183,7 +193,7 @@ function NewAnalysisContent() {
 
           {/* Step 02 Pending */}
           <div className="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container text-on-surface-variant">
-            <div className="w-6 h-6 rounded bg-surface-container-highest flex items-center justify-center font-mono-data-sm text-mono-data-sm font-semibold text-on-surface">
+            <div className="w-7 h-7 rounded bg-surface-container-highest flex items-center justify-center font-mono-data-sm text-mono-data-sm font-semibold text-on-surface shrink-0">
               02
             </div>
             <div className="flex flex-col min-w-0">
@@ -195,7 +205,7 @@ function NewAnalysisContent() {
 
           {/* Step 03 Pending */}
           <div className="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container text-on-surface-variant">
-            <div className="w-6 h-6 rounded bg-surface-container-highest flex items-center justify-center font-mono-data-sm text-mono-data-sm font-semibold text-on-surface">
+            <div className="w-7 h-7 rounded bg-surface-container-highest flex items-center justify-center font-mono-data-sm text-mono-data-sm font-semibold text-on-surface shrink-0">
               03
             </div>
             <div className="flex flex-col min-w-0">
@@ -208,22 +218,22 @@ function NewAnalysisContent() {
       </div>
 
       {/* SECTION 1: DUAL FRAME PHOTOGRAMMETRY VIEWPORTS */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-space-lg mb-space-lg">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-space-md sm:gap-space-lg mb-space-lg">
         {/* Panel A: REFERENCE IMAGE */}
         <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-space-md py-space-sm bg-primary text-on-primary">
-            <div className="flex items-center gap-space-sm">
-              <span className="w-2 h-2 rounded-full bg-secondary-container"></span>
-              <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed">Frame A • Reference Master</span>
+            <div className="flex items-center gap-space-sm min-w-0">
+              <span className="w-2 h-2 rounded-full bg-secondary-container shrink-0"></span>
+              <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed hidden sm:inline">Frame A • Reference Master</span>
               <span className="font-headline-sm text-headline-sm text-on-primary truncate">REFERENCE FRAME</span>
             </div>
-            <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm">
+            <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm shrink-0">
               <span className="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-semibold">
                 {refImage?.sensor || "OHRC"}
               </span>
             </div>
           </div>
-          <div className="relative w-full h-80 bg-primary-container overflow-hidden group">
+          <div className="relative w-full h-64 sm:h-80 bg-primary-container overflow-hidden group">
             <Image
               src="/images/crater-terrain-reference.png"
               alt="Lunar South Pole High Resolution Orthomosaic"
@@ -247,7 +257,7 @@ function NewAnalysisContent() {
               </span>
             </div>
           </div>
-          <div className="p-space-md bg-surface-container-low flex flex-col gap-space-sm">
+          <div className="p-space-sm sm:p-space-md bg-surface-container-low flex flex-col gap-space-sm">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-xs font-mono-data-sm text-mono-data-sm">
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
                 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Sensor</span>
@@ -267,11 +277,11 @@ function NewAnalysisContent() {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-space-xs pt-space-xs">
-              <div className="flex items-center gap-space-xs">
+              <div className="flex items-center gap-space-xs w-full sm:w-auto">
                 <select
                   value={refImageId}
                   onChange={(e) => setRefImageId(e.target.value)}
-                  className="px-space-sm py-1 rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors cursor-pointer focus:outline-none"
+                  className="w-full sm:w-auto px-space-sm py-2.5 min-h-[44px] rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors cursor-pointer focus:outline-none"
                 >
                   {images.map((img) => (
                     <option key={img._id} value={img._id} className="bg-surface-container text-on-surface">
@@ -281,7 +291,7 @@ function NewAnalysisContent() {
                 </select>
               </div>
               <div className="flex items-center gap-space-xs">
-                <span className="px-space-xs py-0.5 rounded bg-surface-container font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+                <span className="px-space-xs py-1 rounded bg-surface-container font-mono-data-sm text-mono-data-sm text-on-surface-variant">
                   GSD: <strong className="text-on-surface font-semibold">{refImage?.resolutionMetersPerPixel || 0.25} m/px</strong>
                 </span>
               </div>
@@ -292,18 +302,18 @@ function NewAnalysisContent() {
         {/* Panel B: SOURCE IMAGE */}
         <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-space-md py-space-sm bg-primary-container text-inverse-on-surface">
-            <div className="flex items-center gap-space-sm">
-              <span className="w-2 h-2 rounded-full bg-secondary"></span>
-              <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed">Frame B • Registration Target</span>
+            <div className="flex items-center gap-space-sm min-w-0">
+              <span className="w-2 h-2 rounded-full bg-secondary shrink-0"></span>
+              <span className="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed hidden sm:inline">Frame B • Registration Target</span>
               <span className="font-headline-sm text-headline-sm text-inverse-on-surface truncate">SOURCE FRAME</span>
             </div>
-            <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm">
+            <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm shrink-0">
               <span className="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-semibold">
                 {srcImage?.sensor || "TMC-2"}
               </span>
             </div>
           </div>
-          <div className="relative w-full h-80 bg-primary-container overflow-hidden group">
+          <div className="relative w-full h-64 sm:h-80 bg-primary-container overflow-hidden group">
             <Image
               src="/images/crater-terrain-reference.png"
               alt="Terrain Mapping Camera Crater Oblique Strip"
@@ -327,7 +337,7 @@ function NewAnalysisContent() {
               </span>
             </div>
           </div>
-          <div className="p-space-md bg-surface-container-low flex flex-col gap-space-sm">
+          <div className="p-space-sm sm:p-space-md bg-surface-container-low flex flex-col gap-space-sm">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-xs font-mono-data-sm text-mono-data-sm">
               <div className="flex flex-col bg-surface-container-lowest p-space-xs rounded">
                 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Sensor</span>
@@ -347,11 +357,11 @@ function NewAnalysisContent() {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-space-xs pt-space-xs">
-              <div className="flex items-center gap-space-xs">
+              <div className="flex items-center gap-space-xs w-full sm:w-auto">
                 <select
                   value={srcImageId}
                   onChange={(e) => setSrcImageId(e.target.value)}
-                  className="px-space-sm py-1 rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors cursor-pointer focus:outline-none"
+                  className="w-full sm:w-auto px-space-sm py-2.5 min-h-[44px] rounded bg-primary text-on-primary font-mono-data-sm text-mono-data-sm font-medium hover:bg-secondary transition-colors cursor-pointer focus:outline-none"
                 >
                   {images.map((img) => (
                     <option key={img._id} value={img._id} className="bg-surface-container text-on-surface">
@@ -361,7 +371,7 @@ function NewAnalysisContent() {
                 </select>
               </div>
               <div className="flex items-center gap-space-xs">
-                <span className="px-space-xs py-0.5 rounded bg-surface-container font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+                <span className="px-space-xs py-1 rounded bg-surface-container font-mono-data-sm text-mono-data-sm text-on-surface-variant">
                   GSD: <strong className="text-on-surface font-semibold">{srcImage?.resolutionMetersPerPixel || 5.0} m/px</strong>
                 </span>
               </div>
@@ -372,23 +382,23 @@ function NewAnalysisContent() {
 
       {/* SECTION 2: METADATA MATRIX */}
       <div className="mb-space-lg bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-space-md py-space-sm bg-surface-container-high">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-space-md py-space-sm bg-surface-container-high gap-1">
           <div className="flex items-center gap-space-sm">
             <span className="material-symbols-outlined text-secondary text-[20px]">difference</span>
-            <span className="font-headline-sm text-headline-sm text-on-surface">METADATA &amp; GEOMETRY COMPARISON MATRIX</span>
+            <span className="font-headline-sm text-headline-sm text-on-surface">METADATA &amp; GEOMETRY MATRIX</span>
           </div>
-          <span className="font-mono-data-sm text-mono-data-sm text-on-surface-variant">
-            COORDINATE REFERENCE: <strong className="text-on-surface">IAU_2000_MOON SPHERE (R=1737.4 KM)</strong>
+          <span className="font-mono-data-sm text-xs text-on-surface-variant">
+            CRS: <strong className="text-on-surface">IAU_2000_MOON (R=1737.4 KM)</strong>
           </span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left font-mono-data-sm text-mono-data-sm">
+          <table className="w-full text-left font-mono-data-sm text-mono-data-sm min-w-[500px]">
             <thead>
               <tr className="bg-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase">
                 <th className="py-2.5 px-space-md font-semibold">Parameter / Sensor State</th>
                 <th className="py-2.5 px-space-md font-semibold">Reference Image ({refImage?.sensor || "OHRC"})</th>
                 <th className="py-2.5 px-space-md font-semibold">Source Image ({srcImage?.sensor || "TMC-2"})</th>
-                <th className="py-2.5 px-space-md font-semibold">Delta &amp; Alignment Verification</th>
+                <th className="py-2.5 px-space-md font-semibold">Delta &amp; Alignment</th>
               </tr>
             </thead>
             <tbody className="divide-y-0 text-on-surface">
@@ -399,7 +409,7 @@ function NewAnalysisContent() {
                 <td className="py-2.5 px-space-md">
                   <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high font-medium text-on-surface">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                    Scale Ratio 1 : {((srcImage?.resolutionMetersPerPixel || 5.0) / (refImage?.resolutionMetersPerPixel || 0.25)).toFixed(1)}x
+                    Scale 1 : {((srcImage?.resolutionMetersPerPixel || 5.0) / (refImage?.resolutionMetersPerPixel || 0.25)).toFixed(1)}x
                   </span>
                 </td>
               </tr>
@@ -410,7 +420,7 @@ function NewAnalysisContent() {
                 <td className="py-2.5 px-space-md">
                   <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                    Δ {Math.abs((refImage?.sunElevationDeg || 18.4) - (srcImage?.sunElevationDeg || 21.4)).toFixed(2)}° • Minimal Shadow Delta
+                    Δ {Math.abs((refImage?.sunElevationDeg || 18.4) - (srcImage?.sunElevationDeg || 21.4)).toFixed(2)}°
                   </span>
                 </td>
               </tr>
@@ -419,7 +429,7 @@ function NewAnalysisContent() {
                 <td className="py-2.5 px-space-md font-semibold text-on-surface">{refImage?.sunAzimuthDeg || 120.0}°</td>
                 <td className="py-2.5 px-space-md font-semibold text-on-surface">{srcImage?.sunAzimuthDeg || 122.1}°</td>
                 <td className="py-2.5 px-space-md text-on-surface-variant font-mono-data-sm">
-                  Δ {Math.abs((refImage?.sunAzimuthDeg || 120.0) - (srcImage?.sunAzimuthDeg || 122.1)).toFixed(1)}° (Illumination Vector Co-aligned)
+                  Δ {Math.abs((refImage?.sunAzimuthDeg || 120.0) - (srcImage?.sunAzimuthDeg || 122.1)).toFixed(1)}° (Co-aligned)
                 </td>
               </tr>
             </tbody>
@@ -427,51 +437,62 @@ function NewAnalysisContent() {
         </div>
       </div>
 
-      {/* SECTION 3: PROCESSING CONFIGURATION & ALGORITHM PIPELINE */}
+      {/* SECTION 3: PROCESSING CONFIGURATION & ALGORITHM PIPELINE (COLLAPSIBLE ON MOBILE) */}
       <div className="mb-space-lg">
         <div className="flex items-center gap-space-sm mb-space-sm">
           <span className="material-symbols-outlined text-secondary text-[22px]">tune</span>
-          <h2 className="font-headline-md text-headline-md text-on-surface">Processing Configuration &amp; Algorithm Pipeline</h2>
+          <h2 className="font-headline-md text-headline-md text-on-surface text-base sm:text-headline-md">
+            Processing Configuration &amp; Algorithm Pipeline
+          </h2>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-space-md lg:gap-space-lg">
           {/* Group 1: Preprocessing */}
-          <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm p-space-md">
-            <div className="flex items-center justify-between pb-space-sm mb-space-sm bg-surface-container-low -mx-space-md -mt-space-md px-space-md pt-space-md rounded-t-xl">
+          <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleSection("prep")}
+              className="w-full flex items-center justify-between p-space-md bg-surface-container-low text-left focus:outline-none min-h-[44px]"
+            >
               <div className="flex items-center gap-space-xs">
-                <span className="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center font-mono-data-sm text-mono-data-sm font-bold">1</span>
+                <span className="w-6 h-6 rounded bg-primary text-on-primary flex items-center justify-center font-mono-data-sm text-xs font-bold">1</span>
                 <span className="font-headline-sm text-headline-sm text-on-surface">PREPROCESSING</span>
               </div>
-              <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Signal Prep</span>
-            </div>
-            <div className="flex flex-col gap-space-sm mt-space-xs">
-              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+              <div className="flex items-center gap-2">
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Signal Prep</span>
+                <span className="material-symbols-outlined text-[20px] text-on-surface-variant lg:hidden">
+                  {openSection.prep ? "expand_less" : "expand_more"}
+                </span>
+              </div>
+            </button>
+            <div className={`p-space-md flex flex-col gap-space-sm ${openSection.prep ? "block" : "hidden lg:flex"}`}>
+              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors min-h-[44px]">
                 <input
                   type="checkbox"
                   checked={illuminationCorrection}
                   onChange={(e) => setIlluminationCorrection(e.target.checked)}
-                  className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4"
+                  className="mt-1 rounded accent-primary text-on-primary w-4 h-4 shrink-0"
                 />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Radiometric Normalization</span>
                   <span className="font-body-sm text-body-sm text-on-surface-variant">Sensor Gain &amp; Solar Flux correction</span>
                 </div>
               </label>
-              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
-                <input defaultChecked type="checkbox" className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4" />
+              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors min-h-[44px]">
+                <input defaultChecked type="checkbox" className="mt-1 rounded accent-primary text-on-primary w-4 h-4 shrink-0" />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Contrast Normalization</span>
                   <span className="font-body-sm text-body-sm text-on-surface-variant">CLAHE adaptive histogram equalization</span>
                 </div>
               </label>
-              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
-                <input defaultChecked type="checkbox" className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4" />
+              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors min-h-[44px]">
+                <input defaultChecked type="checkbox" className="mt-1 rounded accent-primary text-on-primary w-4 h-4 shrink-0" />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Bilateral Filtering</span>
-                  <span className="font-body-sm text-body-sm text-on-surface-variant">Regolith speckle &amp; cosmic ray noise suppression</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant">Regolith speckle &amp; noise suppression</span>
                 </div>
               </label>
-              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors opacity-75">
-                <input type="checkbox" className="mt-0.5 rounded accent-primary text-on-primary w-4 h-4" />
+              <label className="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors opacity-75 min-h-[44px]">
+                <input type="checkbox" className="mt-1 rounded accent-primary text-on-primary w-4 h-4 shrink-0" />
                 <div className="flex flex-col">
                   <span className="font-body-md text-body-md font-semibold text-on-surface">Shadow Mask Exclusion</span>
                   <span className="font-body-sm text-body-sm text-on-surface-variant">Exclude extreme shadowing in crater floors</span>
@@ -481,23 +502,32 @@ function NewAnalysisContent() {
           </div>
 
           {/* Group 2: Feature Detection */}
-          <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm p-space-md">
-            <div className="flex items-center justify-between pb-space-sm mb-space-sm bg-surface-container-low -mx-space-md -mt-space-md px-space-md pt-space-md rounded-t-xl">
+          <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleSection("detect")}
+              className="w-full flex items-center justify-between p-space-md bg-surface-container-low text-left focus:outline-none min-h-[44px]"
+            >
               <div className="flex items-center gap-space-xs">
-                <span className="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center font-mono-data-sm text-mono-data-sm font-bold">2</span>
-                <span className="font-headline-sm text-headline-sm text-on-surface">FEATURE DETECTION &amp; MATCHING</span>
+                <span className="w-6 h-6 rounded bg-primary text-on-primary flex items-center justify-center font-mono-data-sm text-xs font-bold">2</span>
+                <span className="font-headline-sm text-headline-sm text-on-surface">FEATURE DETECTION</span>
               </div>
-              <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Extraction</span>
-            </div>
-            <div className="flex flex-col gap-space-md mt-space-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Extraction</span>
+                <span className="material-symbols-outlined text-[20px] text-on-surface-variant lg:hidden">
+                  {openSection.detect ? "expand_less" : "expand_more"}
+                </span>
+              </div>
+            </button>
+            <div className={`p-space-md flex flex-col gap-space-md ${openSection.detect ? "block" : "hidden lg:flex"}`}>
               <div className="flex flex-col gap-1.5">
                 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Feature Detector Engine</span>
-                <div className="grid grid-cols-3 gap-1 p-1 bg-surface-container-low rounded-lg">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 p-1 bg-surface-container-low rounded-lg">
                   {(["SIFT", "ORB", "SuperPoint"] as const).map((item) => (
                     <button
                       key={item}
                       onClick={() => setDetector(item)}
-                      className={`py-1.5 text-center font-mono-data-sm text-mono-data-sm transition-colors rounded ${
+                      className={`py-2.5 min-h-[44px] text-center font-mono-data-sm text-mono-data-sm transition-colors rounded ${
                         detector === item
                           ? "font-semibold bg-primary text-on-primary shadow-sm"
                           : "font-medium text-on-surface hover:bg-surface-container-highest"
@@ -510,13 +540,13 @@ function NewAnalysisContent() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Tie-Point Correspondence Engine</span>
-                <div className="grid grid-cols-3 gap-1 p-1 bg-surface-container-low rounded-lg">
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Correspondence Matcher</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 p-1 bg-surface-container-low rounded-lg">
                   {(["FLANN", "LightGlue", "SuperGlue"] as const).map((item) => (
                     <button
                       key={item}
                       onClick={() => setMatcher(item)}
-                      className={`py-1.5 text-center font-mono-data-sm text-mono-data-sm transition-colors rounded ${
+                      className={`py-2.5 min-h-[44px] text-center font-mono-data-sm text-mono-data-sm transition-colors rounded ${
                         matcher === item
                           ? "font-semibold bg-primary text-on-primary shadow-sm"
                           : "font-medium text-on-surface hover:bg-surface-container-highest"
@@ -530,8 +560,8 @@ function NewAnalysisContent() {
 
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
-                  <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Feature Point Target Budget</span>
-                  <span className="font-mono-data-sm text-mono-data-sm font-bold text-secondary">{keypointBudget.toLocaleString()} Keypoints</span>
+                  <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Keypoint Target Budget</span>
+                  <span className="font-mono-data-sm text-mono-data-sm font-bold text-secondary">{keypointBudget.toLocaleString()}</span>
                 </div>
                 <input
                   type="range"
@@ -549,7 +579,7 @@ function NewAnalysisContent() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-space-sm rounded bg-surface-container-low">
+              <div className="flex items-center justify-between p-space-sm rounded bg-surface-container-low min-h-[44px]">
                 <span className="font-body-sm text-body-sm font-medium text-on-surface">Sub-pixel Refinement</span>
                 <span className="font-mono-data-sm text-mono-data-sm px-space-xs py-0.5 rounded bg-surface-container font-semibold text-on-surface">
                   Quadratic Interpolation
@@ -559,23 +589,32 @@ function NewAnalysisContent() {
           </div>
 
           {/* Group 3: Verification */}
-          <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm p-space-md">
-            <div className="flex items-center justify-between pb-space-sm mb-space-sm bg-surface-container-low -mx-space-md -mt-space-md px-space-md pt-space-md rounded-t-xl">
+          <div className="flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+            <button
+              type="button"
+              onClick={() => toggleSection("geom")}
+              className="w-full flex items-center justify-between p-space-md bg-surface-container-low text-left focus:outline-none min-h-[44px]"
+            >
               <div className="flex items-center gap-space-xs">
-                <span className="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center font-mono-data-sm text-mono-data-sm font-bold">3</span>
+                <span className="w-6 h-6 rounded bg-primary text-on-primary flex items-center justify-center font-mono-data-sm text-xs font-bold">3</span>
                 <span className="font-headline-sm text-headline-sm text-on-surface">GEOMETRIC VERIFICATION</span>
               </div>
-              <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Epipolar Fit</span>
-            </div>
-            <div className="flex flex-col gap-space-md mt-space-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Epipolar Fit</span>
+                <span className="material-symbols-outlined text-[20px] text-on-surface-variant lg:hidden">
+                  {openSection.geom ? "expand_less" : "expand_more"}
+                </span>
+              </div>
+            </button>
+            <div className={`p-space-md flex flex-col gap-space-md ${openSection.geom ? "block" : "hidden lg:flex"}`}>
               <div className="flex flex-col gap-1.5">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Robust Model Estimator</span>
-                <div className="grid grid-cols-3 gap-1 p-1 bg-surface-container-low rounded-lg">
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Robust Estimator</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 p-1 bg-surface-container-low rounded-lg">
                   {(["RANSAC", "USAC", "MAGSAC++"] as const).map((item) => (
                     <button
                       key={item}
                       onClick={() => setEstimator(item)}
-                      className={`py-1.5 text-center font-mono-data-sm text-mono-data-sm transition-colors rounded ${
+                      className={`py-2.5 min-h-[44px] text-center font-mono-data-sm text-mono-data-sm transition-colors rounded ${
                         estimator === item
                           ? "font-semibold bg-primary text-on-primary shadow-sm"
                           : "font-medium text-on-surface hover:bg-surface-container-highest"
@@ -588,13 +627,13 @@ function NewAnalysisContent() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Spatial Transformation Matrix</span>
-                <div className="grid grid-cols-3 gap-1 p-1 bg-surface-container-low rounded-lg">
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Transformation Model</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 p-1 bg-surface-container-low rounded-lg">
                   {(["Homography", "Affine", "Rigid"] as const).map((item) => (
                     <button
                       key={item}
                       onClick={() => setMatrixModel(item)}
-                      className={`py-1.5 text-center font-mono-data-sm text-mono-data-sm text-[11px] truncate px-1 transition-colors rounded ${
+                      className={`py-2.5 min-h-[44px] text-center font-mono-data-sm text-mono-data-sm text-xs truncate px-1 transition-colors rounded ${
                         matrixModel === item
                           ? "font-semibold bg-primary text-on-primary shadow-sm"
                           : "font-medium text-on-surface hover:bg-surface-container-highest"
@@ -608,11 +647,11 @@ function NewAnalysisContent() {
 
               <div className="grid grid-cols-3 gap-space-xs">
                 <div className="flex flex-col p-space-xs bg-surface-container-low rounded">
-                  <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Inlier Error</span>
+                  <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Inlier Err</span>
                   <select
                     value={reprojThreshold}
                     onChange={(e) => setReprojThreshold(Number(e.target.value))}
-                    className="bg-transparent font-mono-data-md text-mono-data-md font-semibold text-on-surface focus:outline-none cursor-pointer"
+                    className="bg-transparent font-mono-data-md text-mono-data-md font-semibold text-on-surface focus:outline-none cursor-pointer py-1"
                   >
                     <option value={1.5}>1.5 px</option>
                     <option value={2.0}>2.0 px</option>
@@ -621,19 +660,19 @@ function NewAnalysisContent() {
                 </div>
                 <div className="flex flex-col p-space-xs bg-surface-container-low rounded">
                   <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Max Iter</span>
-                  <span className="font-mono-data-md text-mono-data-md font-semibold text-on-surface">10,000</span>
+                  <span className="font-mono-data-md text-mono-data-md font-semibold text-on-surface py-1">10,000</span>
                 </div>
                 <div className="flex flex-col p-space-xs bg-surface-container-low rounded">
                   <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Confidence</span>
-                  <span className="font-mono-data-md text-mono-data-md font-semibold text-on-surface">99.9%</span>
+                  <span className="font-mono-data-md text-mono-data-md font-semibold text-on-surface py-1">99.9%</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-space-sm p-space-sm rounded bg-surface-container-high text-on-surface">
-                <span className="material-symbols-outlined text-secondary text-[20px]">memory</span>
+              <div className="flex items-center gap-space-sm p-space-sm rounded bg-surface-container-high text-on-surface min-h-[44px]">
+                <span className="material-symbols-outlined text-secondary text-[20px] shrink-0">memory</span>
                 <div className="flex flex-col min-w-0">
                   <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">ACCELERATION</span>
-                  <span className="font-mono-data-sm text-mono-data-sm font-medium truncate">Multi-core OpenMP / CUDA</span>
+                  <span className="font-mono-data-sm text-mono-data-sm font-medium truncate">Multi-core CUDA / OpenMP</span>
                 </div>
               </div>
             </div>
@@ -642,20 +681,23 @@ function NewAnalysisContent() {
       </div>
 
       {/* BOTTOM STICKY ACTION BAR */}
-      <div className="sticky bottom-7 z-30 p-space-md rounded-xl bg-primary-container text-inverse-on-surface shadow-xl flex flex-col md:flex-row items-center justify-between gap-space-md">
-        <div className="flex items-center gap-space-md font-mono-data-sm text-mono-data-sm">
+      <div className="sticky bottom-7 z-30 p-space-sm sm:p-space-md rounded-xl bg-primary-container text-inverse-on-surface shadow-2xl flex flex-col md:flex-row items-center justify-between gap-space-sm sm:gap-space-md border border-white/10">
+        <div className="flex items-center gap-2 sm:gap-space-md font-mono-data-sm text-mono-data-sm flex-wrap w-full md:w-auto">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-ping"></span>
-            <span className="text-secondary-fixed font-semibold">
-              {isExecuting ? execStatus : "SYSTEM READY FOR PIPELINE RUN"}
+            <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-ping shrink-0"></span>
+            <span className="text-secondary-fixed font-semibold text-xs sm:text-sm">
+              {isExecuting ? execStatus : "READY FOR PIPELINE RUN"}
             </span>
           </div>
           <span className="text-on-primary-container hidden sm:inline">•</span>
-          <span className="text-on-primary-container hidden sm:inline">Ref: {refImage?.name} ↔ Src: {srcImage?.name}</span>
+          <span className="text-on-primary-container text-xs hidden sm:inline truncate max-w-xs">
+            Ref: {refImage?.name} ↔ Src: {srcImage?.name}
+          </span>
         </div>
 
-        <div className="flex items-center gap-space-md w-full md:w-auto justify-end">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-space-md w-full md:w-auto">
           <button
+            type="button"
             onClick={() => {
               setDetector("SIFT");
               setMatrixModel("Homography");
@@ -663,19 +705,19 @@ function NewAnalysisContent() {
               setReprojThreshold(2.0);
               setIlluminationCorrection(true);
             }}
-            className="px-space-md py-2 rounded font-mono-data-sm text-mono-data-sm font-medium text-inverse-on-surface hover:bg-primary transition-colors flex items-center gap-1.5"
+            className="px-space-md py-2.5 min-h-[44px] rounded font-mono-data-sm text-mono-data-sm font-medium text-inverse-on-surface hover:bg-white/10 transition-colors flex items-center justify-center gap-1.5"
           >
             <span className="material-symbols-outlined text-[16px]">restart_alt</span>
-            Reset to Default ISRO Profile
+            <span>Reset Profile</span>
           </button>
 
           <button
             type="button"
             onClick={handleRunPipeline}
             disabled={isExecuting}
-            className={`px-space-xl py-2.5 rounded text-on-secondary font-headline-sm text-headline-sm font-semibold shadow-[0_0_15px_rgba(91,184,254,0.4)] transition-all flex items-center gap-2 ${
+            className={`px-space-lg sm:px-space-xl py-3 min-h-[48px] rounded-lg text-white font-headline-sm text-sm sm:text-headline-sm font-semibold shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
               isExecuting
-                ? "bg-[#10b981] text-white cursor-not-allowed"
+                ? "bg-[#10b981] cursor-not-allowed"
                 : "bg-secondary hover:bg-secondary-container hover:text-on-secondary-container"
             }`}
           >
@@ -686,7 +728,7 @@ function NewAnalysisContent() {
               </>
             ) : (
               <>
-                <span>RUN CORRESPONDENCE ANALYSIS</span>
+                <span>RUN PIPELINE</span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </>
             )}

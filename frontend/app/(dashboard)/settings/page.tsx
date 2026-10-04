@@ -131,9 +131,9 @@ export default function SettingsPage() {
             <button
               type="button"
               onClick={() => logoutUser()}
-              className="mt-2 h-8 px-3 bg-error-container text-on-error-container hover:bg-error hover:text-white rounded font-body-sm text-body-sm font-semibold flex items-center justify-center gap-1.5 transition-colors self-start"
+              className="mt-3 min-h-[44px] px-4 bg-error-container text-on-error-container hover:bg-error hover:text-white rounded font-body-sm text-body-sm font-semibold flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto"
             >
-              <span className="material-symbols-outlined text-[16px]">logout</span>
+              <span className="material-symbols-outlined text-[18px]">logout</span>
               <span>Sign Out Workstation</span>
             </button>
           </div>
@@ -152,7 +152,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="p-space-md flex flex-col gap-space-sm font-body-sm">
-          <div className="flex items-center justify-between p-space-sm bg-surface-container-low rounded">
+          <label className="flex items-center justify-between p-space-sm bg-surface-container-low rounded cursor-pointer gap-3 min-h-[52px]">
             <div className="flex flex-col">
               <span className="font-bold text-on-surface">CUDA Hardware Acceleration</span>
               <span className="text-body-sm text-on-surface-variant">Allocate 4x NVIDIA A100 Tensor Core cluster for sub-pixel homography fitting</span>
@@ -161,11 +161,11 @@ export default function SettingsPage() {
               type="checkbox"
               checked={gpuAcceleration}
               onChange={(e) => setGpuAcceleration(e.target.checked)}
-              className="w-4 h-4 accent-primary rounded cursor-pointer"
+              className="w-5 h-5 accent-primary rounded cursor-pointer shrink-0"
             />
-          </div>
+          </label>
 
-          <div className="flex items-center justify-between p-space-sm bg-surface-container-low rounded">
+          <label className="flex items-center justify-between p-space-sm bg-surface-container-low rounded cursor-pointer gap-3 min-h-[52px]">
             <div className="flex flex-col">
               <span className="font-bold text-on-surface">Automatic SPICE Ephemeris Kernel Sync</span>
               <span className="text-body-sm text-on-surface-variant">Synchronize SPK/CK kernels on Chandrayaan orbit pass telemetry ingest</span>
@@ -174,11 +174,11 @@ export default function SettingsPage() {
               type="checkbox"
               checked={ephemerisSync}
               onChange={(e) => setEphemerisSync(e.target.checked)}
-              className="w-4 h-4 accent-primary rounded cursor-pointer"
+              className="w-5 h-5 accent-primary rounded cursor-pointer shrink-0"
             />
-          </div>
+          </label>
 
-          <div className="flex items-center justify-between p-space-sm bg-surface-container-low rounded">
+          <label className="flex items-center justify-between p-space-sm bg-surface-container-low rounded cursor-pointer gap-3 min-h-[52px]">
             <div className="flex flex-col">
               <span className="font-bold text-on-surface">Sub-Pixel L-M Optimization by Default</span>
               <span className="text-body-sm text-on-surface-variant">Perform Levenberg-Marquardt patch correlation on all correspondence runs</span>
@@ -187,9 +187,9 @@ export default function SettingsPage() {
               type="checkbox"
               checked={subPixelRefine}
               onChange={(e) => setSubPixelRefine(e.target.checked)}
-              className="w-4 h-4 accent-primary rounded cursor-pointer"
+              className="w-5 h-5 accent-primary rounded cursor-pointer shrink-0"
             />
-          </div>
+          </label>
         </div>
       </div>
     </div>

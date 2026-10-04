@@ -81,18 +81,18 @@ export default function DatasetsPage() {
     <div className="flex flex-col w-full pb-12">
       {/* Breadcrumb & Top Mission Action Bar */}
       <section className="flex flex-col gap-space-xs py-space-sm">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant text-xs sm:text-sm">
             <Link href="/dashboard" className="hover:text-secondary">ISRO Portal</Link>
             <span className="text-outline">/</span>
             <span>Data</span>
             <span className="text-outline">/</span>
             <span className="text-secondary font-medium">Datasets Repository</span>
           </div>
-          <div className="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm">
-            <span className="px-space-xs py-space-2xs bg-surface-container text-on-surface-variant rounded">SPICE CK/SPK: <strong className="text-on-surface">V09_RECON</strong></span>
-            <span className="px-space-xs py-space-2xs bg-surface-container text-on-surface-variant rounded">PDS-4 SCHEMA: <strong className="text-on-surface">1.21.0.0</strong></span>
-            <span className="inline-flex items-center gap-space-2xs px-space-xs py-space-2xs bg-surface-container text-on-surface-variant rounded">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-space-sm font-mono-data-sm text-mono-data-sm text-[11px] sm:text-xs">
+            <span className="px-space-xs py-1 bg-surface-container text-on-surface-variant rounded">SPICE CK/SPK: <strong className="text-on-surface">V09_RECON</strong></span>
+            <span className="px-space-xs py-1 bg-surface-container text-on-surface-variant rounded hidden sm:inline-block">PDS-4 SCHEMA: <strong className="text-on-surface">1.21.0.0</strong></span>
+            <span className="inline-flex items-center gap-space-2xs px-space-xs py-1 bg-surface-container text-on-surface-variant rounded">
               <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
               <span>CATALOG SYNC: 100%</span>
             </span>
@@ -100,22 +100,22 @@ export default function DatasetsPage() {
         </div>
 
         {/* Title & Description Strip */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-sm">
           <div className="flex flex-col">
-            <h1 className="font-headline-md text-headline-md text-on-surface tracking-tight uppercase font-bold">
+            <h1 className="font-headline-md text-headline-md text-on-surface tracking-tight uppercase font-bold text-xl sm:text-2xl">
               Lunar Scientific Dataset Repository
             </h1>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">
+            <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
               Query, inspect and ingest PDS4-compliant lunar orbital imagery, elevation profiles, and cartographic products from Chandrayaan and coordinated reference archives.
             </p>
           </div>
-          <div className="flex items-center gap-space-xs">
-            <button className="flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container text-on-surface font-mono-data-sm text-mono-data-sm rounded hover:bg-surface-container-high transition-colors">
-              <span className="material-symbols-outlined text-[16px]">sync_alt</span>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs w-full lg:w-auto">
+            <button className="flex items-center justify-center gap-space-xs px-space-sm py-2 min-h-[44px] bg-surface-container text-on-surface font-mono-data-sm text-mono-data-sm rounded hover:bg-surface-container-high transition-colors">
+              <span className="material-symbols-outlined text-[18px]">sync_alt</span>
               <span>Harvest External PDS Nodes</span>
             </button>
-            <button className="flex items-center gap-space-xs px-space-sm py-space-xs bg-primary text-on-primary font-mono-data-sm text-mono-data-sm rounded hover:bg-secondary transition-colors">
-              <span className="material-symbols-outlined text-[16px]">cloud_download</span>
+            <button className="flex items-center justify-center gap-space-xs px-space-sm py-2 min-h-[44px] bg-primary text-on-primary font-mono-data-sm text-mono-data-sm rounded hover:bg-secondary transition-colors">
+              <span className="material-symbols-outlined text-[18px]">cloud_download</span>
               <span>Batch Download (3)</span>
             </button>
           </div>
@@ -125,27 +125,27 @@ export default function DatasetsPage() {
       {/* Filter & Spatial Query Console */}
       <section className="mt-space-sm bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col gap-space-sm">
         <div className="flex flex-col md:flex-row gap-space-sm">
-          <div className="relative flex-1 flex items-center bg-surface-container-low rounded px-space-sm py-space-2xs">
+          <div className="relative flex-1 flex items-center bg-surface-container-low rounded px-space-sm py-2 min-h-[44px]">
             <span className="material-symbols-outlined text-outline text-[18px] mr-space-xs">search</span>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search datasets by ID, crater, instrument or coordinates (e.g. OHRC_0421, Shackleton, 89.9°S)..."
-              className="w-full bg-transparent font-mono-data-md text-mono-data-md text-on-surface focus:outline-none placeholder:text-outline placeholder:font-body-sm"
+              placeholder="Search datasets by ID, crater, instrument or coordinates..."
+              className="w-full bg-transparent font-mono-data-md text-mono-data-md text-on-surface focus:outline-none placeholder:text-outline placeholder:font-body-sm text-sm"
             />
             {searchQuery && (
-              <button onClick={() => setSearchQuery("")} className="text-outline hover:text-on-surface p-space-2xs" title="Clear query">
-                <span className="material-symbols-outlined text-[16px]">close</span>
+              <button onClick={() => setSearchQuery("")} className="text-outline hover:text-on-surface p-1" title="Clear query">
+                <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
             )}
           </div>
-          <div className="flex items-center bg-surface-container-low rounded overflow-hidden">
-            <span className="px-space-sm py-space-xs font-label-caps text-label-caps uppercase text-on-surface-variant bg-surface-container">LAT/LON</span>
-            <input type="text" defaultValue="-85.2° / 128.9°" className="w-36 px-space-xs font-mono-data-sm text-mono-data-sm bg-transparent text-on-surface focus:outline-none" />
+          <div className="flex items-center bg-surface-container-low rounded overflow-hidden w-full md:w-auto min-h-[44px]">
+            <span className="px-space-sm py-2 font-label-caps text-label-caps uppercase text-on-surface-variant bg-surface-container">LAT/LON</span>
+            <input type="text" defaultValue="-85.2° / 128.9°" className="flex-1 md:w-36 px-space-xs font-mono-data-sm text-mono-data-sm bg-transparent text-on-surface focus:outline-none" />
             <span className="px-space-xs font-mono-data-sm text-mono-data-sm text-outline">±0.5°</span>
-            <button className="px-space-sm py-space-xs bg-secondary text-on-secondary font-mono-data-sm text-mono-data-sm hover:bg-on-secondary-container transition-colors flex items-center gap-space-2xs">
-              <span className="material-symbols-outlined text-[16px]">pin_drop</span>
+            <button className="px-space-sm py-2 bg-secondary text-on-secondary font-mono-data-sm text-mono-data-sm hover:bg-on-secondary-container transition-colors flex items-center gap-space-2xs min-h-[44px]">
+              <span className="material-symbols-outlined text-[18px]">pin_drop</span>
               <span>Lock</span>
             </button>
           </div>
@@ -153,14 +153,14 @@ export default function DatasetsPage() {
 
         {/* Multi-level Granule Filter Matrix */}
         <div className="flex flex-col gap-space-xs pt-space-xs">
-          <div className="flex flex-wrap items-center gap-space-xs">
-            <span className="w-28 font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">Payload:</span>
-            <div className="flex flex-wrap items-center gap-space-2xs font-mono-data-sm text-mono-data-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-space-xs">
+            <span className="w-28 font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider text-xs">Payload:</span>
+            <div className="flex flex-wrap items-center gap-1.5 font-mono-data-sm text-mono-data-sm">
               {(["ALL", "OHRC", "TMC-2", "IIRS", "LROC NAC", "DFSAR"] as const).map((payload) => (
                 <button
                   key={payload}
                   onClick={() => setSelectedPayload(payload)}
-                  className={`px-space-sm py-space-2xs rounded transition-colors ${
+                  className={`px-space-sm py-1.5 min-h-[36px] rounded transition-colors ${
                     selectedPayload === payload
                       ? "bg-primary text-on-primary font-semibold"
                       : "bg-surface-container text-on-surface hover:bg-surface-container-high"
@@ -172,13 +172,13 @@ export default function DatasetsPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-space-xs">
-            <span className="w-28 font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">Pixel Scale:</span>
-            <div className="flex flex-wrap items-center gap-space-2xs font-mono-data-sm text-mono-data-sm">
-              <button className="px-space-sm py-space-2xs bg-secondary text-on-secondary rounded font-medium">ALL SCALES</button>
-              <button className="px-space-sm py-space-2xs bg-surface-container text-on-surface rounded hover:bg-surface-container-high">&lt; 0.50 m/px (Ultra High)</button>
-              <button className="px-space-sm py-space-2xs bg-surface-container text-on-surface rounded hover:bg-surface-container-high">0.5 – 5.0 m/px (Stereo DEM)</button>
-              <button className="px-space-sm py-space-2xs bg-surface-container text-on-surface rounded hover:bg-surface-container-high">&gt; 10 m/px (Spectroscopy)</button>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-space-xs mt-1">
+            <span className="w-28 font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider text-xs">Pixel Scale:</span>
+            <div className="flex flex-wrap items-center gap-1.5 font-mono-data-sm text-mono-data-sm">
+              <button className="px-space-sm py-1.5 min-h-[36px] bg-secondary text-on-secondary rounded font-medium">ALL SCALES</button>
+              <button className="px-space-sm py-1.5 min-h-[36px] bg-surface-container text-on-surface rounded hover:bg-surface-container-high">&lt; 0.50 m/px (Ultra High)</button>
+              <button className="px-space-sm py-1.5 min-h-[36px] bg-surface-container text-on-surface rounded hover:bg-surface-container-high">0.5 – 5.0 m/px (Stereo DEM)</button>
+              <button className="px-space-sm py-1.5 min-h-[36px] bg-surface-container text-on-surface rounded hover:bg-surface-container-high">&gt; 10 m/px (Spectroscopy)</button>
             </div>
           </div>
         </div>
@@ -186,21 +186,70 @@ export default function DatasetsPage() {
 
       {/* Main Split Content: Table vs Inspector */}
       <section className="mt-space-md grid grid-cols-1 xl:grid-cols-12 gap-space-md items-start">
-        {/* LEFT / CENTER: Table (8 cols) */}
+        {/* LEFT / CENTER: Table & Mobile Cards (8 cols) */}
         <div className="xl:col-span-8 flex flex-col gap-space-sm bg-surface-container-lowest rounded-lg p-space-sm shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-space-xs py-space-2xs bg-surface-container-low rounded">
-            <div className="flex items-center gap-space-sm font-mono-data-sm text-mono-data-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 px-space-xs py-space-2xs bg-surface-container-low rounded">
+            <div className="flex flex-wrap items-center gap-space-sm font-mono-data-sm text-mono-data-sm text-xs">
               <span className="font-bold text-on-surface">{filteredImages.length} Granules Found</span>
               <span className="text-outline">|</span>
-              <span className="text-on-surface-variant">PDS4 Collection: <code className="text-secondary font-mono-data-sm">urn:isro:ch2:science_archive:data_calibrated</code></span>
+              <span className="text-on-surface-variant truncate max-w-[200px] sm:max-w-none">PDS4 Collection: <code className="text-secondary font-mono-data-sm">calibrated</code></span>
             </div>
-            <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm">
+            <div className="flex items-center gap-space-xs font-mono-data-sm text-mono-data-sm text-xs">
               <span className="text-on-surface-variant">Sort:</span>
               <span className="text-on-surface font-semibold">Acquisition Time ↓</span>
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* Mobile Card List (< md:) */}
+          <div className="flex flex-col divide-y divide-surface-container-high md:hidden">
+            {filteredImages.map((item) => {
+              const isSelected = selectedImage?._id === item._id;
+              return (
+                <div
+                  key={item._id}
+                  onClick={() => setSelectedImageId(item._id)}
+                  className={`p-3 transition-colors cursor-pointer rounded-lg mb-1 ${
+                    isSelected ? "bg-secondary-fixed/40 border border-secondary" : "hover:bg-surface-container-low"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-10 rounded overflow-hidden bg-primary shadow-xs relative shrink-0">
+                        <Image src="/images/crater-terrain-reference.png" alt={item.name} fill className="object-cover" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-secondary text-sm flex items-center gap-1">
+                          <span className={`w-2 h-2 rounded-full ${isSelected ? "bg-secondary" : "bg-outline-variant"}`}></span>
+                          {item.name}
+                        </div>
+                        <div className="text-xs text-on-surface-variant font-mono">{item.sensor} · {item.resolutionMetersPerPixel} m/px</div>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-[#ecfdf5] text-[#065f46]">
+                      Level-2B
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between pt-1">
+                    <div className="text-xs text-on-surface-variant font-mono">
+                      {item.width && item.height ? `${item.width}×${item.height}` : "4096×4096"} · Elev: {item.sunElevationDeg || 18.4}°
+                    </div>
+                    <button
+                      className={`px-3 py-1.5 min-h-[44px] rounded font-mono text-xs font-semibold ${
+                        isSelected
+                          ? "bg-primary text-on-primary"
+                          : "bg-surface-container text-on-surface"
+                      }`}
+                    >
+                      {isSelected ? "Active" : "Inspect"}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop Table (>= md:) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left font-mono-data-sm text-mono-data-sm border-collapse">
               <thead>
                 <tr className="bg-surface-container text-on-surface-variant uppercase font-label-caps text-label-caps select-none">

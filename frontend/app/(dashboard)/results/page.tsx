@@ -164,8 +164,8 @@ export default function ResultsPage() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-        <div className="relative flex-1 max-w-md">
+      <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+        <div className="relative flex-1 w-full md:max-w-md">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">
             search
           </span>
@@ -174,19 +174,19 @@ export default function ResultsPage() {
             placeholder="Search by ID, sensor pair, or image name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 bg-surface-container-low border border-outline-variant/40 rounded-lg text-xs font-mono-data-sm focus:outline-none focus:border-secondary"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] bg-surface-container-low border border-outline-variant/40 rounded-lg text-xs font-mono-data-sm focus:outline-none focus:border-secondary"
           />
         </div>
 
-        <div className="flex items-center gap-1.5 font-mono-data-sm text-xs">
+        <div className="flex flex-wrap items-center gap-1.5 font-mono-data-sm text-xs">
           <span className="text-on-surface-variant font-semibold mr-1">Status:</span>
           {(["ALL", "PASSED", "INLIER WARN", "FAILED"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setFilterStatus(s)}
-              className={`px-2.5 py-1 rounded transition-colors ${
+              className={`px-3 py-1.5 min-h-[36px] rounded transition-colors ${
                 filterStatus === s
-                  ? "bg-primary-container text-white shadow-xs"
+                  ? "bg-primary-container text-white shadow-xs font-semibold"
                   : "bg-surface-container text-on-surface-variant hover:text-on-surface"
               }`}
             >
@@ -196,9 +196,59 @@ export default function ResultsPage() {
         </div>
       </div>
 
-      {/* Main Table */}
+      {/* Main Results View */}
       <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile Stacked Card View (< md:) */}
+        <div className="flex flex-col divide-y divide-surface-container/60 md:hidden p-2">
+          {filtered.map((row) => (
+            <div key={row.id} className="p-3 hover:bg-surface-container-low/40 transition-colors rounded-lg mb-1">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div>
+                  <div className="font-bold text-secondary text-sm">{row.id}</div>
+                  <div className="text-xs text-on-surface font-semibold">{row.sensorPair}</div>
+                  <div className="text-[11px] text-on-surface-variant font-mono">{row.refImage} ↔ {row.srcImage}</div>
+                </div>
+                <span
+                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
+                    row.status === "PASSED"
+                      ? "bg-[#ecfdf5] text-[#065f46]"
+                      : "bg-[#fffbeb] text-[#92400e]"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${row.status === "PASSED" ? "bg-[#10b981]" : "bg-[#f59e0b]"}`}></span>
+                  {row.status}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 py-2 bg-surface-container-low px-2.5 rounded font-mono text-xs">
+                <div>
+                  <span className="text-on-surface-variant text-[10px] block">RMSE</span>
+                  <span className="font-bold text-on-surface">{row.rmse.toFixed(2)} px</span>
+                </div>
+                <div>
+                  <span className="text-on-surface-variant text-[10px] block">Inliers</span>
+                  <span className="font-bold text-[#065f46]">{row.inlierRatio}%</span>
+                </div>
+                <div>
+                  <span className="text-on-surface-variant text-[10px] block">SSIM</span>
+                  <span className="font-bold text-on-surface">{row.ssim.toFixed(3)}</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between pt-2.5">
+                <span className="text-[11px] font-mono text-on-surface-variant">{row.runDate}</span>
+                <Link
+                  href="/registration"
+                  className="px-3 py-2 min-h-[44px] bg-surface-container hover:bg-surface-container-high rounded text-xs font-semibold text-secondary hover:text-on-surface transition-colors inline-flex items-center gap-1.5"
+                >
+                  <span>Inspect Report</span>
+                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Table (>= md:) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left font-mono-data-sm text-mono-data-sm border-collapse">
             <thead>
               <tr className="bg-surface-container-low border-b border-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase">

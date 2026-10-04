@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -65,6 +65,15 @@ function RegistrationContent() {
   const [artifacts, setArtifacts] = useState<JobArtifacts>({});
   const [flickerState, setFlickerState] = useState<"ref" | "src">("ref");
   const [swipePosition, setSwipePosition] = useState(50);
+  const swipeContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleSwipeTouch = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!swipeContainerRef.current) return;
+    const rect = swipeContainerRef.current.getBoundingClientRect();
+    const touchX = e.touches[0].clientX - rect.left;
+    const pct = Math.min(100, Math.max(0, (touchX / rect.width) * 100));
+    setSwipePosition(Math.round(pct));
+  };
 
   // Load all jobs on mount
   useEffect(() => {
@@ -281,15 +290,15 @@ function RegistrationContent() {
         {/* LEFT: VIEWPORTS (8-9 COLS) */}
         <div className="xl:col-span-8 2xl:col-span-9 flex flex-col gap-space-md">
           {/* Controller Bar */}
-          <div className="flex items-center justify-between bg-surface-container-low px-space-sm py-space-xs rounded font-mono-data-sm text-mono-data-sm">
-            <div className="flex items-center gap-space-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-surface-container-low px-space-sm py-space-xs rounded font-mono-data-sm text-mono-data-sm">
+            <div className="flex flex-wrap items-center gap-space-sm w-full sm:w-auto">
               <span className="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">Multi-Viewport Mode</span>
-              <div className="flex items-center bg-surface-container-highest rounded p-0.5">
+              <div className="flex items-center bg-surface-container-highest rounded p-0.5 w-full sm:w-auto overflow-x-auto">
                 {(["tri-split", "swipe", "flicker"] as const).map((mode) => (
                   <button
                     key={mode}
                     onClick={() => setViewportMode(mode)}
-                    className={`px-space-xs py-space-2xs rounded font-mono-data-sm text-mono-data-sm capitalize ${
+                    className={`flex-1 sm:flex-none px-space-xs py-1.5 min-h-[36px] rounded font-mono-data-sm text-mono-data-sm capitalize transition-colors ${
                       viewportMode === mode
                         ? "bg-primary-container text-on-primary shadow-xs"
                         : "text-on-surface-variant hover:text-on-surface"
@@ -300,24 +309,29 @@ function RegistrationContent() {
                 ))}
               </div>
             </div>
-            <div className="flex items-center gap-space-xs text-on-surface-variant">
-              <span className="material-symbols-outlined text-[16px] text-secondary cursor-pointer hover:opacity-80">zoom_in</span>
+            <div className="flex items-center gap-space-xs text-on-surface-variant text-xs">
+              <span className="material-symbols-outlined text-[18px] text-secondary cursor-pointer hover:opacity-80 p-1">zoom_in</span>
               <span className="text-on-surface font-semibold">100% GSD</span>
-              <span className="material-symbols-outlined text-[16px] text-secondary cursor-pointer hover:opacity-80">zoom_out</span>
+              <span className="material-symbols-outlined text-[18px] text-secondary cursor-pointer hover:opacity-80 p-1">zoom_out</span>
               <span className="text-outline-variant">|</span>
-              <span className="material-symbols-outlined text-[16px] cursor-pointer hover:text-on-surface">sync</span>
+              <span className="material-symbols-outlined text-[18px] cursor-pointer hover:text-on-surface p-1">sync</span>
               <span>Synchronized Pan</span>
             </div>
           </div>
 
           {/* Interactive Multi-Viewport Mode View */}
           {viewportMode === "swipe" ? (
-            <div className="relative w-full aspect-[16/9] bg-primary rounded-lg overflow-hidden select-none">
+            <div
+              ref={swipeContainerRef}
+              onTouchStart={handleSwipeTouch}
+              onTouchMove={handleSwipeTouch}
+              className="relative w-full aspect-[4/3] sm:aspect-[16/9] bg-primary rounded-lg overflow-hidden select-none cursor-ew-resize touch-pan-y"
+            >
               {/* Reference Image Background */}
               <Image src={refImageUrl} alt="Reference Base" fill className="object-cover" />
               {/* Warped Source Overlay clipped by swipe slider */}
               <div
-                className="absolute inset-0 overflow-hidden"
+                className="absolute inset-0 overflow-hidden pointer-events-none"
                 style={{ clipPath: `polygon(0 0, ${swipePosition}% 0, ${swipePosition}% 100%, 0 100%)` }}
               >
                 <Image src={warpedImageUrl} alt="Warped Source Overlay" fill className="object-cover" />
@@ -327,7 +341,7 @@ function RegistrationContent() {
                 className="absolute top-0 bottom-0 w-0.5 bg-secondary shadow-lg pointer-events-none"
                 style={{ left: `${swipePosition}%` }}
               >
-                <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-xs shadow-md">
+                <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-sm shadow-md font-bold">
                   ⇄
                 </div>
               </div>
@@ -338,9 +352,10 @@ function RegistrationContent() {
                 max="100"
                 value={swipePosition}
                 onChange={(e) => setSwipePosition(Number(e.target.value))}
-                className="absolute inset-x-4 bottom-4 z-20 accent-secondary cursor-ew-resize opacity-80 hover:opacity-100"
+                className="absolute inset-x-4 bottom-4 z-20 accent-secondary cursor-ew-resize opacity-80 hover:opacity-100 h-8"
+                aria-label="Swipe comparison slider"
               />
-              <div className="absolute top-3 left-3 bg-primary/80 px-2 py-1 rounded text-inverse-on-surface font-mono text-xs">
+              <div className="absolute top-3 left-3 bg-primary/80 px-2 py-1 rounded text-inverse-on-surface font-mono text-[11px] sm:text-xs max-w-[80%] truncate">
                 Left: Warped ({job?.sourceImageId?.sensor || "TMC-2"}) | Right: Reference ({job?.referenceImageId?.sensor || "OHRC"})
               </div>
             </div>
@@ -718,15 +733,18 @@ function RegistrationContent() {
       </div>
 
       {/* BOTTOM ACTION BAR */}
-      <div className="mt-space-sm bg-surface-container-lowest px-space-md py-space-sm rounded shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-sm">
-        <div className="flex items-center gap-space-sm w-full md:w-auto">
-          <Link href="/new-analysis" className="px-space-md py-space-xs bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-body-md text-body-md flex items-center gap-space-xs transition-colors">
+      <div className="mt-space-sm bg-surface-container-lowest px-space-md py-space-sm rounded shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-sm">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm w-full md:w-auto">
+          <Link
+            href="/new-analysis"
+            className="px-space-md py-2 min-h-[44px] bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-body-md text-body-md flex items-center justify-center gap-space-xs transition-colors"
+          >
             <span className="material-symbols-outlined text-[18px]">arrow_back</span>
             <span>Back to Workstation</span>
           </Link>
           <button
             onClick={handleGenerateReport}
-            className="px-space-md py-space-xs bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-body-md text-body-md flex items-center gap-space-xs transition-colors"
+            className="px-space-md py-2 min-h-[44px] bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-body-md text-body-md flex items-center justify-center gap-space-xs transition-colors"
           >
             <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>
             <span>Generate Verification Report</span>
@@ -735,7 +753,7 @@ function RegistrationContent() {
         <div className="flex items-center gap-space-sm w-full md:w-auto justify-end">
           <button
             onClick={handleExportGeoTiff}
-            className="px-space-md py-space-xs bg-primary-container text-on-primary hover:bg-secondary rounded font-body-md text-body-md font-semibold flex items-center gap-space-xs shadow-sm transition-all hover:shadow"
+            className="w-full sm:w-auto px-space-md py-2 min-h-[44px] bg-primary-container text-on-primary hover:bg-secondary rounded font-body-md text-body-md font-semibold flex items-center justify-center gap-space-xs shadow-sm transition-all hover:shadow"
           >
             <span className="material-symbols-outlined text-[18px] text-secondary-fixed">download</span>
             <span>Export Registered GeoTIFF (COG)</span>
@@ -745,7 +763,7 @@ function RegistrationContent() {
       </div>
 
       {/* BATCH METADATA FOOTER TAG */}
-      <div className="flex items-center justify-between px-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 px-space-xs font-mono-data-sm text-mono-data-sm text-on-surface-variant text-[11px] sm:text-xs">
         <div>Processing Job: {job?._id || "REG-CH2"} | Algorithm: {job?.algorithm || "classical"} / {job?.transformModel || "homography"}</div>
         <div>IAU/IAG Lunar Geodetic Frame 2000 | Ortho Engine: GDAL/RPC-V4</div>
       </div>
